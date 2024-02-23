@@ -4,7 +4,7 @@ import { useConfig } from 'nextra-theme-docs'
 
 const logo = (
   <>
-  <img src="/logo-dark.png" alt="Logo" height="75px" width="75px" />
+  <img src="/logo-dark.png" alt="Logo" height="40px" width="40px" />
   <span style={{ marginLeft: '.4em', fontWeight: 800 }}> Cogwheel Docs </span>
   </>
 )
