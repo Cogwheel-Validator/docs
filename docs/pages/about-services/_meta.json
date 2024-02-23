@@ -1,0 +1,21 @@
+{
+    "explorer":{
+        "title": "Explorer"
+    },
+    "frontend":{
+        "title": "Dyson Frontend"
+    },
+    "restake":{
+        "title": "REstake"
+    },
+    "restake-ui":{
+        "title": "REstake-UI"
+    },
+    "status":{
+        "title": "Service Status Page"
+    },
+    "endpoints":{
+        "title": "Blockchain endpoints"
+    }
+
+}

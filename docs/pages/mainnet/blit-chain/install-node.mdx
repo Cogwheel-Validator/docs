@@ -1,0 +1,148 @@
+# Node setup for Blit Chain
+
+Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
+can be daunting and chalanging task. This is a short guide how to set up the node.
+
+## Update the system and install the essentials
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && sudo apt install 
+    build-essential \
+    make \
+    build-essential \
+    libssl-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    wget \
+    curl \
+    llvm \
+    libncurses5-dev \
+    libncursesw5-dev \
+    xz-utils \
+    tk-dev \
+    libffi-dev \
+    liblzma-dev \
+    python3-openssl \
+    git \
+    libre2-dev \
+    dnsutils \
+    entr \
+    jq \ 
+    ufw 
+```
+
+## Install Goenv and Go
+
+```bash
+git clone https://github.com/go-nv/goenv.git ~/.goenv
+
+echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
+echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(goenv init -)"' >> ~/.bashrc
+echo 'export PATH="$GOROOT/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc
+
+#Save changes
+source ~/.bashrc
+
+goenv install 1.21.3
+goenv global 1.21.3
+```
+
+## Install Pyenv
+
+```bash
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+#Save changes
+source ~/.bashrc
+```
+## Set up variables and set up cosmovisor
+
+```bash
+export BLIT_VERSION=$(curl http://mainnet.blitchain.net/cosmos/base/tendermint/v1beta1/node_info | jq -r .application_version.version)
+
+export DAEMON_HOME=$HOME/.blit
+
+#Install and prepare cosmovisor
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+mkdir -p $DAEMON_HOME/cosmovisor/
+cd $DAEMON_HOME/cosmovisor/
+```
+## Set up the script
+
+```bash
+curl https://raw.githubusercontent.com/BlitChain/blitchain/develop/scripts/cosmovisor-preupgrade-build-from-source.sh > cosmovisor-preupgrade-build-from-source.sh
+chmod +x ./cosmovisor-preupgrade-build-from-source.sh
+```
+## Install latest blitd and set up sim links
+
+```bash
+./cosmovisor-preupgrade-build-from-source.sh $BLIT_VERSION
+ln -s $DAEMON_HOME/cosmovisor/upgrades/$BLIT_VERSION $DAEMON_HOME/cosmovisor/current
+sudo ln -s $DAEMON_HOME/cosmovisor/current/bin/blitd /usr/local/bin/blitd -f
+```
+
+## Set up the node and other configuration
+
+```bash
+cd $DAEMON_HOME/cosmovisor/current/
+make mainnet
+blitd init MONIKER # Change moniker to the name you want your validator to be recognized
+```
+This settings should only be changed if you plan to run your node a bit differently.
+```bash
+cd $HOME/.blit/config
+vim app.toml
+```
+This is an optional step if you do not want to use cosmovisor sctipt.
+If you do not want to run the binary from the upgrade path you need
+to link the path to blitvm.
+```toml
+[blit]
+blitvm_path = "/home/user/path/to/blitvm"
+```
+## Create systemd service file
+
+```bash
+sudo tee /etc/systemd/system/blitd.service > /dev/null <<EOF
+[Unit]
+Description=Blitchain Daemon
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(goenv which cosmovisor) run start
+Restart=on-failure
+RestartSec=5
+Environment="DAEMON_HOME=$DAEMON_HOME"
+Environment="DAEMON_NAME=blitd"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment=DAEMON_POLL_INTERVAL=1s
+Environment=DAEMON_LOG_BUFFER_SIZE=512
+Environment=DAEMON_PREUPGRADE_MAX_RETRIES=10
+Environment=COSMOVISOR_CUSTOM_PREUPGRADE=cosmovisor-preupgrade-build-from-source.sh
+WorkingDirectory=$DAEMON_HOME/cosmovisor/current/
+Environment=PATH=$HOME/.pyenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+LimitNOFILE=65535
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+## Start the service
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable blitd
+sudo systemctl start blitd
+```

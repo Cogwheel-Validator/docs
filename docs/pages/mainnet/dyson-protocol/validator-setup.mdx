@@ -1,0 +1,35 @@
+import { Callout } from 'nextra/components'
+
+# Validator setup for Dyson Protocol
+
+## Create keys and validator
+
+<Callout type="info" emoji="🐋">
+  Some commands need to be executed inside docker container. Any commands with the binary
+  should be executed inside the chain container. To enter chain container use this command:
+  "docker compose exec chain bash" inside the dyson directory.
+</Callout>
+<Callout type="info" emoji="🙋‍♀️">
+  Make sure to change values for moniker, identity, details website to your own values.
+</Callout>
+
+```bash
+#Then create the wallet ( replace #keyname with whatever name you want)
+dysond keys add #keyname
+
+#Now create the validator 
+dysond tx staking create-validator \
+--amount=1dys \
+--pubkey=$(dysond tendermint show-validator) \
+--moniker=node name \
+--chain-id=dyson-mainnet-01 \
+--commission-rate=”0.05″ \
+--commission-max-rate=”0.20″ \
+--commission-max-change-rate=”0.01″ \
+--min-self-delegation=”1″ \
+--gas=”auto” \
+--gas-prices=”0.0001dys” \
+--from=#keyname \
+--gas-adjustment 1.5
+```
+
