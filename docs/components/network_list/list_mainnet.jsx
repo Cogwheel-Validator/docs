@@ -39,6 +39,7 @@ export default function mainnet() {
         key={index}
         isPressable
         onPress={() => router.push(item.href)} // Use the router to navigate when the card is pressed
+        style={{ margin: '10px' }}
       >
           <CardBody className="overflow-visible p-0">
             <Image

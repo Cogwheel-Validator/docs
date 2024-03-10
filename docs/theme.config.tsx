@@ -98,14 +98,6 @@ const config: DocsThemeConfig = {
       </div>
     )
   },
-  banner: {
-    key: 'Docs Page Release',
-    text: (
-      <span>
-        🏗️ Cogwheel's docs page has been released. Some pages need more work and correction. 
-      </span>
-    )
-  },
   toc: {
     backToTop: true
   }
