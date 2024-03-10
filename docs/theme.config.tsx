@@ -27,9 +27,6 @@ const config: DocsThemeConfig = {
       }
     }
   },
-  editLink: {
-    content: null
-  },
   logo,
   darkMode: true,
   chat: {
@@ -75,6 +72,9 @@ const config: DocsThemeConfig = {
         <link rel="icon" href="/favicon.ico" type="image/ico" />
       </>
     )
+  },
+  editLink: {
+    text: null
   },
   feedback: {
     content: null
