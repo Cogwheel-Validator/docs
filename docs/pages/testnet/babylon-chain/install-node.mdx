@@ -17,7 +17,7 @@ sudo apt install entr jq make git ufw wget
 sudo rm -r /usr/local/go/
 wget https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
-rm go1.20.4..linux-amd64.tar.gz
+rm go1.22.0.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
 source $HOME/.bashrc
@@ -50,7 +50,7 @@ sudo ln -s $HOME/.babylond/cosmovisor/current/bin/babylond /usr/local/bin/babylo
 
 sudo tee /etc/systemd/system/babylond.service > /dev/null <<EOF
 [Unit]
-Description=”{$SERVICE_NAME} node”
+Description=”Babylon Chain node”
 After=network-online.target
 
 [Service]
@@ -80,28 +80,16 @@ sudo systemctl enable babylond.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-babylond init YOUR_MONIKER --chain-id bbn-test-2
+babylond init YOUR_MONIKER --chain-id bbn-test-3
 
 # Get address book and genesis.json
-wget https://github.com/babylonchain/networks/raw/main/bbn-test-2/genesis.tar.bz2
-tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
-mv genesis.json ~/.babylond/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/babylon-testnet/genesis.json -O $HOME/.babylond/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/babylon-testnet/addrbook.json -O $HOME/.babylond/config/addrbook.json
 
 
 #Do some changes to the settings
-babylond config keyring-backend test
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.00001ubbn\”|” $HOME/.babylond/config/app.toml
-
-# You can get address book from any validator (you only need 1 address book)
-
-#Polkachu
-wget -O addrbook.json https://snapshots.polkachu.com/testnet-addrbook/babylon/addrbook.json –inet4-only
-mv addrbook.json ~/.babylond/config or
-#KJ Nodes
-curl -Ls https://snapshots.kjnodes.com/babylon-testnet/addrbook.json > $HOME/.babylond/config/addrbook.json or
-#NodeJumper
-curl -s https://snapshots-testnet.nodejumper.io/babylon-testnet/addrbook.json > $HOME/.babylond/config/addrbook.json
-# Or find seed from some validator that offers seed to bootstrap your node.
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.0001ubbn\”|” $HOME/.babylond/config/app.toml
+sed -i -e “s|^timeout_commit *=.*|timeout_commit = \”30s\”|” $HOME/.babylond/config/config.toml
 ```
 
 ## Use state sync or snapshot to catch up
@@ -112,10 +100,7 @@ Use snapshot or state sync to catch up.
 ```
 Links to snapshots. You only need from one provider.
 https://polkachu.com/testnets/babylon/snapshots
-
 https://services.kjnodes.com/testnet/babylon/snapshot/
-
-https://app.nodejumper.io/babylon-testnet/sync
 ```
 
 ## Start the node

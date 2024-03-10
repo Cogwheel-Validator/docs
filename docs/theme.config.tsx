@@ -27,6 +27,9 @@ const config: DocsThemeConfig = {
       }
     }
   },
+  editLink: {
+    content: null
+  },
   logo,
   darkMode: true,
   chat: {

@@ -1,0 +1,38 @@
+import { Card, Cards } from 'nextra/components'
+import { ChevronRightIcon } from '@components/icons'
+
+![Side Protocol icon](/icons/sideIcon.png)
+
+# Side Protocol
+
+| Info | Data |
+| :------------      | :----------      |
+| Chain ID           | side-testnet-2     |
+| Chain version      | v0.6.0  |
+| Network type       | testnet   |
+
+## Endpoints
+
+| Side Protocol       | Links                               |
+| :------------      | :----------:                        |
+| REST API           | https://side-testnet-api.cogwheel.zone      |
+| RPC                | https://side-testnet-rpc.cogwheel.zone      |
+| GRPC               | grpc://side-testnet-grpc.cogwheel.zone:443  |
+
+<Cards>
+  <Card
+    icon={<ChevronRightIcon />}
+    title="Install Node"
+    href="./side-protocol/install-node"
+  />
+  <Card
+    icon={<ChevronRightIcon />}
+    title="Validator Setup"
+    href="./side-protocol/validator-setup"
+  />
+  <Card
+    icon={<ChevronRightIcon />}
+    title="Node Commands"
+    href="./side-protocol/node-commands"
+  />
+</Cards>

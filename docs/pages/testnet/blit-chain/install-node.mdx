@@ -1,4 +1,4 @@
-# Node setup for Blit Chain
+# Node setup for Blit Chain - Testnet
 
 Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
 can be daunting and chalanging task. This is a short guide how to set up the node.
@@ -66,7 +66,7 @@ source ~/.bashrc
 ## Set up variables and set up cosmovisor
 
 ```bash
-export BLIT_VERSION=$(curl http://testnet.blitchain.net/cosmos/base/tendermint/v1beta1/node_info | jq -r .application_version.version)
+export BLIT_VERSION=$(curl https://blit-testnet-api.cogwheel.zone/cosmos/base/tendermint/v1beta1/node_info | jq -r .application_version.version)
 
 export DAEMON_HOME=$HOME/.blit
 

@@ -1,0 +1,116 @@
+# Node setup for Union Protocol
+
+Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
+can be daunting and chalanging task. This is a short guide how to set up the node.
+
+## Update the system and install the essentials:
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim /or apt install nano 
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO and Cosmovisor
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
+rm go1.22.0.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
+source $HOME/.bashrc
+
+# Install cosmovisor
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.5.0
+sudo mv ~/go/bin/cosmovisor /usr/local/bin
+```
+
+## Set up cosmovisor and download the binary
+
+```bash 
+mkdir -p $HOME/.union/cosmovisor/genesis/bin
+mkdir -p $HOME/.union/cosmovisor/upgrades
+wget -O - https://github.com/Cogwheel-Validator/docs/raw/main/files/union-testnet/uniond-v0.19.0-linux-amd64.tar.gz | tar -xz -C $HOME/.union/cosmovisor/genesis/bin/
+chmod +x $HOME/.union/cosmovisor/genesis/bin/uniond
+sudo ln -s $HOME/.union/cosmovisor/genesis $HOME/.union/cosmovisor/current -f
+sudo ln -s $HOME/.union/cosmovisor/current/bin/uniond /usr/local/bin/uniond -f
+
+## Download the node binary
+
+```
+
+``` bash
+# Create service file
+
+sudo tee /etc/systemd/system/uniond.service > /dev/null <<EOF
+[Unit]
+Description=”Union Protocol node”
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+WorkingDirectory=$HOME/.union
+Restart=on-failure 
+RestartSec=5
+LimitNOFILE=65535
+Environment=”DAEMON_NAME=uniond”
+Environment=”DAEMON_HOME=$HOME/.union”
+Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
+Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
+Environment=”UNSAFE_SKIP_BACKUP=true”
+Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.union/cosmovisor/current/bin”
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable uniond.service
+```
+
+## Set up the node 
+
+```bash
+
+# Workaround mandatory home argument
+alias uniond='uniond --home=$HOME/.union/'
+
+# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+
+uniond init YOUR_MONIKER --chain-id union-testnet-6 --home=$HOME/.union/
+
+# Get address book and genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/union-testnet/genesis.json -O $HOME/.union/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/union-testnet/addrbook.json -O $HOME/.union/config/addrbook.json
+
+
+#Do some changes to the settings
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0muno\”|” $HOME/.union/config/app.toml
+```
+
+## Use state sync or snapshot to catch up
+
+Use snapshot or state sync to catch up.
+
+
+```bash
+Links to snapshots. You only need from one provider.
+#Stavr
+cd $HOME
+apt install lz4
+sudo systemctl stop uniond
+cp $HOME/.union/data/priv_validator_state.json $HOME/.union/priv_validator_state.json.backup
+rm -rf $HOME/.union/data
+curl -o - -L https://union-t.snapshot.stavr.tech/union-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.union --strip-components 2
+curl -o - -L https://union-t.wasm.stavr.tech/wasm-union.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.union --strip-components 2
+mv $HOME/.union/priv_validator_state.json.backup $HOME/.union/data/priv_validator_state.json
+```
+
+## Start the node
+
+```bash
+sudo systemctl start uniond  && sudo journalctl -fu uniond -o cat
+```
