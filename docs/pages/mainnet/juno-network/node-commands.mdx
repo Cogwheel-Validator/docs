@@ -124,31 +124,31 @@ junod tx distribution withdraw-rewards $( junod keys show wallet --bech val -a) 
 #### Delegate tokens to yourself
 
 ```bash
-junod tx staking delegate $( junod keys show wallet --bech val -a) 1000000000000.075ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
+junod tx staking delegate $( junod keys show wallet --bech val -a) 1000000ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
 ```
 
 #### Delegate tokens to validator
 
 ```bash
-junod tx staking delegate <TO_VALOPER_ADDRESS> 1000000000000.075ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno  -y
+junod tx staking delegate <TO_VALOPER_ADDRESS> 1000000ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno  -y
 ```
 
 #### Redelegate tokens to another validator
 
 ```bash
-junod tx staking redelegate $( junod keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000$ppica --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
+junod tx staking redelegate $( junod keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
 ```
 
 #### Unbond tokens from your validator
 
 ```bash
-junod tx staking unbond $( junod keys show wallet --bech val -a) 1000000$ppica --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
+junod tx staking unbond $( junod keys show wallet --bech val -a) 1000000ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
 ```
 
 #### Send tokens to the wallet
 
 ```bash
-junod tx bank send wallet <TO_WALLET_ADDRESS> 1000000$ppica --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
+junod tx bank send wallet <TO_WALLET_ADDRESS> 1000000ujuno --from wallet --chain-id juno-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.075ujuno -y
 ```
 
 ## 🏛️ Governance
@@ -196,13 +196,13 @@ junod tx gov vote 1 NoWithVeto --from wallet --chain-id juno-1 --gas-adjustment 
 **Disable indexer**
 
 ```bash
-sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/.banksy/config/config.toml
+sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/.juno/config/config.toml
 ```
 
 **Enable indexer**
 
 ```bash
-sed -i -e 's|^indexer *=.*|indexer = "kv"|' $HOME/.banksy/config/config.toml
+sed -i -e 's|^indexer *=.*|indexer = "kv"|' $HOME/.juno/config/config.toml
 ```
 
 #### Update pruning
@@ -213,7 +213,7 @@ sed -i \
   -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "2000"|' \
   -e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
   -e 's|^pruning-interval *=.*|pruning-interval = "100"|' \
-  $HOME/.banksy/config/app.toml
+  $HOME/.juno/config/app.toml
 ```
 
 ## 🔧 Maintenance
@@ -233,13 +233,13 @@ junod status 2>&1 | jq .SyncInfo
 #### Enable prometheus
 
 ```bash
-sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.banksy/config/config.toml
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.juno/config/config.toml
 ```
 
 #### Reset chain data
 
 ```bash
-junod tendermint unsafe-reset-all --keep-addr-book --home $HOME/.banksy --keep-addr-book
+junod tendermint unsafe-reset-all --keep-addr-book --home $HOME/.juno --keep-addr-book
 ```
 
 #### Remove node
@@ -255,8 +255,8 @@ sudo systemctl disable junod
 sudo rm /etc/systemd/system/junod.service
 sudo systemctl daemon-reload
 rm -f $(which junod)
-rm -rf $HOME/.banksy
-rm -rf $HOME/composable-juno
+rm -rf $HOME/.juno
+rm -rf $HOME/juno
 ```
 
 ## ⚙️ Service Management

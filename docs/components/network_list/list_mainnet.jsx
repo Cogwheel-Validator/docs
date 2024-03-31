@@ -28,6 +28,12 @@ export default function mainnet() {
       img: "/icons/junoIcon.png",
       chainID: "juno-1",
       href: "./mainnet/juno-network"
+    },
+    {
+      title: "Nibiru Chain",
+      img: "/icons/nibiruIcon.png",
+      chainID: "cataclysm-1",
+      href: "./mainnet/nibiru-chain"
     }
   ];
 

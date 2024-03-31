@@ -85,35 +85,17 @@ sudo systemctl enable centaurid.service
 centaurid init YOUR_MONIKER --chain-id centauri-1
 
 # Get address book and genesis.json
-wget -O $HOME/.banksy/config/genesis.json https://raw.githubusercontent.com/notional-labs/composable-networks/main/mainnet/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/composable/genesis.json -O $HOME/.banksy/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/composable/addrbook.json -O $HOME/.banksy/config/addrbook.json
 
 #Set minimum gas prices
 sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0ppica\”|” $HOME/.banksy/config/app.toml
-# You can get address book from any validator (you only need 1 address book)
-```
-```Polkachu
-wget -O addrbook.json https://snapshots.polkachu.com/addrbook/composable/addrbook.json -inet4-only
-mv addrbook.json ~/.banksy/config
-```
-Or
-```KJ Nodes
-curl -Ls https://snapshots.kjnodes.com/composable/addrbook.json > $HOME/.banksy/config/addrbook.json
-```
-Or
-```Genznodes
-wget -O $HOME/.banksy/config/addrbook.json “https://snapshot.genznodes.dev/composable/addrbook.json”
-# Or find seed from some validator that offers seed to bootstrap your node.
 ```
 
 ## Use state sync or snapshot to catch up
 
 Use snapshot or state sync to catch up.
 
-
-<Callout type="warning" emoji="⚠️">
-  If you plan to use state sync make sure that entety that offers these services
-   has wasm file included.
-</Callout>
 
 ```
 Links to snapshots. You only need from one provider.
