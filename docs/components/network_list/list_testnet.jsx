@@ -35,6 +35,12 @@ export default function testnet() {
         chainID: "union-testnet-6",
         href: "./testnet/union-network"
       },
+      {
+        title: "Juno Testnet",
+        img: "/icons/junoIcon.png",
+        chainID: "uni-6",
+        href: "./testnet/juno-network"
+      }
     ];
   
     return (

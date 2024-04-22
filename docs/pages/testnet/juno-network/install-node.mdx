@@ -19,7 +19,7 @@ sudo apt install entr jq make git ufw wget
 sudo rm -r /usr/local/go/
 wget https://golang.org/dl/go1.21.1.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
-rm go1.21.1.linux-amd64.tar.gz
+rm go1.22.2.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
 source $HOME/.bashrc
@@ -35,7 +35,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/CosmosContracts/juno
 cd juno 
-git checkout v21.0.0 # always doublecheck from the official team for the right version
+git checkout v22.0.0-alpha.1 # always doublecheck from the official team for the right version
 make install
 ```
 
