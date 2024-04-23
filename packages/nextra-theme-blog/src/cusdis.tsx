@@ -10,19 +10,12 @@ const Cusdis = dynamic(
   { ssr: false }
 )
 
-function Comments({
-  appId,
-  host = 'https://cusdis.com',
-  lang
-}: {
-  appId: string
-  host?: string
-  lang: string
-}): ReactElement | null {
-  const { opts } = useBlogContext()
+function Comments(): ReactElement | null {
+  const { config, opts } = useBlogContext()
   const router = useRouter()
   const { resolvedTheme } = useTheme()
 
+  const { cusdis } = config
   const theme = resolvedTheme === 'dark' ? 'dark' : 'light'
 
   // update the theme for the cusdis iframe when theme changed
@@ -30,17 +23,20 @@ function Comments({
     window.CUSDIS?.setTheme(theme)
   }, [theme])
 
-  if (!appId) {
+  if (!cusdis) {
+    return null
+  }
+  if (!cusdis.appId) {
     console.warn('[nextra/cusdis] `appId` is required')
     return null
   }
   return (
     <Cusdis
-      lang={lang}
+      lang={cusdis.lang}
       style={{ marginTop: '4rem' }}
       attrs={{
-        host,
-        appId,
+        host: cusdis.host || 'https://cusdis.com',
+        appId: cusdis.appId,
         pageId: router.pathname,
         pageTitle: opts.title,
         theme

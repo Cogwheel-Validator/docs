@@ -1,12 +1,12 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
-import { useData } from 'nextra/hooks'
+import { useSSG } from 'nextra/ssg'
 import { getStaticTags } from './utils/get-tags'
 
 const NEXTRA_INTERNAL = Symbol.for('__nextra_internal__')
 
 export const TagTitle = ({ prefix = 'Posts tagged with ' }) => {
-  const { tag } = useData()
+  const { tag } = useSSG()
   const title = `${prefix}${tag}`
   return (
     <Head>
@@ -16,7 +16,7 @@ export const TagTitle = ({ prefix = 'Posts tagged with ' }) => {
 }
 
 export const TagName = () => {
-  const { tag } = useData()
+  const { tag } = useSSG()
   return tag || null
 }
 

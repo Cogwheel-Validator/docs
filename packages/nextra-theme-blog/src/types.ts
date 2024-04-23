@@ -1,11 +1,16 @@
 /* eslint typescript-sort-keys/interface: error */
 import type { PageOpts } from 'nextra'
-import type { MDXComponents } from 'nextra/mdx'
+import type { Components } from 'nextra/mdx'
 import type { ReactNode } from 'react'
 
 export interface NextraBlogTheme {
   comments?: ReactNode
-  components?: MDXComponents
+  components?: Components
+  cusdis?: {
+    appId: string
+    host?: string
+    lang: string
+  }
   darkMode?: boolean
   dateFormatter?: (date: Date) => string
   footer?: ReactNode
@@ -25,6 +30,8 @@ export interface NextraBlogTheme {
   titleSuffix?: string
 }
 
+export type BlogPageOpts = PageOpts<BlogFrontMatter>
+
 export type BlogFrontMatter = {
   author?: string
   back?: string
@@ -37,5 +44,5 @@ export type BlogFrontMatter = {
 
 export interface LayoutProps {
   config: NextraBlogTheme
-  opts: PageOpts<BlogFrontMatter>
+  opts: BlogPageOpts
 }

@@ -1,7 +1,8 @@
 import cn from 'clsx'
-import type { Document } from 'flexsearch'
+// flexsearch types are incorrect, they were overwritten in tsconfig.json
+import FlexSearch from 'flexsearch'
+import { useRouter } from 'next/router'
 import type { SearchData } from 'nextra'
-import { useRouter } from 'nextra/hooks'
 import type { ReactElement, ReactNode } from 'react'
 import { useCallback, useState } from 'react'
 import { DEFAULT_LOCALE } from '../constants'
@@ -9,7 +10,7 @@ import type { SearchResult } from '../types'
 import { HighlightMatches } from './highlight-matches'
 import { Search } from './search'
 
-type SectionIndex = Document<
+type SectionIndex = FlexSearch.Document<
   {
     id: string
     url: string
@@ -21,7 +22,7 @@ type SectionIndex = Document<
   ['title', 'content', 'url', 'display']
 >
 
-type PageIndex = Document<
+type PageIndex = FlexSearch.Document<
   {
     id: number
     title: string
@@ -59,14 +60,12 @@ const loadIndexesImpl = async (
   basePath: string,
   locale: string
 ): Promise<void> => {
-  const [searchData, Document] = await Promise.all([
-    fetch(`${basePath}/_next/static/chunks/nextra-data-${locale}.json`).then(
-      response => response.json() as Promise<SearchData>
-    ),
-    import('flexsearch').then(mod => mod.default.Document)
-  ])
+  const response = await fetch(
+    `${basePath}/_next/static/chunks/nextra-data-${locale}.json`
+  )
+  const searchData = (await response.json()) as SearchData
 
-  const pageIndex: PageIndex = new Document({
+  const pageIndex: PageIndex = new FlexSearch.Document({
     cache: 100,
     tokenize: 'full',
     document: {
@@ -81,7 +80,7 @@ const loadIndexesImpl = async (
     }
   })
 
-  const sectionIndex: SectionIndex = new Document({
+  const sectionIndex: SectionIndex = new FlexSearch.Document({
     cache: 100,
     tokenize: 'full',
     document: {
@@ -199,8 +198,8 @@ export function Flexsearch({
           prefix: isFirstItemOfPage && (
             <div
               className={cn(
-                '_mx-2.5 _mb-2 _mt-6 _select-none _border-b _border-black/10 _px-2.5 _pb-1.5 _text-xs _font-semibold _uppercase _text-gray-500 first:_mt-0 dark:_border-white/20 dark:_text-gray-300',
-                'contrast-more:_border-gray-600 contrast-more:_text-gray-900 contrast-more:dark:_border-gray-50 contrast-more:dark:_text-gray-50'
+                'nx-mx-2.5 nx-mb-2 nx-mt-6 nx-select-none nx-border-b nx-border-black/10 nx-px-2.5 nx-pb-1.5 nx-text-xs nx-font-semibold nx-uppercase nx-text-gray-500 first:nx-mt-0 dark:nx-border-white/20 dark:nx-text-gray-300',
+                'contrast-more:nx-border-gray-600 contrast-more:nx-text-gray-900 contrast-more:dark:nx-border-gray-50 contrast-more:dark:nx-text-gray-50'
               )}
             >
               {result.doc.title}
@@ -208,11 +207,11 @@ export function Flexsearch({
           ),
           children: (
             <>
-              <div className="_text-base _font-semibold _leading-5">
+              <div className="nx-text-base nx-font-semibold nx-leading-5">
                 <HighlightMatches match={search} value={title} />
               </div>
               {content && (
-                <div className="excerpt _mt-1 _text-sm _leading-[1.35rem] _text-gray-600 dark:_text-gray-400 contrast-more:dark:_text-gray-50">
+                <div className="excerpt nx-mt-1 nx-text-sm nx-leading-[1.35rem] nx-text-gray-600 dark:nx-text-gray-400 contrast-more:dark:nx-text-gray-50">
                   <HighlightMatches match={search} value={content} />
                 </div>
               )}
@@ -284,7 +283,7 @@ export function Flexsearch({
       onChange={handleChange}
       onActive={preload}
       className={className}
-      overlayClassName="_w-screen _min-h-[100px] _max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      overlayClassName="nx-w-screen nx-min-h-[100px] nx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
       results={results}
     />
   )

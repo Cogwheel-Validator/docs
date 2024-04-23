@@ -10,8 +10,12 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "moduleResolution": "node",
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["vitest/globals"],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      // fixes incorrect types for flexsearch https://github.com/nextapps-de/flexsearch/issues/392#issuecomment-1552286514
+      "flexsearch": ["./node_modules/@types/flexsearch"]
+    }
   }
 }

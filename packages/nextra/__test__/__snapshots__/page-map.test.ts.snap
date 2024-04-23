@@ -1,33 +1,52 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Page Process > should match i18n site page maps 1`] = `
-{
-  "enPageMap": [
+exports[`Page Process > pageMap en-US 1`] = `
+[
+  [
+    {
+      "kind": "MdxPage",
+      "name": "404",
+      "route": "/404",
+    },
+    {
+      "kind": "MdxPage",
+      "name": "500",
+      "route": "/500",
+    },
     {
       "data": {
+        "404": {
+          "theme": {
+            "timestamp": false,
+            "typesetting": "article",
+          },
+          "type": "page",
+        },
+        "500": {
+          "theme": {
+            "timestamp": false,
+            "typesetting": "article",
+          },
+          "type": "page",
+        },
         "about": {
-          "items": Map {
-            "contributors" => {
+          "items": {
+            "a-page": {
+              "title": "A Page",
+            },
+            "acknowledgement": {
+              "title": "Acknowledgement",
+            },
+            "changelog": {
+              "title": "Changelog",
+            },
+            "contributors": {
               "href": "https://github.com/vercel/swr/graphs/contributors",
               "newWindow": true,
               "title": "Contributors",
             },
-            "team" => {
+            "team": {
               "title": "Team",
-            },
-            "acknowledgement" => {
-              "title": "Acknowledgement",
-            },
-            "a-page" => {
-              "title": "A Page",
-            },
-            "changelog" => {
-              "title": "Changelog",
-            },
-            "123" => {
-              "href": "https://google.com",
-              "newWindow": true,
-              "title": "Last, key is number",
             },
           },
           "title": "About",
@@ -54,6 +73,7 @@ exports[`Page Process > should match i18n site page maps 1`] = `
           "title": "Examples",
           "type": "page",
         },
+        "foo": "Foo",
         "index": {
           "display": "hidden",
           "title": "Introduction",
@@ -70,7 +90,10 @@ exports[`Page Process > should match i18n site page maps 1`] = `
           "title": "Remote",
           "type": "page",
         },
+        "test": "Test",
       },
+      "kind": "Meta",
+      "locale": "en-US",
     },
     {
       "children": [
@@ -81,158 +104,168 @@ exports[`Page Process > should match i18n site page maps 1`] = `
               "theme": {
                 "layout": "raw",
               },
+              "title": "A Page",
               "type": "page",
             },
             "acknowledgement": "🧩 Acknowledgement",
+            "changelog": "Changelog",
             "team": "👥 Team",
           },
+          "kind": "Meta",
+          "locale": "en-US",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "A Page",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "a-page",
-          "route": "/en/about/a-page",
+          "route": "/about/a-page",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Acknowledgement",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "acknowledgement",
-          "route": "/en/about/acknowledgement",
+          "route": "/about/acknowledgement",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Changelog",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "changelog",
-          "route": "/en/about/changelog",
+          "route": "/about/changelog",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Team",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "team",
-          "route": "/en/about/team",
+          "route": "/about/team",
         },
       ],
+      "kind": "Folder",
       "name": "about",
-      "route": "/en/about",
+      "route": "/about",
     },
     {
       "children": [
         {
           "data": {
-            "*": {
+            "swr-v1": {
               "theme": {
                 "breadcrumb": true,
-                "topContent": [Function],
               },
+              "title": "Announcing SWR 1.0",
             },
           },
+          "kind": "Meta",
+          "locale": "en-US",
         },
         {
           "frontMatter": {
-            "authors": [
-              {
-                "link": "https://twitter.com/shuding_",
-                "name": "Shu Ding",
-              },
-              {
-                "link": "https://twitter.com/huozhi",
-                "name": "Jiachi Liu",
-              },
-            ],
-            "date": 2021-08-27T00:00:00.000Z,
-            "description": "Almost 2 years ago we open sourced SWR, the tiny data-fetching React library that people love. Today we are reaching another milestone: the 1.0 version of SWR",
+            "description": "Almost 2 years ago we open sourced SWR, the tiny data-fetching React library that people love. Today we are reaching another milestone: the 1.0 version of SWR.",
             "image": "https://assets.vercel.com/image/upload/v1630059453/swr/v1.png",
-            "title": "Announcing SWR 1.0",
           },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "swr-v1",
-          "route": "/en/blog/swr-v1",
+          "route": "/blog/swr-v1",
         },
       ],
+      "kind": "Folder",
       "name": "blog",
-      "route": "/en/blog",
+      "route": "/blog",
     },
     {
       "frontMatter": {
         "searchable": false,
-        "sidebarTitle": "Blog",
       },
+      "kind": "MdxPage",
+      "locale": "en-US",
       "name": "blog",
-      "route": "/en/blog",
+      "route": "/blog",
     },
     {
       "children": [
         {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "404-500",
+          "route": "/docs/404-500",
+        },
+        {
           "data": {
             "--- hey": {
-              "title": <Separator>
-                Getting Started
-              </Separator>,
+              "title": "Getting Started",
               "type": "separator",
             },
             "--- my_new_separator": {
-              "title": <Separator>
-                Advanced
-              </Separator>,
+              "title": "Advanced",
               "type": "separator",
             },
             "404-500": "404/500 Custom Error Pages",
-            "advanced": "",
-            "arguments": "",
+            "advanced": {
+              "title": "Advanced",
+            },
+            "arguments": {
+              "title": "Arguments",
+            },
+            "callout": "Callout",
             "change-log": {
               "theme": {
                 "sidebar": false,
               },
+              "title": "Change Log",
             },
+            "code-block-without-language": "Code Block without Language",
             "conditional-fetching": "Conditional Data Fetching",
             "custom-header-ids": "Custom Header IDs",
-            "data-fetching": "",
+            "data-fetching": {
+              "title": "Data Fetching",
+            },
             "error-handling": {
               "display": "hidden",
+              "title": "Error Handling",
             },
             "getting-started": {
-              "title": <React.Fragment>
-                <i>
-                  Getting
-                </i>
-                 
-                <s>
-                  Started
-                </s>
-              </React.Fragment>,
+              "title": "Getting Started",
             },
             "github_link": {
               "href": "https://github.com/shuding/nextra",
               "newWindow": true,
               "title": "GitHub 🐙 →",
             },
-            "global-configuration": "",
-            "middleware": "",
-            "mutation": "",
-            "options": "",
-            "pagination": "",
-            "prefetching": "",
+            "global-configuration": {
+              "title": "Global Configuration",
+            },
+            "middleware": {
+              "title": "Middleware",
+            },
+            "mutation": {
+              "title": "Mutation",
+            },
+            "options": {
+              "title": "Options",
+            },
+            "pagination": {
+              "title": "Pagination",
+            },
+            "prefetching": {
+              "title": "Prefetching",
+            },
             "raw-layout": {
               "theme": {
                 "layout": "raw",
               },
+              "title": "Raw Layout",
             },
             "revalidation": "Auto Revalidation",
-            "suspense": "",
+            "suspense": {
+              "title": "Suspense",
+            },
             "typescript": "TypeScript :)",
+            "understanding": "Understanding",
             "with-nextjs": "Next.js SSG and SSR",
             "wrap-toc-items": "Wrap Table of Content Items",
           },
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "404 500",
-          },
-          "name": "404-500",
-          "route": "/en/docs/404-500",
+          "kind": "Meta",
+          "locale": "en-US",
         },
         {
           "children": [
@@ -244,286 +277,278 @@ exports[`Page Process > should match i18n site page maps 1`] = `
                   },
                 },
                 "--- yoo": {
-                  "title": <Separator>
-                    Do Not Use
-                  </Separator>,
+                  "title": "Do Not Use",
                   "type": "separator",
                 },
+                "cache": "Cache",
+                "code-highlighting": "Code Highlighting",
+                "dynamic-markdown-import": "Dynamic Markdown Import",
                 "file-name.with.DOTS": "Filenames with Dots",
+                "images": "Images",
+                "markdown-import": "Markdown Import",
                 "more": "More: A Super Super Super Super Long Directory",
+                "performance": "Performance",
+                "react-native": "React Native",
+                "scrollbar-x": "Scrollbar X",
               },
+              "kind": "Meta",
+              "locale": "en-US",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Cache",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "cache",
-              "route": "/en/docs/advanced/cache",
+              "route": "/docs/advanced/cache",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Code Highlighting",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "code-highlighting",
-              "route": "/en/docs/advanced/code-highlighting",
+              "route": "/docs/advanced/code-highlighting",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Dynamic Markdown Import",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "dynamic-markdown-import",
-              "route": "/en/docs/advanced/dynamic-markdown-import",
+              "route": "/docs/advanced/dynamic-markdown-import",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "File Name.with.dots",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "file-name.with.DOTS",
-              "route": "/en/docs/advanced/file-name.with.DOTS",
+              "route": "/docs/advanced/file-name.with.DOTS",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Images",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "images",
-              "route": "/en/docs/advanced/images",
+              "route": "/docs/advanced/images",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Markdown Import",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "markdown-import",
-              "route": "/en/docs/advanced/markdown-import",
+              "route": "/docs/advanced/markdown-import",
             },
             {
               "children": [
                 {
-                  "frontMatter": {
-                    "sidebarTitle": "Loooooooooooooooooooong Title",
-                  },
+                  "kind": "MdxPage",
+                  "locale": "en-US",
                   "name": "loooooooooooooooooooong-title",
-                  "route": "/en/docs/advanced/more/loooooooooooooooooooong-title",
+                  "route": "/docs/advanced/more/loooooooooooooooooooong-title",
                 },
                 {
                   "children": [
                     {
-                      "frontMatter": {
-                        "sidebarTitle": "One",
-                      },
+                      "kind": "MdxPage",
+                      "locale": "en-US",
                       "name": "one",
-                      "route": "/en/docs/advanced/more/tree/one",
+                      "route": "/docs/advanced/more/tree/one",
                     },
                     {
-                      "frontMatter": {
-                        "sidebarTitle": "Three",
-                      },
+                      "kind": "MdxPage",
+                      "locale": "en-US",
                       "name": "three",
-                      "route": "/en/docs/advanced/more/tree/three",
+                      "route": "/docs/advanced/more/tree/three",
                     },
                     {
-                      "frontMatter": {
-                        "sidebarTitle": "Two",
-                      },
+                      "kind": "MdxPage",
+                      "locale": "en-US",
                       "name": "two",
-                      "route": "/en/docs/advanced/more/tree/two",
+                      "route": "/docs/advanced/more/tree/two",
+                    },
+                    {
+                      "data": {
+                        "one": "One",
+                        "three": "Three",
+                        "two": "Two",
+                      },
+                      "kind": "Meta",
+                      "locale": "en-US",
                     },
                   ],
+                  "kind": "Folder",
                   "name": "tree",
-                  "route": "/en/docs/advanced/more/tree",
+                  "route": "/docs/advanced/more/tree",
+                },
+                {
+                  "data": {
+                    "loooooooooooooooooooong-title": "Loooooooooooooooooooong Title",
+                  },
+                  "kind": "Meta",
+                  "locale": "en-US",
                 },
               ],
+              "kind": "Folder",
               "name": "more",
-              "route": "/en/docs/advanced/more",
+              "route": "/docs/advanced/more",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Performance",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "performance",
-              "route": "/en/docs/advanced/performance",
+              "route": "/docs/advanced/performance",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "React Native",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "react-native",
-              "route": "/en/docs/advanced/react-native",
+              "route": "/docs/advanced/react-native",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Scrollbar X",
-              },
+              "kind": "MdxPage",
+              "locale": "en-US",
               "name": "scrollbar-x",
-              "route": "/en/docs/advanced/scrollbar-x",
+              "route": "/docs/advanced/scrollbar-x",
             },
           ],
+          "kind": "Folder",
           "name": "advanced",
-          "route": "/en/docs/advanced",
+          "route": "/docs/advanced",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Advanced",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "advanced",
-          "route": "/en/docs/advanced",
+          "route": "/docs/advanced",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Arguments",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "arguments",
-          "route": "/en/docs/arguments",
+          "route": "/docs/arguments",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Callout",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "callout",
-          "route": "/en/docs/callout",
+          "route": "/docs/callout",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Change Log",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "change-log",
-          "route": "/en/docs/change-log",
+          "route": "/docs/change-log",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Code Block without Language",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "code-block-without-language",
-          "route": "/en/docs/code-block-without-language",
+          "route": "/docs/code-block-without-language",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Conditional Fetching",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "conditional-fetching",
-          "route": "/en/docs/conditional-fetching",
+          "route": "/docs/conditional-fetching",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Custom Header Ids",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "custom-header-ids",
-          "route": "/en/docs/custom-header-ids",
+          "route": "/docs/custom-header-ids",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Data Fetching",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "data-fetching",
-          "route": "/en/docs/data-fetching",
+          "route": "/docs/data-fetching",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Error Handling",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "error-handling",
-          "route": "/en/docs/error-handling",
+          "route": "/docs/error-handling",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Getting Started",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "getting-started",
-          "route": "/en/docs/getting-started",
+          "route": "/docs/getting-started",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Global Configuration",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "global-configuration",
-          "route": "/en/docs/global-configuration",
+          "route": "/docs/global-configuration",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Middleware",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "middleware",
-          "route": "/en/docs/middleware",
+          "route": "/docs/middleware",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Mutation",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "mutation",
-          "route": "/en/docs/mutation",
+          "route": "/docs/mutation",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Options",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "options",
-          "route": "/en/docs/options",
+          "route": "/docs/options",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Pagination",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "pagination",
-          "route": "/en/docs/pagination",
+          "route": "/docs/pagination",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Prefetching",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "prefetching",
-          "route": "/en/docs/prefetching",
+          "route": "/docs/prefetching",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Raw Layout",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "raw-layout",
-          "route": "/en/docs/raw-layout",
+          "route": "/docs/raw-layout",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Revalidation",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "revalidation",
-          "route": "/en/docs/revalidation",
+          "route": "/docs/revalidation",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Suspense",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "suspense",
-          "route": "/en/docs/suspense",
+          "route": "/docs/suspense",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "TypeScript",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "typescript",
-          "route": "/en/docs/typescript",
+          "route": "/docs/typescript",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Understanding",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "understanding",
-          "route": "/en/docs/understanding",
+          "route": "/docs/understanding",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "With Nextjs",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "with-nextjs",
-          "route": "/en/docs/with-nextjs",
+          "route": "/docs/with-nextjs",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Wrap Toc Items",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "wrap-toc-items",
-          "route": "/en/docs/wrap-toc-items",
+          "route": "/docs/wrap-toc-items",
         },
       ],
+      "kind": "Folder",
       "name": "docs",
-      "route": "/en/docs",
+      "route": "/docs",
     },
     {
       "children": [
@@ -531,382 +556,119 @@ exports[`Page Process > should match i18n site page maps 1`] = `
           "data": {
             "auth": "Authentication",
             "basic": "Basic Usage",
-            "error-handling": "",
+            "error-handling": {
+              "title": "Error Handling",
+            },
             "full": {
               "theme": {
                 "layout": "raw",
               },
+              "title": "Full",
             },
-            "infinite-loading": "",
+            "infinite-loading": {
+              "title": "Infinite Loading",
+            },
             "ssr": "Next.js SSR",
           },
+          "kind": "Meta",
+          "locale": "en-US",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Authentication",
           },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "auth",
-          "route": "/en/examples/auth",
+          "route": "/examples/auth",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Basic Usage",
           },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "basic",
-          "route": "/en/examples/basic",
+          "route": "/examples/basic",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Error Handling",
           },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "error-handling",
-          "route": "/en/examples/error-handling",
+          "route": "/examples/error-handling",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Full",
-          },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "full",
-          "route": "/en/examples/full",
+          "route": "/examples/full",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Infinite Loading",
           },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "infinite-loading",
-          "route": "/en/examples/infinite-loading",
+          "route": "/examples/infinite-loading",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Next.js SSR",
           },
+          "kind": "MdxPage",
+          "locale": "en-US",
           "name": "ssr",
-          "route": "/en/examples/ssr",
+          "route": "/examples/ssr",
         },
       ],
+      "kind": "Folder",
       "name": "examples",
-      "route": "/en/examples",
+      "route": "/examples",
     },
     {
-      "frontMatter": {
-        "sidebarTitle": "Foo",
-      },
+      "kind": "MdxPage",
+      "locale": "en-US",
       "name": "foo",
-      "route": "/en/foo",
+      "route": "/foo",
     },
     {
       "frontMatter": {
         "searchable": false,
         "title": "React Hooks for Data Fetching",
       },
+      "kind": "MdxPage",
+      "locale": "en-US",
       "name": "index",
-      "route": "/en",
-    },
-    {
-      "children": [
-        {
-          "children": [],
-          "name": "graphql-eslint",
-          "route": "/en/remote/graphql-eslint",
-        },
-        {
-          "children": [],
-          "name": "graphql-yoga",
-          "route": "/en/remote/graphql-yoga",
-        },
-      ],
-      "name": "remote",
-      "route": "/en/remote",
+      "route": "/",
     },
     {
       "frontMatter": {
-        "sidebarTitle": "Test",
+        "mdxOptions": {
+          "format": "md",
+        },
       },
+      "kind": "MdxPage",
+      "locale": "en-US",
       "name": "test",
-      "route": "/en/test",
-    },
-    {
-      "frontMatter": {
-        "sidebarTitle": "Virtual Page",
-      },
-      "name": "virtual-page",
-      "route": "/en/virtual-page",
+      "route": "/test",
     },
   ],
-  "esPageMap": [
-    {
-      "data": {
-        "about": {
-          "items": Map {
-            "contributors" => {
-              "href": "https://github.com/vercel/swr/graphs/contributors",
-              "newWindow": true,
-              "title": "Contributors",
-            },
-            "team" => {
-              "title": "Team",
-            },
-            "acknowledgement" => {
-              "title": "Acknowledgement",
-            },
-            "a-page" => {
-              "title": "A Page",
-            },
-            "changelog" => {
-              "title": "Changelog",
-            },
-            "123" => {
-              "href": "https://google.com",
-              "newWindow": true,
-              "title": "Last, key is number",
-            },
-          },
-          "title": "About",
-          "type": "menu",
-        },
-        "docs": {
-          "title": "Docs",
-          "type": "page",
-        },
-        "examples": {
-          "title": "Ejemplos",
-          "type": "page",
-        },
-        "index": {
-          "display": "hidden",
-          "title": "Introducción",
-          "type": "page",
-        },
-      },
-    },
-    {
-      "children": [
-        {
-          "data": {
-            "advanced": "Avanzado",
-            "arguments": "Argumentos",
-            "change-log": "Registro de cambios",
-            "conditional-fetching": "Obtención De Datos Condicional",
-            "data-fetching": "Obtención De Datos",
-            "error-handling": "Gestión De Errores",
-            "getting-started": "Comienza",
-            "global-configuration": "Configuración Global",
-            "middleware": "Middleware",
-            "mutation": "Mutación",
-            "options": "Opciones",
-            "pagination": "Paginación",
-            "prefetching": "Prefetching",
-            "revalidation": "Revalidación Automática",
-            "suspense": "Suspense",
-            "typescript": "Typescript",
-            "with-nextjs": "Next.js SSG and SSR",
-            "wrap-toc-items": "Ajustar elementos de la tabla de contenido",
-          },
-        },
-        {
-          "children": [
-            {
-              "data": {
-                "cache": "Cache",
-                "file-name.with.DOTS": "Nombres de archivos con puntos",
-                "performance": "Rendimiento",
-                "react-native": "React Native",
-              },
-            },
-            {
-              "frontMatter": {
-                "sidebarTitle": "File Name.with.dots",
-              },
-              "name": "file-name.with.DOTS",
-              "route": "/es/docs/advanced/file-name.with.DOTS",
-            },
-            {
-              "frontMatter": {
-                "sidebarTitle": "Performance",
-              },
-              "name": "performance",
-              "route": "/es/docs/advanced/performance",
-            },
-          ],
-          "name": "advanced",
-          "route": "/es/docs/advanced",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Arguments",
-          },
-          "name": "arguments",
-          "route": "/es/docs/arguments",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Change Log",
-          },
-          "name": "change-log",
-          "route": "/es/docs/change-log",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Conditional Fetching",
-          },
-          "name": "conditional-fetching",
-          "route": "/es/docs/conditional-fetching",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Data Fetching",
-          },
-          "name": "data-fetching",
-          "route": "/es/docs/data-fetching",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Error Handling",
-          },
-          "name": "error-handling",
-          "route": "/es/docs/error-handling",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Getting Started",
-          },
-          "name": "getting-started",
-          "route": "/es/docs/getting-started",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Global Configuration",
-          },
-          "name": "global-configuration",
-          "route": "/es/docs/global-configuration",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Mutation",
-          },
-          "name": "mutation",
-          "route": "/es/docs/mutation",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Options",
-          },
-          "name": "options",
-          "route": "/es/docs/options",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Pagination",
-          },
-          "name": "pagination",
-          "route": "/es/docs/pagination",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Prefetching",
-          },
-          "name": "prefetching",
-          "route": "/es/docs/prefetching",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Revalidation",
-          },
-          "name": "revalidation",
-          "route": "/es/docs/revalidation",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Suspense",
-          },
-          "name": "suspense",
-          "route": "/es/docs/suspense",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Understanding",
-          },
-          "name": "understanding",
-          "route": "/es/docs/understanding",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "With Nextjs",
-          },
-          "name": "with-nextjs",
-          "route": "/es/docs/with-nextjs",
-        },
-        {
-          "frontMatter": {
-            "sidebarTitle": "Wrap Toc Items",
-          },
-          "name": "wrap-toc-items",
-          "route": "/es/docs/wrap-toc-items",
-        },
-      ],
-      "name": "docs",
-      "route": "/es/docs",
-    },
-    {
-      "children": [
-        {
-          "data": {
-            "auth": "Autenticación",
-            "basic": "Uso Básico",
-            "error-handling": "Manejo De Errores",
-            "infinite-loading": "Carga Infinita",
-          },
-        },
-        {
-          "frontMatter": {
-            "full": true,
-            "title": "Autenticación",
-          },
-          "name": "auth",
-          "route": "/es/examples/auth",
-        },
-        {
-          "frontMatter": {
-            "full": true,
-            "title": "Uso Básico",
-          },
-          "name": "basic",
-          "route": "/es/examples/basic",
-        },
-        {
-          "frontMatter": {
-            "full": true,
-            "title": "Manejo De Errores",
-          },
-          "name": "error-handling",
-          "route": "/es/examples/error-handling",
-        },
-        {
-          "frontMatter": {
-            "full": true,
-            "title": "Carga Infinita",
-          },
-          "name": "infinite-loading",
-          "route": "/es/examples/infinite-loading",
-        },
-      ],
-      "name": "examples",
-      "route": "/es/examples",
-    },
-    {
-      "frontMatter": {
-        "title": "Biblioteca React Hooks para la obtención de datos",
-      },
-      "name": "index",
-      "route": "/es",
-    },
-  ],
-  "ruPageMap": [
+  "/docs/data-fetching",
+]
+`;
+
+exports[`Page Process > pageMap ru 1`] = `
+[
+  [
     {
       "data": {
         "blog": {
@@ -934,49 +696,91 @@ exports[`Page Process > should match i18n site page maps 1`] = `
           "type": "page",
         },
       },
+      "kind": "Meta",
+      "locale": "ru",
     },
     {
       "children": [
         {
           "data": {
-            "*": {
+            "a-page": {
+              "display": "hidden",
+              "theme": {
+                "layout": "raw",
+              },
+              "title": "A Page",
+              "type": "page",
+            },
+            "acknowledgement": "🧩 Acknowledgement",
+            "changelog": "Changelog",
+            "team": "👥 Team",
+          },
+          "kind": "Meta",
+          "locale": "en-US",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "a-page",
+          "route": "/about/a-page",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "acknowledgement",
+          "route": "/about/acknowledgement",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "changelog",
+          "route": "/about/changelog",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "team",
+          "route": "/about/team",
+        },
+      ],
+      "kind": "Folder",
+      "name": "about",
+      "route": "/about",
+    },
+    {
+      "children": [
+        {
+          "data": {
+            "swr-v1": {
               "theme": {
                 "breadcrumb": true,
-                "topContent": [Function],
               },
+              "title": "Представляем SWR 1.0",
             },
           },
+          "kind": "Meta",
+          "locale": "ru",
         },
         {
           "frontMatter": {
-            "authors": [
-              {
-                "link": "https://twitter.com/shuding_",
-                "name": "Shu Ding",
-              },
-              {
-                "link": "https://twitter.com/huozhi",
-                "name": "Jiachi Liu",
-              },
-            ],
-            "date": 2021-08-27T00:00:00.000Z,
             "description": "Почти 2 года назад мы сделали SWR — крошечную React библиотеку с открытым исходным кодом для выборки данных, которую люди полюбили. Сегодня мы приближаемся к еще одной вехе: версии 1.0 SWR!",
             "image": "https://assets.vercel.com/image/upload/v1630059453/swr/v1.png",
-            "title": "Представляем SWR 1.0",
           },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "swr-v1",
-          "route": "/ru/blog/swr-v1",
+          "route": "/blog/swr-v1",
         },
       ],
+      "kind": "Folder",
       "name": "blog",
-      "route": "/ru/blog",
+      "route": "/blog",
     },
     {
-      "frontMatter": {
-        "sidebarTitle": "Blog",
-      },
+      "kind": "MdxPage",
+      "locale": "ru",
       "name": "blog",
-      "route": "/ru/blog",
+      "route": "/blog",
     },
     {
       "children": [
@@ -998,9 +802,12 @@ exports[`Page Process > should match i18n site page maps 1`] = `
             "revalidation": "Авто-ревалидация",
             "suspense": "Задержка (Suspense)",
             "typescript": "Typescript",
+            "understanding": "Understanding",
             "with-nextjs": "Next.js SSG и SSR",
             "wrap-toc-items": "Обернуть таблицу содержимого элементов",
           },
+          "kind": "Meta",
+          "locale": "ru",
         },
         {
           "children": [
@@ -1011,161 +818,270 @@ exports[`Page Process > should match i18n site page maps 1`] = `
                 "performance": "Производительность",
                 "react-native": "React Native",
               },
+              "kind": "Meta",
+              "locale": "ru",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Cache",
-              },
+              "kind": "MdxPage",
+              "locale": "ru",
               "name": "cache",
-              "route": "/ru/docs/advanced/cache",
+              "route": "/docs/advanced/cache",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "File Name.with.dots",
-              },
+              "kind": "MdxPage",
+              "locale": "ru",
               "name": "file-name.with.DOTS",
-              "route": "/ru/docs/advanced/file-name.with.DOTS",
+              "route": "/docs/advanced/file-name.with.DOTS",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "Performance",
-              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "kind": "MdxPage",
+                      "locale": "en-US",
+                      "name": "one",
+                      "route": "/docs/advanced/more/tree/one",
+                    },
+                    {
+                      "kind": "MdxPage",
+                      "locale": "en-US",
+                      "name": "three",
+                      "route": "/docs/advanced/more/tree/three",
+                    },
+                    {
+                      "kind": "MdxPage",
+                      "locale": "en-US",
+                      "name": "two",
+                      "route": "/docs/advanced/more/tree/two",
+                    },
+                    {
+                      "data": {
+                        "one": "One",
+                        "three": "Three",
+                        "two": "Two",
+                      },
+                      "kind": "Meta",
+                      "locale": "en-US",
+                    },
+                  ],
+                  "kind": "Folder",
+                  "name": "tree",
+                  "route": "/docs/advanced/more/tree",
+                },
+                {
+                  "kind": "MdxPage",
+                  "locale": "en-US",
+                  "name": "loooooooooooooooooooong-title",
+                  "route": "/docs/advanced/more/loooooooooooooooooooong-title",
+                },
+                {
+                  "data": {
+                    "loooooooooooooooooooong-title": "Loooooooooooooooooooong Title",
+                  },
+                  "kind": "Meta",
+                  "locale": "en-US",
+                },
+              ],
+              "kind": "Folder",
+              "name": "more",
+              "route": "/docs/advanced/more",
+            },
+            {
+              "kind": "MdxPage",
+              "locale": "ru",
               "name": "performance",
-              "route": "/ru/docs/advanced/performance",
+              "route": "/docs/advanced/performance",
             },
             {
-              "frontMatter": {
-                "sidebarTitle": "React Native",
-              },
+              "kind": "MdxPage",
+              "locale": "ru",
               "name": "react-native",
-              "route": "/ru/docs/advanced/react-native",
+              "route": "/docs/advanced/react-native",
+            },
+            {
+              "kind": "MdxPage",
+              "locale": "en-US",
+              "name": "code-highlighting",
+              "route": "/docs/advanced/code-highlighting",
+            },
+            {
+              "kind": "MdxPage",
+              "locale": "en-US",
+              "name": "dynamic-markdown-import",
+              "route": "/docs/advanced/dynamic-markdown-import",
+            },
+            {
+              "kind": "MdxPage",
+              "locale": "en-US",
+              "name": "images",
+              "route": "/docs/advanced/images",
+            },
+            {
+              "kind": "MdxPage",
+              "locale": "en-US",
+              "name": "markdown-import",
+              "route": "/docs/advanced/markdown-import",
+            },
+            {
+              "kind": "MdxPage",
+              "locale": "en-US",
+              "name": "scrollbar-x",
+              "route": "/docs/advanced/scrollbar-x",
             },
           ],
+          "kind": "Folder",
           "name": "advanced",
-          "route": "/ru/docs/advanced",
+          "route": "/docs/advanced",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Arguments",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "arguments",
-          "route": "/ru/docs/arguments",
+          "route": "/docs/arguments",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Change Log",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "change-log",
-          "route": "/ru/docs/change-log",
+          "route": "/docs/change-log",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Conditional Fetching",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "conditional-fetching",
-          "route": "/ru/docs/conditional-fetching",
+          "route": "/docs/conditional-fetching",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Data Fetching",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "data-fetching",
-          "route": "/ru/docs/data-fetching",
+          "route": "/docs/data-fetching",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Error Handling",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "error-handling",
-          "route": "/ru/docs/error-handling",
+          "route": "/docs/error-handling",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Getting Started",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "getting-started",
-          "route": "/ru/docs/getting-started",
+          "route": "/docs/getting-started",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Global Configuration",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "global-configuration",
-          "route": "/ru/docs/global-configuration",
+          "route": "/docs/global-configuration",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Middleware",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "middleware",
-          "route": "/ru/docs/middleware",
+          "route": "/docs/middleware",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Mutation",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "mutation",
-          "route": "/ru/docs/mutation",
+          "route": "/docs/mutation",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Options",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "options",
-          "route": "/ru/docs/options",
+          "route": "/docs/options",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Pagination",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "pagination",
-          "route": "/ru/docs/pagination",
+          "route": "/docs/pagination",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Prefetching",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "prefetching",
-          "route": "/ru/docs/prefetching",
+          "route": "/docs/prefetching",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Revalidation",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "revalidation",
-          "route": "/ru/docs/revalidation",
+          "route": "/docs/revalidation",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Suspense",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "suspense",
-          "route": "/ru/docs/suspense",
+          "route": "/docs/suspense",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Understanding",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "understanding",
-          "route": "/ru/docs/understanding",
+          "route": "/docs/understanding",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "With Nextjs",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "with-nextjs",
-          "route": "/ru/docs/with-nextjs",
+          "route": "/docs/with-nextjs",
         },
         {
-          "frontMatter": {
-            "sidebarTitle": "Wrap Toc Items",
-          },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "wrap-toc-items",
-          "route": "/ru/docs/wrap-toc-items",
+          "route": "/docs/wrap-toc-items",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "404-500",
+          "route": "/docs/404-500",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "advanced",
+          "route": "/docs/advanced",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "callout",
+          "route": "/docs/callout",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "code-block-without-language",
+          "route": "/docs/code-block-without-language",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "custom-header-ids",
+          "route": "/docs/custom-header-ids",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "raw-layout",
+          "route": "/docs/raw-layout",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "typescript",
+          "route": "/docs/typescript",
         },
       ],
+      "kind": "Folder",
       "name": "docs",
-      "route": "/ru/docs",
+      "route": "/docs",
     },
     {
       "children": [
@@ -1177,58 +1093,107 @@ exports[`Page Process > should match i18n site page maps 1`] = `
             "infinite-loading": "Бесконечная загрузка",
             "ssr": "Next.js SSR",
           },
+          "kind": "Meta",
+          "locale": "ru",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Аутентификация",
           },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "auth",
-          "route": "/ru/examples/auth",
+          "route": "/examples/auth",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Основное использование",
           },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "basic",
-          "route": "/ru/examples/basic",
+          "route": "/examples/basic",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Обработка ошибок",
           },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "error-handling",
-          "route": "/ru/examples/error-handling",
+          "route": "/examples/error-handling",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Бесконечная загрузка",
           },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "infinite-loading",
-          "route": "/ru/examples/infinite-loading",
+          "route": "/examples/infinite-loading",
         },
         {
           "frontMatter": {
             "full": true,
             "title": "Next.js SSR",
           },
+          "kind": "MdxPage",
+          "locale": "ru",
           "name": "ssr",
-          "route": "/ru/examples/ssr",
+          "route": "/examples/ssr",
+        },
+        {
+          "kind": "MdxPage",
+          "locale": "en-US",
+          "name": "full",
+          "route": "/examples/full",
         },
       ],
+      "kind": "Folder",
       "name": "examples",
-      "route": "/ru/examples",
+      "route": "/examples",
     },
     {
       "frontMatter": {
         "title": "React хуки для получения данных",
       },
+      "kind": "MdxPage",
+      "locale": "ru",
       "name": "index",
-      "route": "/ru",
+      "route": "/",
+    },
+    {
+      "kind": "MdxPage",
+      "name": "404",
+      "route": "/404",
+    },
+    {
+      "kind": "MdxPage",
+      "name": "500",
+      "route": "/500",
+    },
+    {
+      "kind": "MdxPage",
+      "locale": "en-US",
+      "name": "foo",
+      "route": "/foo",
+    },
+    {
+      "frontMatter": {
+        "mdxOptions": {
+          "format": "md",
+        },
+      },
+      "kind": "MdxPage",
+      "locale": "en-US",
+      "name": "test",
+      "route": "/test",
     },
   ],
-}
+  "/docs/data-fetching",
+]
 `;

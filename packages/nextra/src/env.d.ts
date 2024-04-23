@@ -8,17 +8,9 @@ declare module 'title' {
 }
 
 declare namespace globalThis {
-  import type { PageMapItem } from './types'
-  var __nextra_resolvePageMap: Record<string, () => Promise<PageMapItem[]>>
+  var __nextra_temp_do_not_use: () => void
 }
 
-declare module 'next/dist/compiled/webpack/webpack.js' {
+declare module 'next/dist/compiled/webpack/webpack' {
   export { default as webpack, sources } from 'webpack'
-}
-
-declare module '*.svg' {
-  import type { ComponentPropsWithRef, ReactElement } from 'react'
-  export const ReactComponent: (
-    _props: ComponentPropsWithRef<'svg'>
-  ) => ReactElement
 }

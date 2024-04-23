@@ -1,11 +1,18 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import type { ReactElement } from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import { BasicLayout } from './basic-layout'
 import { useBlogContext } from './blog-context'
+import { MDXTheme } from './mdx-theme'
+import Nav from './nav'
 import { collectPostsAndNavs } from './utils/collect'
 import getTags from './utils/get-tags'
 
-export function PostsLayout(): ReactElement {
+export function PostsLayout({
+  children
+}: {
+  children: ReactNode
+}): ReactElement {
   const { config, opts } = useBlogContext()
   const { posts } = collectPostsAndNavs({ config, opts })
   const router = useRouter()
@@ -31,23 +38,23 @@ export function PostsLayout(): ReactElement {
     return (
       <div key={post.route} className="post-item">
         <h3>
-          <Link href={post.route} className="!_no-underline">
-            {postTitle}
+          <Link href={post.route} passHref legacyBehavior>
+            <a className="!nx-no-underline">{postTitle}</a>
           </Link>
         </h3>
         {description && (
-          <p className="_mb-2 dark:_text-gray-400 _text-gray-600">
+          <p className="nx-mb-2 dark:nx-text-gray-400 nx-text-gray-600">
             {description}
             {config.readMore && (
-              <Link href={post.route} className="post-item-more _ml-2">
-                {config.readMore}
+              <Link href={post.route} passHref legacyBehavior>
+                <a className="post-item-more nx-ml-2">{config.readMore}</a>
               </Link>
             )}
           </p>
         )}
         {date && (
           <time
-            className="_text-sm dark:_text-gray-400 _text-gray-600"
+            className="nx-text-sm dark:nx-text-gray-400 nx-text-gray-600"
             dateTime={date.toISOString()}
           >
             {date.toDateString()}
@@ -56,5 +63,11 @@ export function PostsLayout(): ReactElement {
       </div>
     )
   })
-  return <>{postList}</>
+  return (
+    <BasicLayout>
+      <Nav />
+      <MDXTheme>{children}</MDXTheme>
+      {postList}
+    </BasicLayout>
+  )
 }
