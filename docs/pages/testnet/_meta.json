@@ -1,8 +1,20 @@
 {
-  "babylon-chain": "Babylon Chain",
-  "blit-chain": "Blit Chain",
-  "composable-cosmos": "Composable Testnet",
-  "juno-network": "Juno Testnet",
-  "side-protocol": "Side Protocol",
-  "union-network": "Union Network"
+  "babylon-chain": {
+    "title": "Babylon Chain"
+  },
+  "blit-chain": {
+    "title": "Blit Chain"
+  },
+  "composable-cosmos": {
+    "title": "Composable Testnet"
+  },
+  "juno-network": {
+    "title": "Juno Testnet"
+  },
+  "side-protocol": {
+    "title": "Side Protocol"
+  },
+  "union-network": {
+    "title": "Union Network"
+  }
 }

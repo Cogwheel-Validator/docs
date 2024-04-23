@@ -1,7 +1,17 @@
 {
-  "blit-chain": "Blit Chain",
-  "composable-cosmos": "Composable Cosmos",
-  "dyson-protocol": "Dyson Protocol",
-  "juno-network": "Juno Network",
-  "nibiru-chain": "Nibiru Chain"
+  "blit-chain": {
+    "title": "Blit Chain"
+  },
+  "composable-cosmos": {
+    "title": "Composable Cosmos"
+  },
+  "dyson-protocol": {
+    "title": "Dyson Protocol"
+  },
+  "juno-network": {
+    "title": "Juno Network"
+  },
+  "nibiru-chain": {
+    "title": "Nibiru Chain"
+  }
 }
