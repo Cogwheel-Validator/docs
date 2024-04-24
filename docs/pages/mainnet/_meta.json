@@ -11,7 +11,10 @@
   "juno-network": {
     "title": "Juno Network"
   },
-  "nibiru-chain": {
+  "nibiru": {
     "title": "Nibiru Chain"
+  },
+  "saga": {
+    "title": "Saga Network"
   }
 }
