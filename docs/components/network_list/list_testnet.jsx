@@ -26,7 +26,7 @@ export default function testnet() {
       {
         title: "Side Protocol",
         img: "/icons/sideIcon.png",
-        chainID: "side-testnet-2",
+        chainID: "side-testnet-3",
         href: "./testnet/side-protocol"
       },
       {
@@ -39,7 +39,7 @@ export default function testnet() {
         title: "Juno Testnet",
         img: "/icons/junoIcon.png",
         chainID: "uni-6",
-        href: "./testnet/juno-network"
+        href: "./testnet/juno"
       }
     ];
   

@@ -33,7 +33,13 @@ export default function mainnet() {
       title: "Nibiru Chain",
       img: "/icons/nibiruIcon.png",
       chainID: "cataclysm-1",
-      href: "./mainnet/nibiru-chain"
+      href: "./mainnet/nibiru"
+    },
+    {
+      title: "Saga Protocol",
+      img: "/icons/sagaIcon.png",
+      chainID: "ssc-1",
+      href: "./mainnet/saga"
     }
   ];
 
