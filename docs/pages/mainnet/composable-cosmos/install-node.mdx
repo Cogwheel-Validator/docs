@@ -17,9 +17,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://golang.org/dl/go1.21.1.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
-rm go1.21.1.linux-amd64.tar.gz
+wget https://golang.org/dl/go1.21.8.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.21.8.linux-amd64.tar.gz
+rm go1.21.8.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
 source $HOME/.bashrc
@@ -34,7 +34,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 ```bash
 cd $HOME 
 git clone https://github.com/ComposableFi/composable-cosmos.git
-cd composable-centauri 
+cd composable-cosmos 
 git checkout v6.5.30 # always doublecheck from the official team for the right version
 make install
 ```

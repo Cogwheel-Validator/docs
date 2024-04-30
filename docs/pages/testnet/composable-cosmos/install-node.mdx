@@ -34,8 +34,8 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 ```bash
 cd $HOME 
 git clone https://github.com/ComposableFi/composable-cosmos.git
-cd composable-centauri 
-git checkout v6.5.21 # always doublecheck from the official team for the right version
+cd composable-cosmos 
+git checkout v6.6.2 # always doublecheck from the official team for the right version
 make install
 ```
 
@@ -44,13 +44,13 @@ make install
 ```bash 
 mkdir -p $HOME/.banksy/cosmovisor/genesis/bin
 mkdir -p $HOME/.banksy/cosmovisor/upgrades
-mv $HOME/go/bin/centaurid $HOME/.banksy/cosmovisor/genesis/bin/
+mv $HOME/go/bin/picad $HOME/.banksy/cosmovisor/genesis/bin/
 sudo ln -s $HOME/.banksy/cosmovisor/genesis $HOME/.banksy/cosmovisor/current -f
-sudo ln -s $HOME/.banksy/cosmovisor/current/bin/centaurid /usr/local/bin/centaurid -f
+sudo ln -s $HOME/.banksy/cosmovisor/current/bin/picad /usr/local/bin/picad -f
 
 # Create service file
 
-sudo tee /etc/systemd/system/centaurid.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/picad.service > /dev/null <<EOF
 [Unit]
 Description=”Composable node”
 After=network-online.target
@@ -62,7 +62,7 @@ WorkingDirectory=$HOME/.banksy
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=centaurid”
+Environment=”DAEMON_NAME=picad”
 Environment=”DAEMON_HOME=$HOME/.banksy”
 Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
 Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
@@ -74,7 +74,7 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable centaurid.service
+sudo systemctl enable picad.service
 ```
 
 ## Set up the node 
@@ -82,7 +82,7 @@ sudo systemctl enable centaurid.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-centaurid init YOUR_MONIKER --chain-id banksy-testnet-5
+picad init YOUR_MONIKER --chain-id banksy-testnet-5
 
 # Get address book and genesis.json
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/composable-testnet/genesis.json -O $HOME/.banksy/config/genesis.json
@@ -110,7 +110,7 @@ https://services.stake-town.com/home/testnet/composable/sync
 ## Or use Stavr snapshot
 cd $HOME
 apt install lz4
-sudo systemctl stop centaurid
+sudo systemctl stop picad
 cp $HOME/.banksy/data/priv_validator_state.json $HOME/.banksy/priv_validator_state.json.backup
 rm -rf $HOME/.banksy/data
 curl -o - -L https://composable-t4.snapshot.stavr.tech/composable/composable-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.banksy --strip-components 2
@@ -122,5 +122,5 @@ mv $HOME/.banksy/priv_validator_state.json.backup $HOME/.banksy/data/priv_valida
 ## Start the node
 
 ```bash
-sudo systemctl start centaurid && sudo journalctl -fu centaurid -o cat
+sudo systemctl start picad && sudo journalctl -fu picad -o cat
 ```
