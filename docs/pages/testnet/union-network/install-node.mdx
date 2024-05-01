@@ -32,7 +32,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 ```bash 
 mkdir -p $HOME/.union/cosmovisor/genesis/bin
 mkdir -p $HOME/.union/cosmovisor/upgrades
-wget -O - https://github.com/Cogwheel-Validator/docs/raw/main/files/union-testnet/uniond-v0.19.0-linux-amd64.tar.gz | tar -xz -C $HOME/.union/cosmovisor/genesis/bin/
+wget -O - https://github.com/Cogwheel-Validator/docs/raw/main/files/union-testnet/uniond-v0.22.0-linux-amd64.tar.gz | tar -xz -C $HOME/.union/cosmovisor/genesis/bin/
 chmod +x $HOME/.union/cosmovisor/genesis/bin/uniond
 sudo ln -s $HOME/.union/cosmovisor/genesis $HOME/.union/cosmovisor/current -f
 sudo ln -s $HOME/.union/cosmovisor/current/bin/uniond /usr/local/bin/uniond -f
@@ -75,12 +75,9 @@ sudo systemctl enable uniond.service
 
 ```bash
 
-# Workaround mandatory home argument
-alias uniond='uniond --home=$HOME/.union/'
-
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-uniond init YOUR_MONIKER --chain-id union-testnet-6 --home=$HOME/.union/
+uniond init YOUR_MONIKER --chain-id union-testnet-8 --home=$HOME/.union/
 
 # Get address book and genesis.json
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/union-testnet/genesis.json -O $HOME/.union/config/genesis.json
@@ -107,6 +104,10 @@ rm -rf $HOME/.union/data
 curl -o - -L https://union-t.snapshot.stavr.tech/union-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.union --strip-components 2
 curl -o - -L https://union-t.wasm.stavr.tech/wasm-union.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.union --strip-components 2
 mv $HOME/.union/priv_validator_state.json.backup $HOME/.union/data/priv_validator_state.json
+
+#KJ nodes
+curl -L https://snapshots.kjnodes.com/union-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.union
+[[ -f $HOME/.union/data/upgrade-info.json ]] && cp $HOME/.union/data/upgrade-info.json $HOME/.union/cosmovisor/genesis/upgrade-info.json
 ```
 
 ## Start the node

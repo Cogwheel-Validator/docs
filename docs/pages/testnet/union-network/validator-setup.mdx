@@ -33,7 +33,12 @@ details=“write info about your validators for example what type of service you
 website=“https://cogwheel.zone for example” \
 ```
 
+Create proof of possession 
 ```bash
-uniond tx staking create-validator /path/to/validator.json --gas-adjustment 1.5 --gas auto
- --gas-prices 0umuno -y
+export PRIV_KEY=$(jq -r '.priv_key.value' ~/.union/config/priv_validator_key.json)
+export POSSESSION_PROOF=$(uniond prove-possession "$PRIV_KEY")
+```
+
+```bash
+uniond tx staking create-validator /path/to/validator.json $POSSESSION_PROOF --chain-id union-testnet-8 --gas-adjustment 1.5 --gas auto --gas-prices 0umuno -y 
 ```
