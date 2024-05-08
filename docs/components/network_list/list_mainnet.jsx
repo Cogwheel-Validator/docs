@@ -12,10 +12,10 @@ export default function mainnet() {
       href:"./mainnet/blit-chain"
     },
     {
-      title: "Composable Cosmos",
-      img: "/icons/composableIcon.png",
+      title: "Picasso Cosmos",
+      img: "/icons/picassoIcon.png",
       chainID: "centauri-1",
-      href: "./mainnet/composable-cosmos"
+      href: "./mainnet/picasso-cosmos"
     },
     {
       title: "Dyson Protocol",

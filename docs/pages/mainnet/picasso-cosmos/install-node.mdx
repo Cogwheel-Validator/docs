@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 
-# Node setup for Composable Cosmos chain
+# Node setup for Picasso Cosmos chain
 
 Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
 can be daunting and chalanging task. This is a short guide how to set up the node.
@@ -35,7 +35,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/ComposableFi/composable-cosmos.git
 cd composable-cosmos 
-git checkout v6.5.30 # always doublecheck from the official team for the right version
+git checkout v6.6.41 # always doublecheck from the official team for the right version
 make install
 ```
 
@@ -44,15 +44,15 @@ make install
 ```bash 
 mkdir -p $HOME/.banksy/cosmovisor/genesis/bin
 mkdir -p $HOME/.banksy/cosmovisor/upgrades
-mv $HOME/go/bin/centaurid $HOME/.banksy/cosmovisor/genesis/bin/
+mv $HOME/go/bin/picad $HOME/.banksy/cosmovisor/genesis/bin/
 sudo ln -s $HOME/.banksy/cosmovisor/genesis $HOME/.banksy/cosmovisor/current -f
-sudo ln -s $HOME/.banksy/cosmovisor/current/bin/centaurid /usr/local/bin/centaurid -f
+sudo ln -s $HOME/.banksy/cosmovisor/current/bin/picad /usr/local/bin/picad -f
 
 # Create service file
 
-sudo tee /etc/systemd/system/centaurid.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/picad.service > /dev/null <<EOF
 [Unit]
-Description=”Composable node”
+Description=”Pica node”
 After=network-online.target
 
 [Service]
@@ -62,7 +62,7 @@ WorkingDirectory=$HOME/.banksy
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=centaurid”
+Environment=”DAEMON_NAME=picad”
 Environment=”DAEMON_HOME=$HOME/.banksy”
 Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
 Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
@@ -74,7 +74,7 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable centaurid.service
+sudo systemctl enable picad.service
 ```
 
 ## Set up the node 
@@ -82,11 +82,11 @@ sudo systemctl enable centaurid.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-centaurid init YOUR_MONIKER --chain-id centauri-1
+picad init YOUR_MONIKER --chain-id centauri-1
 
 # Get address book and genesis.json
-wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/composable/genesis.json -O $HOME/.banksy/config/genesis.json
-wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/composable/addrbook.json -O $HOME/.banksy/config/addrbook.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/picasso/genesis.json -O $HOME/.banksy/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/picasso/addrbook.json -O $HOME/.banksy/config/addrbook.json
 
 #Set minimum gas prices
 sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0ppica\”|” $HOME/.banksy/config/app.toml
@@ -110,5 +110,5 @@ https://services.kjnodes.com/mainnet/composable/snapshot/
 ## Start the node
 
 ```bash
-sudo systemctl start centaurid && sudo journalctl -fu centaurid -o cat
+sudo systemctl start picad && sudo journalctl -fu picad -o cat
 ```

@@ -11,12 +11,12 @@ import { Callout } from 'nextra/components'
 
 ```bash
 #Create the wallet ( replace #keyname with whatever name you want)
-centaurid keys add #keyname
+picad keys add #keyname
 
 #Now create the validator 
-centaurid tx staking create-validator \
+picad tx staking create-validator \
 --amount=1000000000000ppica \
---pubkey=$( centaurid tendermint show-validator) \
+--pubkey=$( picad tendermint show-validator) \
 --moniker=validatorName \
 --chain-id=centauri-1 \
 --commission-rate=”0.05″ \
@@ -29,6 +29,6 @@ centaurid tx staking create-validator \
 --gas-adjustment=1.5
 --identity=keybaseIdNumber \
 --details=“write info about your validators for example what type of service you ofer etc.” \
---website=“https://cogwheel.zone for example” \
+--website=“https://cogwheel.zone for example” 
 ```
 
