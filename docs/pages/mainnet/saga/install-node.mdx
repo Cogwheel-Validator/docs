@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 
-# Node setup for Saga Protocol
+# Node setup for Saga Network
 
 Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
 can be daunting and chalanging task. This is a short guide how to set up the node.
@@ -33,48 +33,48 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 
 ```bash
 cd $HOME 
-git clone https://github.com/NibiruChain/nibiru.git
+git clone https://github.com/sagaxyz/ssc.git
 cd nibiru  # always doublecheck from the official team for the right version
-git checkout v1.2.0
+git checkout v0.1.5
 make install
 ```
 
 ## Set up cosmovisor
 
 ```bash 
-mkdir -p $HOME/.nibid/cosmovisor/genesis/bin
-mkdir -p $HOME/.nibid/cosmovisor/upgrades
-mv $HOME/go/bin/nibidd $HOME/.nibid/cosmovisor/genesis/bin/
-sudo ln -s $HOME/.nibid/cosmovisor/genesis $HOME/.nibid/cosmovisor/current -f
-sudo ln -s $HOME/.nibid/cosmovisor/current/bin/nibid /usr/local/bin/nibid -f
+mkdir -p $HOME/.ssc/cosmovisor/genesis/bin
+mkdir -p $HOME/.ssc/cosmovisor/upgrades
+mv $HOME/go/bin/sscd $HOME/.ssc/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.ssc/cosmovisor/genesis $HOME/.ssc/cosmovisor/current -f
+sudo ln -s $HOME/.ssc/cosmovisor/current/bin/sscd /usr/local/bin/sscd -f
 
 # Create service file
 
-sudo tee /etc/systemd/system/nibid.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/saga.service > /dev/null <<EOF
 [Unit]
-Description=Nibiru node”
+Description=Saga node”
 After=network-online.target
 
 [Service]
 User=$USER
 ExecStart=$(which cosmovisor) run start
-WorkingDirectory=$HOME/.nibid
+WorkingDirectory=$HOME/.ssc
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=nibid”
-Environment=”DAEMON_HOME=$HOME/.nibid”
+Environment=”DAEMON_NAME=sscd”
+Environment=”DAEMON_HOME=$HOME/.ssc”
 Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
 Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
 Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.nibid/cosmovisor/current/bin”
+Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.ssc/cosmovisor/current/bin”
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable nibid.service
+sudo systemctl enable saga.service
 ```
 
 ## Set up the node 
@@ -82,26 +82,26 @@ sudo systemctl enable nibid.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-nibid init YOUR_MONIKER --chain-id cataclysm-1
+sscd init YOUR_MONIKER --chain-id ssc-1
 
 # Get address book and genesis.json
-wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/nibiru/genesis.json -O $HOME/.nibid/config/genesis.json
-wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/nibiru/addrbook.json -O $HOME/.nibid/config/addrbook.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/saga/genesis.json -O $HOME/.ssc/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/saga/addrbook.json -O $HOME/.ssc/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.025unibi\"|" $HOME/.nibid/config/app.toml
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0usaga\"|" $HOME/.ssc/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.
 ``` 
 Links to snapshots. You only need from one provider.
 
-https://polkachu.com/tendermint_snapshots/nibiru
-https://services.kjnodes.com/mainnet/nibiru/snapshot/
+https://polkachu.com/tendermint_snapshots/saga
+https://services.kjnodes.com/mainnet/saga/snapshot/
 ```
 
 ## Start the node
 
 ```bash
-sudo systemctl start nibid && sudo journalctl -fu nibid -o cat
+sudo systemctl start saga && sudo journalctl -fu saga -o cat
 ```
