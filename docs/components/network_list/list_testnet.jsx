@@ -26,7 +26,7 @@ export default function testnet() {
       {
         title: "Side Protocol",
         img: "/icons/sideIcon.png",
-        chainID: "side-testnet-3",
+        chainID: "S2-testnet-2",
         href: "./testnet/side-protocol"
       },
       {
