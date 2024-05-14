@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 
-# Node setup for Juno Network
+# Node setup for Initia
 
 Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
 can be daunting and chalanging task. This is a short guide how to set up the node.
@@ -17,9 +17,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://golang.org/dl/go1.22.2.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
-rm go1.22.2.linux-amd64.tar.gz
+wget https://golang.org/dl/go1.22.3.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
+rm go1.22.3.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
 source $HOME/.bashrc
@@ -33,48 +33,48 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 
 ```bash
 cd $HOME 
-git clone https://github.com/CosmosContracts/juno
-cd juno 
-git checkout v22.0.0-alpha.1 # always doublecheck from the official team for the right version
+git clone https://github.com/initia-labs/initia
+cd initia 
+git checkout v0.2.11 # always doublecheck from the official team for the right version
 make install
 ```
 
 ## Set up cosmovisor
 
 ```bash 
-mkdir -p $HOME/.juno/cosmovisor/genesis/bin
-mkdir -p $HOME/.juno/cosmovisor/upgrades
-mv $HOME/go/bin/junod $HOME/.juno/cosmovisor/genesis/bin/
-sudo ln -s $HOME/.juno/cosmovisor/genesis $HOME/.juno/cosmovisor/current -f
-sudo ln -s $HOME/.juno/cosmovisor/current/bin/junod /usr/local/bin/junod -f
+mkdir -p $HOME/.initia/cosmovisor/genesis/bin
+mkdir -p $HOME/.initia/cosmovisor/upgrades
+mv $HOME/go/bin/initiad $HOME/.initia/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.initia/cosmovisor/genesis $HOME/.initia/cosmovisor/current -f
+sudo ln -s $HOME/.initia/cosmovisor/current/bin/initiad /usr/local/bin/initiad -f
 
 # Create service file
 
-sudo tee /etc/systemd/system/junod.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/initiad.service > /dev/null <<EOF
 [Unit]
-Description=Juno node”
+Description=Initia node”
 After=network-online.target
 
 [Service]
 User=$USER
 ExecStart=$(which cosmovisor) run start
-WorkingDirectory=$HOME/.juno
+WorkingDirectory=$HOME/.initia
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=junod”
-Environment=”DAEMON_HOME=$HOME/.juno”
+Environment=”DAEMON_NAME=initiad”
+Environment=”DAEMON_HOME=$HOME/.initia”
 Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
 Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
 Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.juno/cosmovisor/current/bin”
+Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.initia/cosmovisor/current/bin”
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable junod.service
+sudo systemctl enable initiad.service
 ```
 
 ## Set up the node 
@@ -82,26 +82,25 @@ sudo systemctl enable junod.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-junod init YOUR_MONIKER --chain-id uni-6
+initiad init YOUR_MONIKER --chain-id initiation-1
 
 # Get address book and genesis.json
-wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/juno-testnet/genesis.json -O $HOME/.juno/config/genesis.json
-wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/juno-testnet/addrbook.json -O $HOME/.juno/config/addrbook.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/initia/genesis.json -O $HOME/.initia/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/initia/addrbook.json -O $HOME/.initia/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.025ujunox\”|” $HOME/.juno/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.15uinit,0.01uusdc\”|” $HOME/.initia/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.
 ``` 
 Links to snapshots. You only need from one provider.
 
-https://polkachu.com/tendermint_snapshots/juno
-https://services.stake-town.com/home/mainnet/juno/sync
+https://polkachu.com/tendermint_snapshots/initia
 ```
 
 ## Start the node
 
 ```bash
-sudo systemctl start junod && sudo journalctl -fu junod -o cat
+sudo systemctl start initiad && sudo journalctl -fu initiad -o cat
 ```
