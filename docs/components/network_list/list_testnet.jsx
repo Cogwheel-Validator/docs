@@ -40,6 +40,12 @@ export default function testnet() {
         img: "/icons/junoIcon.png",
         chainID: "uni-6",
         href: "./testnet/juno"
+      },
+      {
+        title: "Initia Testnet",
+        img: "/icons/initiaIcon.png",
+        chainID: "initiation-1",
+        href: "./testnet/initia"
       }
     ];
   
