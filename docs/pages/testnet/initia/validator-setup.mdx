@@ -14,7 +14,7 @@ import { Callout } from 'nextra/components'
 initiad keys add #keyname
 
 #Now create the validator 
-initiad tx staking create-validator \
+initiad tx mstaking create-validator \
 --amount=1000000uinit \
 --pubkey=$( initiad tendermint show-validator) \
 --moniker= "validatorName" \

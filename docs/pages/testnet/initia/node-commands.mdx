@@ -62,7 +62,7 @@ initiad q bank balances $( initiad keys show wallet -a)
 #### Edit existing validator
 
 ```bash
-initiad tx staking edit-validator \
+initiad tx mstaking edit-validator \
 --new-moniker "YOUR_MONIKER_NAME" \
 --identity "YOUR_KEYBASE_ID" \
 --details "YOUR_DETAILS" \
@@ -92,19 +92,19 @@ initiad query slashing signing-info $( initiad tendermint show-validator)
 #### List all active validators
 
 ```bash
-initiad q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_BONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
+initiad q mstaking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_BONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
 ```
 
 #### List all inactive validators
 
 ```bash
-initiad q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_UNBONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
+initiad q mstaking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_UNBONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
 ```
 
 #### View validator details
 
 ```bash
-initiad q staking validator $( initiad keys show wallet --bech val -a)
+initiad q mstaking validator $( initiad keys show wallet --bech val -a)
 ```
 
 ## 🪙 Token management
@@ -124,25 +124,25 @@ initiad tx distribution withdraw-rewards $( initiad keys show wallet --bech val 
 #### Delegate tokens to yourself
 
 ```bash
-initiad tx staking delegate $( initiad keys show wallet --bech val -a) 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit -y
+initiad tx mstaking delegate $( initiad keys show wallet --bech val -a) 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit -y
 ```
 
 #### Delegate tokens to validator
 
 ```bash
-initiad tx staking delegate <TO_VALOPER_ADDRESS> 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit  -y
+initiad tx mstaking delegate <TO_VALOPER_ADDRESS> 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit  -y
 ```
 
 #### Redelegate tokens to another validator
 
 ```bash
-initiad tx staking redelegate $( initiad keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit -y
+initiad tx mstaking redelegate $( initiad keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit -y
 ```
 
 #### Unbond tokens from your validator
 
 ```bash
-initiad tx staking unbond $( initiad keys show wallet --bech val -a) 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit -y
+initiad tx mstaking unbond $( initiad keys show wallet --bech val -a) 1000000uinit --from wallet --chain-id initiation-1 --gas-adjustment 1.5 --gas auto --gas-prices 0.015uinit -y
 ```
 
 #### Send tokens to the wallet
