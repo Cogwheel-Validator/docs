@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 
-# Validator setup for Composable Finance - Composable (cosmos) chain
+# Validator setup for Composable Testnet
 
 ## Create keys and validator
 
@@ -12,23 +12,30 @@ import { Callout } from 'nextra/components'
 ```bash
 #Create the wallet ( replace #keyname with whatever name you want)
 picad keys add #keyname
-
-#Now create the validator 
-picad tx staking create-validator \
---amount=1000000000000ppica \
---pubkey=$( picad tendermint show-validator) \
---moniker=validatorName \
---chain-id=banksy-testnet-5 \
---commission-rate=”0.05″ \
---commission-max-rate=”0.20″ \
---commission-max-change-rate=”0.01″ \
---min-self-delegation=”1″ \
---gas=”auto” \
---gas-prices=”0ppica” \
---from=#keyname \
---gas-adjustment=1.5
---identity=keybaseIdNumber \
---details=“write info about your validators for example what type of service you ofer etc.” \
---website=“https://cogwheel.zone for example” \
 ```
 
+Now create validator.json and place it somewhere you will know. Run this command and insert pubkey
+in json file.
+
+```bash
+picad tendermint show-validator
+```
+
+```json
+#Now create the validator.json  
+amount=1000000000000ppica
+pubkey=fillInFromTheCommandUp \
+moniker=validatorName \
+commission-rate=”0.05″ \
+commission-max-rate=”0.20″ \
+commission-max-change-rate=”0.01″ \
+min-self-delegation=”1″ \
+identity=keybaseIdNumber \
+details=“write info about your validators for example what type of service you ofer etc.” \
+website=“https://cogwheel.zone for example” \
+```
+
+```bash
+picad tx staking create-validator /path/to/validator.json --gas-adjustment 1.5 --gas auto
+ --gas-prices 0ppica -y
+```

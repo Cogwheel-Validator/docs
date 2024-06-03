@@ -32,7 +32,7 @@ export default function testnet() {
       {
         title: "Union Network",
         img: "/icons/unionIcon.png",
-        chainID: "union-testnet-6",
+        chainID: "union-testnet-8",
         href: "./testnet/union-network"
       },
       {
