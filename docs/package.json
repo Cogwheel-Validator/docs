@@ -17,7 +17,8 @@
     "nextra-theme-docs": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sharp": "^0.32.6"
+    "sharp": "^0.32.6",
+    "@nextui-org/react": "^2.4.6"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
