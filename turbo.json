@@ -3,10 +3,9 @@
   "pipeline": {
     "build": {
       "dependsOn": [
-        // Run `build` in workspaces I depend on first
         "^build"
       ],
-      "outputs": ["dist/**", ".next/**", "loader.js"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "loader.js"]
     },
     "build:tailwind": {
       "dependsOn": [],
@@ -15,7 +14,6 @@
     "test": {},
     "types:check": {
       "dependsOn": [
-        // Run `build` in workspaces I depend on first
         "^build"
       ]
     },
