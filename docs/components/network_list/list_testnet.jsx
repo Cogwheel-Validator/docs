@@ -46,11 +46,17 @@ export default function testnet() {
         img: "/icons/initiaIcon.png",
         chainID: "initiation-1",
         href: "./testnet/initia"
+      },
+      {
+        title: "Symphony Testnet",
+        img: "/icons/symphonyIcon.png",
+        chainID: "symphony-testnet-2",
+        href: "./testnet/symphony-testnet"
       }
     ];
   
     return (
-      <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {list.map((item, index) => (
           <Card
           shadow='sm'
@@ -59,7 +65,7 @@ export default function testnet() {
           onPress={() => router.push(item.href)} // Use the router to navigate when the card is pressed
           style={{ margin: '10px' }}
         >
-            <CardBody className="overflow-visible p-0">
+            <CardBody className="p-0 overflow-visible">
               <Image
                 shadow="sm"
                 radius="lg"
@@ -69,7 +75,7 @@ export default function testnet() {
                 src={item.img}
               />
             </CardBody>
-            <CardFooter className="text-small justify-between">
+            <CardFooter className="justify-between text-small">
               <b>{item.title}</b>
               <p className="text-default-500">{item.chainID}</p>
             </CardFooter>
