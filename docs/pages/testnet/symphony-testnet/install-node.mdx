@@ -67,7 +67,7 @@ Environment=”DAEMON_HOME=$HOME/.symphonyd”
 Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
 Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
 Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.symphony/cosmovisor/current/bin”
+Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.symphonyd/cosmovisor/current/bin”
 
 [Install]
 WantedBy=multi-user.target
@@ -82,14 +82,14 @@ sudo systemctl enable symphonyd.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-symphonyd init YOUR_MONIKER --chain-id uni-6
+symphonyd init YOUR_MONIKER --chain-id symphony-testnet-2
 
 # Get address book and genesis.json
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/symphony-testnet/genesis.json -O $HOME/.symphonyd/config/genesis.json
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/symphony-testnet/addrbook.json -O $HOME/.symphonyd/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.025usymphonyx\”|” $HOME/.symphony/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.025note\”|” $HOME/.symphonyd/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.
