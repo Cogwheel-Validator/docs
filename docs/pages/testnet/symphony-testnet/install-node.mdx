@@ -35,7 +35,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/Orchestra-Labs/symphony
 cd symphony 
-git checkout v0.2.1 # always doublecheck from the official team for the right version
+git checkout v0.3.0 # always doublecheck from the official team for the right version
 make install
 ```
 
@@ -82,7 +82,7 @@ sudo systemctl enable symphonyd.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER” with name for your node.
 
-symphonyd init YOUR_MONIKER --chain-id symphony-testnet-2
+symphonyd init YOUR_MONIKER --chain-id symphony-testnet-3
 
 # Get address book and genesis.json
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/symphony-testnet/genesis.json -O $HOME/.symphonyd/config/genesis.json

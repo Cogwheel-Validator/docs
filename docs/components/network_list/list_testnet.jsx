@@ -50,7 +50,7 @@ export default function testnet() {
       {
         title: "Symphony Testnet",
         img: "/icons/symphonyIcon.png",
-        chainID: "symphony-testnet-2",
+        chainID: "symphony-testnet-3",
         href: "./testnet/symphony-testnet"
       }
     ];
