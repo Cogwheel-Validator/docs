@@ -1,0 +1,107 @@
+import { Callout } from 'nextra/components'
+
+# Node setup for Symphony
+
+Node setup requres some basic knowlage of Linux OS and server managment. Setting up the node
+can be daunting and chalanging task. This is a short guide how to set up the node.
+
+## Update the system and install the essentials:
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim /or apt install nano 
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO and Cosmovisor
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://golang.org/dl/go1.21.8.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.21.8.linux-amd64.tar.gz
+rm go1.21.8.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
+source $HOME/.bashrc
+
+# Install cosmovisor
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.5.0
+sudo mv ~/go/bin/cosmovisor /usr/local/bin
+```
+
+## Clone the repository and install node binary
+
+```bash
+cd $HOME 
+git clone https://github.com/Orchestra-Labs/symphony
+cd symphony 
+git checkout v0.3.0 # always doublecheck from the official team for the right version
+make install
+```
+
+## Set up cosmovisor
+
+```bash 
+mkdir -p $HOME/.symphonyd/cosmovisor/genesis/bin
+mkdir -p $HOME/.symphonyd/cosmovisor/upgrades
+mv $HOME/go/bin/symphonyd $HOME/.symphonyd/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.symphonyd/cosmovisor/genesis $HOME/.symphonyd/cosmovisor/current -f
+sudo ln -s $HOME/.symphonyd/cosmovisor/current/bin/symphonyd /usr/local/bin/symphonyd -f
+
+# Create service file
+
+sudo tee /etc/systemd/system/symphonyd.service > /dev/null <<EOF
+[Unit]
+Description=symphony node”
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+WorkingDirectory=$HOME/.symphony
+Restart=on-failure 
+RestartSec=5
+LimitNOFILE=65535
+Environment=”DAEMON_NAME=symphonyd”
+Environment=”DAEMON_HOME=$HOME/.symphonyd”
+Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
+Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
+Environment=”UNSAFE_SKIP_BACKUP=true”
+Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.symphonyd/cosmovisor/current/bin”
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable symphonyd.service
+```
+
+## Set up the node 
+
+```bash
+# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+
+symphonyd init YOUR_MONIKER --chain-id symphony-testnet-3
+
+# Get address book and genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/symphony-testnet/genesis.json -O $HOME/.symphonyd/config/genesis.json
+wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/symphony-testnet/addrbook.json -O $HOME/.symphonyd/config/addrbook.json
+
+#Set minimum gas prices
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.025note\”|” $HOME/.symphonyd/config/app.toml
+```
+
+Use snapshot or state sync to catch up.
+``` 
+Links to snapshots. You only need from one provider.
+
+https://services.nodeshub.online/testnet-networks/symphony/snapshot
+https://service.vinjan.xyz/testnet/symphony/snapshot
+```
+
+## Start the node
+
+```bash
+sudo systemctl start symphonyd && sudo journalctl -fu symphonyd -o cat
+```
