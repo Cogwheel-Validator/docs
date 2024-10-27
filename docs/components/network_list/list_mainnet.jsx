@@ -40,6 +40,12 @@ export default function mainnet() {
       img: "/icons/sagaIcon.png",
       chainID: "ssc-1",
       href: "./mainnet/saga"
+    },
+    {
+      title: "Atom One",
+      img: "/icons/oneIcon.png",
+      chainID: "atomone-1",
+      href: "./mainnet/atomone"
     }
   ];
 

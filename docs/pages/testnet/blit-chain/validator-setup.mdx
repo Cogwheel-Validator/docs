@@ -20,17 +20,19 @@ blitd tendermint show-validator
 ```
 
 ```json
-#Now create the validator.json  
-amount=1000000ublit
-pubkey=fillInFromTheCommandUp \
-moniker=validatorName \
-commission-rate=”0.05″ \
-commission-max-rate=”0.20″ \
-commission-max-change-rate=”0.01″ \
-min-self-delegation=”1″ \
-identity=keybaseIdNumber \
-details=“write info about your validators for example what type of service you ofer etc.” \
-website=“https://cogwheel.zone for example” \
+{
+        "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"insertFromTheCommandAbove"},
+        "amount": "1000000stake",
+        "moniker": "myvalidator",
+        "identity": "optional identity signature (ex. UPort or Keybase)",
+        "website": "validator's (optional) website",
+        "security": "validator's (optional) security contact email",
+        "details": "validator's (optional) details",
+        "commission-rate": "0.1",
+        "commission-max-rate": "0.2",
+        "commission-max-change-rate": "0.01",
+        "min-self-delegation": "1"
+}
 ```
 
 ```bash

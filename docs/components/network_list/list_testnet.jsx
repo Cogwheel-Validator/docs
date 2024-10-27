@@ -46,6 +46,12 @@ export default function testnet() {
         img: "/icons/initiaIcon.png",
         chainID: "initiation-1",
         href: "./testnet/initia"
+      },
+      {
+        title: "Prysm Devnet",
+        img: "/icons/prysmIcon.png",
+        chainID: "prysm-devnet-1",
+        href: "./testnet/prysm"
       }
     ];
   
