@@ -52,7 +52,7 @@ sudo ln -s $HOME/.banksy/cosmovisor/current/bin/picad /usr/local/bin/picad -f
 
 sudo tee /etc/systemd/system/picad.service > /dev/null <<EOF
 [Unit]
-Description=”Pica node”
+Description="Pica node"
 After=network-online.target
 
 [Service]
@@ -62,12 +62,12 @@ WorkingDirectory=$HOME/.banksy
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=picad”
-Environment=”DAEMON_HOME=$HOME/.banksy”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.banksy/cosmovisor/current/bin”
+Environment="DAEMON_NAME=picad"
+Environment="DAEMON_HOME=$HOME/.banksy"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.banksy/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +80,7 @@ sudo systemctl enable picad.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 picad init YOUR_MONIKER --chain-id centauri-1
 
@@ -89,7 +89,7 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/picass
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/picasso/addrbook.json -O $HOME/.banksy/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0ppica\”|” $HOME/.banksy/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0ppica\"|" $HOME/.banksy/config/app.toml
 ```
 
 ## Use state sync or snapshot to catch up

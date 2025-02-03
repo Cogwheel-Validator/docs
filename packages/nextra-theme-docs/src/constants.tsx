@@ -223,7 +223,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
       return getGitIssueUrl({
         labels: config.feedback.labels,
         repository: config.docsRepositoryBase,
-        title: `Feedback for “${config.title}”`
+        title: `Feedback for “${config.title}"`
       })
     }
   },

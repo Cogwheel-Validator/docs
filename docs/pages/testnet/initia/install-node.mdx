@@ -52,7 +52,7 @@ sudo ln -s $HOME/.initia/cosmovisor/current/bin/initiad /usr/local/bin/initiad -
 
 sudo tee /etc/systemd/system/initiad.service > /dev/null <<EOF
 [Unit]
-Description=Initia node”
+Description=Initia node"
 After=network-online.target
 
 [Service]
@@ -62,12 +62,12 @@ WorkingDirectory=$HOME/.initia
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=initiad”
-Environment=”DAEMON_HOME=$HOME/.initia”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.initia/cosmovisor/current/bin”
+Environment="DAEMON_NAME=initiad"
+Environment="DAEMON_HOME=$HOME/.initia"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.initia/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +80,7 @@ sudo systemctl enable initiad.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 initiad init YOUR_MONIKER --chain-id initiation-1
 
@@ -89,7 +89,7 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/initia
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/initia/addrbook.json -O $HOME/.initia/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.15uinit,0.01uusdc\”|” $HOME/.initia/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.15uinit,0.01uusdc\"|" $HOME/.initia/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.

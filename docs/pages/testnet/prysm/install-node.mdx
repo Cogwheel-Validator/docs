@@ -52,7 +52,7 @@ sudo ln -s $HOME/.prysm/cosmovisor/current/bin/prysmd /usr/local/bin/prysmd -f
 
 sudo tee /etc/systemd/system/prysmd.service > /dev/null <<EOF
 [Unit]
-Description=prysm node”
+Description=prysm node"
 After=network-online.target
 
 [Service]
@@ -62,12 +62,12 @@ WorkingDirectory=$HOME/.prysm
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=prysmd”
-Environment=”DAEMON_HOME=$HOME/.prysm”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.prysm/cosmovisor/current/bin”
+Environment="DAEMON_NAME=prysmd"
+Environment="DAEMON_HOME=$HOME/.prysm"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.prysm/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +80,7 @@ sudo systemctl enable prysmd.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 prysmd init YOUR_MONIKER --chain-id prysm-devnet-1
 
@@ -89,7 +89,7 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/prysm-
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/prysm-testnet/addrbook.json -O $HOME/.prysm/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0uprysm\”|” $HOME/.prysm/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0uprysm\"|" $HOME/.prysm/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.

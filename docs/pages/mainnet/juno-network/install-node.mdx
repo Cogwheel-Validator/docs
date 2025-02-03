@@ -52,7 +52,7 @@ sudo ln -s $HOME/.juno/cosmovisor/current/bin/junod /usr/local/bin/junod -f
 
 sudo tee /etc/systemd/system/junod.service > /dev/null <<EOF
 [Unit]
-Description=Juno node”
+Description=Juno node"
 After=network-online.target
 
 [Service]
@@ -62,12 +62,12 @@ WorkingDirectory=$HOME/.juno
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=junod”
-Environment=”DAEMON_HOME=$HOME/.juno”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.juno/cosmovisor/current/bin”
+Environment="DAEMON_NAME=junod"
+Environment="DAEMON_HOME=$HOME/.juno"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.juno/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +80,7 @@ sudo systemctl enable junod.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 junod init YOUR_MONIKER --chain-id juno-1
 
@@ -89,7 +89,7 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/juno/g
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/juno/addrbook.json -O $HOME/.juno/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.025ujuno,0.003ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9,0.025ibc/4A482FA914A4B9B05801ED81C33713899F322B24F76A06F4B8FE872485EA22FF,0.025ibc/EAC38D55372F38F1AFD68DF7FE9EF762DCF69F26520643CF3F9D292A738D8034\”|” $HOME/.juno/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.025ujuno,0.003ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9,0.025ibc/4A482FA914A4B9B05801ED81C33713899F322B24F76A06F4B8FE872485EA22FF,0.025ibc/EAC38D55372F38F1AFD68DF7FE9EF762DCF69F26520643CF3F9D292A738D8034\"|" $HOME/.juno/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.

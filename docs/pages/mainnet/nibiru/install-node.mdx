@@ -52,7 +52,7 @@ sudo ln -s $HOME/.nibid/cosmovisor/current/bin/nibid /usr/local/bin/nibid -f
 
 sudo tee /etc/systemd/system/nibid.service > /dev/null <<EOF
 [Unit]
-Description=Nibiru node”
+Description=Nibiru node"
 After=network-online.target
 
 [Service]
@@ -62,12 +62,12 @@ WorkingDirectory=$HOME/.nibid
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=nibid”
-Environment=”DAEMON_HOME=$HOME/.nibid”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.nibid/cosmovisor/current/bin”
+Environment="DAEMON_NAME=nibid"
+Environment="DAEMON_HOME=$HOME/.nibid"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.nibid/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +80,7 @@ sudo systemctl enable nibid.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 nibid init YOUR_MONIKER --chain-id cataclysm-1
 

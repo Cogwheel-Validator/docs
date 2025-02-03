@@ -50,7 +50,7 @@ sudo ln -s $HOME/.babylond/cosmovisor/current/bin/babylond /usr/local/bin/babylo
 
 sudo tee /etc/systemd/system/babylond.service > /dev/null <<EOF
 [Unit]
-Description=”Babylon Chain node”
+Description="Babylon Chain node"
 After=network-online.target
 
 [Service]
@@ -60,12 +60,12 @@ WorkingDirectory=$HOME/.babylond
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=babylond”
-Environment=”DAEMON_HOME=$HOME/.babylond”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.babylond/cosmovisor/current/bin”
+Environment="DAEMON_NAME=babylond"
+Environment="DAEMON_HOME=$HOME/.babylond"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.babylond/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -78,7 +78,7 @@ sudo systemctl enable babylond.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 babylond init YOUR_MONIKER --chain-id bbn-test-3
 
@@ -88,8 +88,8 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/babylo
 
 
 #Do some changes to the settings
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.0001ubbn\”|” $HOME/.babylond/config/app.toml
-sed -i -e “s|^timeout_commit *=.*|timeout_commit = \”30s\”|” $HOME/.babylond/config/config.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.0001ubbn\"|" $HOME/.babylond/config/app.toml
+sed -i -e “s|^timeout_commit *=.*|timeout_commit = \"30s\"|" $HOME/.babylond/config/config.toml
 ```
 
 ## Use state sync or snapshot to catch up

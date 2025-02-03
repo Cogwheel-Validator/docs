@@ -52,7 +52,7 @@ sudo ln -s $HOME/.symphonyd/cosmovisor/current/bin/symphonyd /usr/local/bin/symp
 
 sudo tee /etc/systemd/system/symphonyd.service > /dev/null <<EOF
 [Unit]
-Description=symphony node”
+Description=symphony node"
 After=network-online.target
 
 [Service]
@@ -62,12 +62,12 @@ WorkingDirectory=$HOME/.symphony
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=symphonyd”
-Environment=”DAEMON_HOME=$HOME/.symphonyd”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.symphonyd/cosmovisor/current/bin”
+Environment="DAEMON_NAME=symphonyd"
+Environment="DAEMON_HOME=$HOME/.symphonyd"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.symphonyd/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -80,7 +80,7 @@ sudo systemctl enable symphonyd.service
 ## Set up the node 
 
 ```bash
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 symphonyd init YOUR_MONIKER --chain-id symphony-testnet-3
 
@@ -89,7 +89,7 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/sympho
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/symphony-testnet/addrbook.json -O $HOME/.symphonyd/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0.025note\”|” $HOME/.symphonyd/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.025note\"|" $HOME/.symphonyd/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.

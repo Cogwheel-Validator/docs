@@ -62,7 +62,7 @@ function _createMdxContent(props) {
   const _components = Object.assign({
     h1: \\"h1\\"
   }, _provideComponents(), props.components);
-  return <_components.h1>{\\"Posts Tagged with “\\"}<TagName />{\\"”\\"}</_components.h1>;
+  return <_components.h1>{\\"Posts Tagged with “\\"}<TagName />{\\""\\"}</_components.h1>;
 }
 function MDXContent(props = {}) {
   const {wrapper: MDXLayout} = Object.assign({}, _provideComponents(), props.components);
@@ -70,7 +70,7 @@ function MDXContent(props = {}) {
 }
 export default MDXContent;
 ",
-  "title": "Posts Tagged with “”",
+  "title": "Posts Tagged with “"",
 }
 `;
 

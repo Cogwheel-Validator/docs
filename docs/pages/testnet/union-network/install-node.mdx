@@ -46,7 +46,7 @@ sudo ln -s $HOME/.union/cosmovisor/current/bin/uniond /usr/local/bin/uniond -f
 
 sudo tee /etc/systemd/system/uniond.service > /dev/null <<EOF
 [Unit]
-Description=”Union Protocol node”
+Description="Union Protocol node"
 After=network-online.target
 
 [Service]
@@ -56,12 +56,12 @@ WorkingDirectory=$HOME/.union
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment=”DAEMON_NAME=uniond”
-Environment=”DAEMON_HOME=$HOME/.union”
-Environment=”DAEMON_ALLOW_DOWNLOAD_BINARIES=false”
-Environment=”DAEMON_RESTART_AFTER_UPGRADE=true”
-Environment=”UNSAFE_SKIP_BACKUP=true”
-Environment=”PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.union/cosmovisor/current/bin”
+Environment="DAEMON_NAME=uniond"
+Environment="DAEMON_HOME=$HOME/.union"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.union/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -75,7 +75,7 @@ sudo systemctl enable uniond.service
 
 ```bash
 
-# Please when using this guide replace “YOUR_MONIKER” with name for your node.
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
 uniond init YOUR_MONIKER --chain-id union-testnet-8 --home=$HOME/.union/
 
@@ -85,7 +85,7 @@ wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/union-
 
 
 #Do some changes to the settings
-sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \”0muno\”|” $HOME/.union/config/app.toml
+sed -i -e “s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0muno\"|" $HOME/.union/config/app.toml
 ```
 
 ## Use state sync or snapshot to catch up

@@ -23,12 +23,12 @@ dysond tx staking create-validator \
 --pubkey=$(dysond tendermint show-validator) \
 --moniker=node name \
 --chain-id=dyson-mainnet-01 \
---commission-rate=”0.05″ \
---commission-max-rate=”0.20″ \
---commission-max-change-rate=”0.01″ \
---min-self-delegation=”1″ \
---gas=”auto” \
---gas-prices=”0.0001dys” \
+--commission-rate="0.05″ \
+--commission-max-rate="0.20″ \
+--commission-max-change-rate="0.01″ \
+--min-self-delegation="1″ \
+--gas="auto" \
+--gas-prices="0.0001dys" \
 --from=#keyname \
 --gas-adjustment 1.5
 ```
