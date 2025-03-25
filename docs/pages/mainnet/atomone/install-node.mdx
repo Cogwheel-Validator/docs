@@ -17,9 +17,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://golang.org/dl/go1.21.13.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.21.13.linux-amd64.tar.gz
-rm go1.21.13.linux-amd64.tar.gz
+wget https://golang.org/dl/go1.22.10.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.22.10.linux-amd64.tar.gz
+rm go1.22.10.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME./bashrc
 source $HOME/.bashrc
@@ -50,9 +50,9 @@ sudo ln -s $HOME/.atomone/cosmovisor/current/bin/atomoned /usr/local/bin/atomone
 
 # Create service file
 
-sudo tee /etc/systemd/system/saga.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/atomoned.service > /dev/null <<EOF
 [Unit]
-Description=Saga node"
+Description=Atomone node"
 After=network-online.target
 
 [Service]
@@ -74,7 +74,7 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable saga.service
+sudo systemctl enable atomoned.service
 ```
 
 ## Set up the node 
@@ -102,5 +102,5 @@ https://snapshots.whenmoonwhenlambo.money/atomone-1
 ## Start the node
 
 ```bash
-sudo systemctl start saga && sudo journalctl -fu saga -o cat
+sudo systemctl start atomoned && sudo journalctl -fu atomoned -o cat
 ```
