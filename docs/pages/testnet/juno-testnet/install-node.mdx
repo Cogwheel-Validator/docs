@@ -35,7 +35,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/CosmosContracts/juno
 cd juno 
-git checkout v28.0.1 # always doublecheck from the official team for the right version
+git checkout v28.0.2 # always doublecheck from the official team for the right version
 make install
 ```
 
@@ -82,7 +82,7 @@ sudo systemctl enable junod.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
-junod init YOUR_MONIKER --chain-id uni-6
+junod init YOUR_MONIKER --chain-id uni-7
 
 # Get address book and genesis.json
 wget https://raw.githubusercontent.com/Cogwheel-Validator/docs/main/files/juno-testnet/genesis.json -O $HOME/.juno/config/genesis.json

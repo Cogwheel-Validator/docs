@@ -38,7 +38,7 @@ export default function testnet() {
       {
         title: "Juno Testnet",
         img: "/icons/junoIcon.png",
-        chainID: "uni-6",
+        chainID: "uni-7",
         href: "./testnet/juno"
       },
       {
