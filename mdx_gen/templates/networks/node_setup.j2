@@ -1,0 +1,118 @@
+---
+title: "Node setup for {{ network.name }}"
+description: "Node setup for {{ network.name }}"
+---
+
+# Node setup for {{ network.name }}
+
+Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
+you are using a Debian based OS such as Ubuntu for example.
+
+## Update the system and install the essentials:
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim # or install nano
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO and Cosmovisor
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://go.dev/dl/go{{ network.go_version }}.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go{{ network.go_version }}.linux-amd64.tar.gz
+rm go{{ network.go_version }}.linux-amd64.tar.gz
+
+# Add GO to PATH
+echo 'export GO111MODULE=on' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+
+# Source the bashrc file
+source $HOME/.bashrc
+
+# Install cosmovisor
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v{{ cosmovisor_recommended_version }}
+sudo mv ~/go/bin/cosmovisor /usr/local/bin
+```
+
+## Clone the repository and install node binary
+
+```bash
+cd $HOME 
+git clone {{ network.repo_url }}
+cd {{ network.repo_name }}  # always doublecheck from the official team for the right version
+git checkout v{{ network.version }}
+make install
+```
+
+## Set up cosmovisor
+
+```bash 
+mkdir -p $HOME/.{{ network.home_dir }}/cosmovisor/genesis/bin
+mkdir -p $HOME/.{{ network.home_dir }}/cosmovisor/upgrades
+mv $HOME/go/bin/{{ network.binary_name }} $HOME/.{{ network.home_dir }}/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.{{ network.home_dir }}/cosmovisor/genesis $HOME/.{{ network.home_dir }}/cosmovisor/current -f
+sudo ln -s $HOME/.{{ network.home_dir }}/cosmovisor/current/bin/{{ network.binary_name }} /usr/local/bin/{{ network.binary_name }} -f
+
+# Create service file
+
+sudo tee /etc/systemd/system/{{ network.binary_name }}.service > /dev/null <<EOF
+[Unit]
+Description={{ network.name }} node"
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+WorkingDirectory=$HOME/.{{ network.home_dir }}
+Restart=on-failure 
+RestartSec=5
+LimitNOFILE=65535
+Environment="DAEMON_NAME={{ network.binary_name }}"
+Environment="DAEMON_HOME=$HOME/.{{ network.home_dir }}"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=$PATH:$HOME/.{{ network.home_dir }}/cosmovisor/current/bin"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable {{ network.binary_name }}.service
+```
+
+## Set up the node 
+
+```bash
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
+
+{{ network.binary_name }} init YOUR_MONIKER --chain-id {{ network.chain_id }}
+
+# Get address book and genesis.json
+curl -L {{ network.genesis_url }} |  tar -xvf {{ network.genesis_file }} -C $HOME/.{{ network.home_dir }}/config/genesis.json
+wget {{ network.addrbook_url }} -O $HOME/.{{ network.home_dir }}/config/addrbook.json
+
+#Set minimum gas prices
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"{{ network.minimum_gas_prices }}\"|" $HOME/.{{ network.home_dir }}/config/app.toml
+```
+
+Use snapshot or state sync to catch up.
+``` 
+Links to snapshots. You only need from one provider.
+
+{% for snapshot in network.snapshots %}
+- [{{ snapshot.name }}]({{ snapshot.url }})
+{% endfor %}
+```
+
+## Start the node
+
+```bash
+sudo systemctl start {{ network.binary_name }} && sudo journalctl -fu {{ network.binary_name }} -o cat
+```
