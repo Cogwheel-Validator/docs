@@ -25,6 +25,58 @@ export const baseOptions: BaseLayoutProps = {
       </>
     ),
   },
+};
+
+/**
+ * Home page specific configuration with navigation menus
+ */
+export const homeOptions: BaseLayoutProps = {
+  nav: {
+    title: (
+      <>
+        <Image
+          src="/logo-dark.png"
+          alt="Cogwheel Docs"
+          width={32}
+          height={32}
+          loading="eager"
+        />
+        <span className="text-xl font-bold text-fd-foreground">
+          Cogwheel Docs
+        </span>
+      </>
+    ),
+  },
   // see https://fumadocs.dev/docs/ui/navigation/links
-  links: [],
+  links: [
+    {
+      type: "menu",
+      text: "Networks",
+      items: [
+        {
+          text: "Mainnets",
+          description: "Node guide for mainnets",
+          url: "/networks/mainnets",
+          icon: "🌐"
+        },
+        {
+          text: "Testnets",
+          description: "Node guide for testnets",
+          url: "/networks/testnets",
+          icon: "🌐",
+        },
+      ],
+    },
+    {
+      type: "menu",
+      text: "Services",
+      items: [
+        { text: "Restake", url: "/services/restake"},
+        { text: "Dyson Frontend", url: "/services/frontend" },
+        { text: "Explorer", url: "/services/explorer"},
+        { text: "Chain Endpoints", url: "/services/endpoints"},
+      ],
+      icon: "🔧",
+    }
+  ],
 };

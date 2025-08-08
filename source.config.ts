@@ -1,6 +1,7 @@
 import {
   defineConfig,
   defineDocs,
+  defineCollections,
   frontmatterSchema,
   metaSchema,
 } from "fumadocs-mdx/config";
@@ -14,6 +15,20 @@ export const docs = defineDocs({
   meta: {
     schema: metaSchema,
   },
+});
+
+// Define networks documentation collection
+export const networks = defineCollections({
+  type: 'doc',
+  dir: 'content/networks',
+  schema: frontmatterSchema,
+});
+
+// Define services documentation collection
+export const services = defineCollections({
+  type: 'doc',
+  dir: 'content/services',
+  schema: frontmatterSchema,
 });
 
 export default defineConfig({

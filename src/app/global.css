@@ -30,4 +30,7 @@
   li {
     @apply text-base py-0.25 pl-2;
   }
+  div {
+    @apply text-base py-0.25;
+  }
 }
