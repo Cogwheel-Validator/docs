@@ -1,0 +1,16 @@
+networks:
+  - name: "Prysm Network"
+    binary_name: "prysmd"
+    home_dir: "prysm"
+    chain_id: "prysm-testnet"
+    minimum_gas_prices: "0.01uprism"
+    validator_amount: "1000000uprism"
+    path: "prysm"
+  - name: "Juno Network"
+    binary_name: "junod"
+    home_dir: "juno"
+    chain_id: "uni-7"
+    minimum_gas_prices: "0.075ujunox"
+    validator_amount: "1000000ujunox"
+    path: "juno"
+  
