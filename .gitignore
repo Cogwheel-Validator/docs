@@ -30,3 +30,5 @@ next-env.d.ts
 # python
 .venv
 __pycache__
+.pytest_cache
+*.bak

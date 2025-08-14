@@ -2,7 +2,6 @@
 title: "Usefull commands for {{ network.name }}"
 description: "Usefull commands for {{ network.name }}"
 ---
-import { Callout } from '@/components/Callout'
 
 # Usefull commands for {{ network.name }}
 
@@ -89,7 +88,7 @@ You can edit only the fields you want to change. The gas flags are required for 
 #### Jail reason
 
 ```bash
-{% if network.cosmos_sdk_version < "0.48" %}
+{% if network.cosmos_sdk_version < 0.48 %}
 ```bash
 {{ network.binary_name }} query slashing signing-info $( {{ network.binary_name }} tendermint show-validator)
 ```

@@ -1,0 +1,115 @@
+---
+title: "Node setup for Prysm Network"
+description: "Node setup for Prysm Network"
+---
+
+# Node setup for Prysm Network
+
+Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
+you are using a Debian based OS such as Ubuntu for example.
+
+## Update the system and install the essentials:
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim # or install nano
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO and Cosmovisor
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://go.dev/dl/gogo1.23.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.23.5.linux-amd64.tar.gz
+rm gogo1.23.5.linux-amd64.tar.gz
+
+# Add GO to PATH
+echo 'export GO111MODULE=on' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+
+# Source the bashrc file
+source $HOME/.bashrc
+
+# Install cosmovisor
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@vlatest
+sudo mv ~/go/bin/cosmovisor /usr/local/bin
+```
+
+## Clone the repository and install node binary
+
+```bash
+cd $HOME 
+git clone https://github.com/prysm/network
+cd prysm  # always doublecheck from the official team for the right version
+git checkout vf48a40b
+make install
+```
+
+## Set up cosmovisor
+
+```bash 
+mkdir -p $HOME/.prysm/cosmovisor/genesis/bin
+mkdir -p $HOME/.prysm/cosmovisor/upgrades
+mv $HOME/go/bin/prysmd $HOME/.prysm/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.prysm/cosmovisor/genesis $HOME/.prysm/cosmovisor/current -f
+sudo ln -s $HOME/.prysm/cosmovisor/current/bin/prysmd /usr/local/bin/prysmd -f
+
+# Create service file
+
+sudo tee /etc/systemd/system/prysmd.service > /dev/null <<EOF
+[Unit]
+Description=Prysm Network node"
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+WorkingDirectory=$HOME/.prysm
+Restart=on-failure 
+RestartSec=5
+LimitNOFILE=65535
+Environment="DAEMON_NAME=prysmd"
+Environment="DAEMON_HOME=$HOME/.prysm"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=$PATH:$HOME/.prysm/cosmovisor/current/bin"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable prysmd.service
+```
+
+## Set up the node 
+
+```bash
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
+
+prysmd init YOUR_MONIKER --chain-id prysm-testnet
+
+# Get address book and genesis.json
+curl -L https://files.cogwheel.zone/prysm/genesis.json |  tar -xvf prysm_genesis.tar.xz -C $HOME/.prysm/config/genesis.json
+wget https://files.cogwheel.zone/prysm/addrbook.json -O $HOME/.prysm/config/addrbook.json
+
+#Set minimum gas prices
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"\"|" $HOME/.prysm/config/app.toml
+```
+
+Use snapshot or state sync to catch up.
+``` 
+Links to snapshots. You only need from one provider.
+
+```
+
+## Start the node
+
+```bash
+sudo systemctl start prysmd && sudo journalctl -fu prysmd -o cat
+```

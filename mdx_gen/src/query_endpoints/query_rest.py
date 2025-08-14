@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from http import HTTPStatus
 
-import aiohttp
+import httpx
 
 
 @dataclass
@@ -11,8 +11,9 @@ class NodeInfo:
 
     denom_version: str
     go_version: str
+    cosmos_sdk_version: str
 
-async def query_node_info(api: str, params: dict | None = None) -> NodeInfo:
+def query_node_info(api: str, params: dict | None = None) -> NodeInfo | None:
     """Query the REST endpoint for the node info.
 
     This function queries the REST API to gather the node info.
@@ -23,18 +24,30 @@ async def query_node_info(api: str, params: dict | None = None) -> NodeInfo:
         params: The parameters to pass to the API
 
     Returns:
-        NodeInfo: The node info
+        NodeInfo: The node info or None if the query failed
 
     """
-    url: str = "/cosmos/base/tendermint/v1beta1/node_info"
-    with aiohttp.ClientSession() as session:
-        async with session.get(api + url, params=params) as response:
-            if response.status == HTTPStatus.OK:
-                data = await response.json()
-                return NodeInfo(
-                    denom_version=data["node_info"]["version"],
-                    go_version=data["node_info"]["go_version"].split(" ")[2],
-                )
-            error_msg: Exception = Exception(
-                f"Failed to query REST endpoint: {response.status} {response.text}")
-            raise error_msg
+    url: str = f"{api}/cosmos/base/tendermint/v1beta1/node_info"
+    try:
+        response = httpx.get(url, params=params, timeout=30)
+        if response.status_code == HTTPStatus.OK:
+            data = response.json()
+            return NodeInfo(
+                denom_version=data["application_version"]["version"],
+                go_version=data["application_version"]["go_version"].split(" ")[2],
+                cosmos_sdk_version = float(
+                    str(data["application_version"]["cosmos_sdk_version"]).split("v")[1][:4]),
+            )
+    except httpx.HTTPStatusError as e:
+        error_msg: Exception = Exception(
+            f"Failed to query REST endpoint: {api} {e.response.status_code} {e.response.text}")
+        raise error_msg from e
+    except httpx.RequestError as e:
+        error_msg: Exception = Exception(
+            f"Failed to query REST endpoint: {api} {e}")
+        raise error_msg from e
+    except Exception as e:
+        error_msg: Exception = Exception(
+            f"Failed to query REST endpoint: {api} {e}")
+        raise error_msg from e
+

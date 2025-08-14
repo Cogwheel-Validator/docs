@@ -33,36 +33,58 @@ class ConfigList:
     """ConfigList class to store the config list.
 
     Args:
-        configs_path: Path to the configs file
+        configs_path: Path to the configs directory containing mainnets.yml and testnets.yml
 
     """
 
     configs_path: Path
 
     def load_configs(self) -> tuple[dict[str, Config], dict[str, Config]]:
-        """Load the configs from the configs file.
+        """Load the configs from the configs directory.
 
         Returns:
             tuple[dict[str, Config], dict[str, Config]]: A tuple of dictionaries containing the mainnets and testnets configs.
 
         """  # noqa: E501
-        with Path(self.configs_path).open("r") as files:
-            # there should be 2 files in the configs path
-            # mainnets.yml and testnets.yml
-            mainnets = yaml.safe_load(files[0])
-            testnets = yaml.safe_load(files[1])
+        # Load mainnets.yml
+        mainnets_path = self.configs_path / "mainnets.yml"
+        if not mainnets_path.exists():
+            msg = f"Mainnets config file not found: {mainnets_path}"
+            raise FileNotFoundError(msg)
+
+        with mainnets_path.open("r", encoding="utf-8") as f:
+            mainnets = yaml.safe_load(f)
+
+        # Load testnets.yml
+        testnets_path = self.configs_path / "testnets.yml"
+        if not testnets_path.exists():
+            msg = f"Testnets config file not found: {testnets_path}"
+            raise FileNotFoundError(msg)
+
+        with testnets_path.open("r", encoding="utf-8") as f:
+            testnets = yaml.safe_load(f)
+
         mainnets_dict: dict[str, Config] = {}
         testnets_dict: dict[str, Config] = {}
-        for config in mainnets["networks"]:
-            mainnets_dict[config["name"]] = Config(**config)
-        for config in testnets["networks"]:
-            testnets_dict[config["name"]] = Config(**config)
+
+        # Process mainnets
+        if "networks" in mainnets:
+            for config in mainnets["networks"]:
+                mainnets_dict[config["name"]] = Config(**config)
+
+        # Process testnets
+        if "networks" in testnets:
+            for config in testnets["networks"]:
+                testnets_dict[config["name"]] = Config(**config)
+
+        # Validate configs
         validity, error = validate_config(mainnets_dict)
         if not validity:
             raise ValueError(error)
         validity, error = validate_config(testnets_dict)
         if not validity:
             raise ValueError(error)
+
         return mainnets_dict, testnets_dict
 
 def validate_config(configs: dict[str, Config]) -> tuple[bool, Exception | None]:

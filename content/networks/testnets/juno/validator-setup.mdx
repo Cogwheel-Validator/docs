@@ -1,12 +1,12 @@
 ---
-title: "Validator setup for {{ network.name }}"
-description: "Validator setup for {{ network.name }}"
+title: "Validator setup for Juno Network"
+description: "Validator setup for Juno Network"
 ---
 
-# Validator setup for {{ network.name }}
+# Validator setup for Juno Network
 
 This guide will assume you have already set up your node. 
-If you haven't, please refer to the [node setup guide](/networks/{{ network.network_type }}s/{{ network.path }}).
+If you haven't, please refer to the [node setup guide](/networks/s/).
 
 ## Create keys and validator
 
@@ -14,46 +14,23 @@ If you haven't, please refer to the [node setup guide](/networks/{{ network.netw
 
 ```bash
 #Create the wallet ( replace #keyname with whatever name you want)
-{{ network.binary_name }} keys add #keyname
+junod keys add #keyname
 ```
 
-{% if network.cosmos_sdk_version < 0.48 %}
-Use the following command to create the validator.
-```bash
-#Now create the validator 
-{{ network.binary_name }} tx staking create-validator \
---amount={{ network.validator_amount }} \
---pubkey=$( {{ network.binary_name }} tendermint show-validator) \
---moniker= "validatorName" \
---chain-id= {{ network.chain_id }} \
---commission-rate= "0.05" \
---commission-max-rate= "0.20" \
---commission-max-change-rate= "0.01" \
---min-self-delegation= "1" \
---gas= "auto" \
---gas-prices= "{{ network.minimum_gas_prices }}" \
---from= #keyname \
---gas-adjustment=1.5 \
---identity=keybaseIdNumber \
---security-contact= "security@example.com" \
---details= "write info about your validators for example what type of service you ofer etc." \
---website= "https://example.com"
-```
-{% else %}
 
 For Cosmos SDK 0.50 and above we need to first gather the private key details and then create a validator.json file containing the validator information.
 
 Use the following command to get the private key details.
 ```bash
 # Get the private key details
-{{ network.binary_name }} comet show-validator
+junod comet show-validator
 ```
 
 And then create the validator.json file. Make sure to set the pubkey to the value from the command above.
 ```json
 {
         "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"insertFromTheCommandAbove"},
-        "amount": "{{ network.validator_amount }}",
+        "amount": "1000000ujunox",
         "moniker": "validatorName",
         "identity": "optional identity signature (ex. UPort or Keybase)",
         "website": "validator's (optional) website",
@@ -69,15 +46,13 @@ And then create the validator.json file. Make sure to set the pubkey to the valu
 And then create the validator. Make sure to set the path to the validator.json file and the keyname.
 ```bash
 # Set a path to the validator.json file in this instance we assume it is in the current directory
-{{ network.binary_name }} tx staking create-validator ./validator.json \
---chain-id= {{ network.chain_id }} \
+junod tx staking create-validator ./validator.json \
+--chain-id= uni-7 \
 --from= #keyname \
 --gas= "auto" \
---gas-prices= "{{ network.minimum_gas_prices }}" \
+--gas-prices= "0.075ujunox" \
 --gas-adjustment=1.5
 ```
-
-{% endif %}
 
 
 

@@ -1,10 +1,35 @@
 ---
-title: Mainnet
-description: Mainnet
+title: "Mainnets Network Documentations"
+description: "Mainnets Network Documentations"
 ---
 
-# Mainnet
+# Mainnets Network Documentations
 
-## Test
+export const networks = [ 
+  {
+    name: "Atom One",
+    image: "atomoneIcon",
+    chainId: "atomone-1",
+    networkType: "mainnet"
+  },
+  {
+    name: "Juno Network",
+    image: "junoIcon",
+    chainId: "juno-1",
+    networkType: "mainnet"
+  },
+  {
+    name: "Nibiru Chain",
+    image: "nibiruIcon",
+    chainId: "nibiru-1",
+    networkType: "mainnet"
+  },
+  {
+    name: "Elys Network",
+    image: "elysIcon",
+    chainId: "elys-1",
+    networkType: "mainnet"
+  },
+];
 
-test1
+<NetworkGrid networks={networks} />
