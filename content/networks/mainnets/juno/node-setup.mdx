@@ -1,0 +1,115 @@
+---
+title: "Node setup for Juno Network"
+description: "Node setup for Juno Network"
+---
+
+# Node setup for Juno Network
+
+Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
+you are using a Debian based OS such as Ubuntu for example.
+
+## Update the system and install the essentials:
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim # or install nano
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO and Cosmovisor
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://go.dev/dl/gogo1.23.9.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.23.9.linux-amd64.tar.gz
+rm gogo1.23.9.linux-amd64.tar.gz
+
+# Add GO to PATH
+echo 'export GO111MODULE=on' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+
+# Source the bashrc file
+source $HOME/.bashrc
+
+# Install cosmovisor
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@vlatest
+sudo mv ~/go/bin/cosmovisor /usr/local/bin
+```
+
+## Clone the repository and install node binary
+
+```bash
+cd $HOME 
+git clone https://github.com/juno/network
+cd juno  # always doublecheck from the official team for the right version
+git checkout vv29.0.0
+make install
+```
+
+## Set up cosmovisor
+
+```bash 
+mkdir -p $HOME/.juno/cosmovisor/genesis/bin
+mkdir -p $HOME/.juno/cosmovisor/upgrades
+mv $HOME/go/bin/junod $HOME/.juno/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.juno/cosmovisor/genesis $HOME/.juno/cosmovisor/current -f
+sudo ln -s $HOME/.juno/cosmovisor/current/bin/junod /usr/local/bin/junod -f
+
+# Create service file
+
+sudo tee /etc/systemd/system/junod.service > /dev/null <<EOF
+[Unit]
+Description=Juno Network node"
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+WorkingDirectory=$HOME/.juno
+Restart=on-failure 
+RestartSec=5
+LimitNOFILE=65535
+Environment="DAEMON_NAME=junod"
+Environment="DAEMON_HOME=$HOME/.juno"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=$PATH:$HOME/.juno/cosmovisor/current/bin"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable junod.service
+```
+
+## Set up the node 
+
+```bash
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
+
+junod init YOUR_MONIKER --chain-id juno-1
+
+# Get address book and genesis.json
+curl -L https://files.cogwheel.zone/juno/genesis.json |  tar -xvf juno_genesis.tar.xz -C $HOME/.juno/config/genesis.json
+wget https://files.cogwheel.zone/juno/addrbook.json -O $HOME/.juno/config/addrbook.json
+
+#Set minimum gas prices
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"\"|" $HOME/.juno/config/app.toml
+```
+
+Use snapshot or state sync to catch up.
+``` 
+Links to snapshots. You only need from one provider.
+
+```
+
+## Start the node
+
+```bash
+sudo systemctl start junod && sudo journalctl -fu junod -o cat
+```

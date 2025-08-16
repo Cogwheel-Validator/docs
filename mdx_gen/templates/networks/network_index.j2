@@ -1,0 +1,28 @@
+---
+title: "{{ network.name }}"
+description: "{{ network.description }}"
+---
+
+# {{ network.name }}
+
+<Image src={`/icons/{{ network.image }}.png`} alt={`{{ network.name }} icon`} width={150} height={150} className="rounded-full" />
+
+{{ network.description }}
+
+
+## Network Information
+
+| Info | Data |
+| :------------      | :----------      |
+| Chain ID           | {{ network.chain_id }}      |
+| Chain version      | {{ network.chain_version }}  |
+| Network type       | {{ network.network_type }}   |
+
+## Endpoints
+
+| {{ network.name }}         | Links|
+| :------------      | :----------|
+| REST API           | {{ network.rest_api }}      |
+| RPC                | {{ network.rpc }}      |
+| GRPC               | {{ network.grpc }}  |
+| Wss | {{ network.wss }} |
