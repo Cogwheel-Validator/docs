@@ -27,6 +27,7 @@ class Config:
     minimum_gas_prices: str
     validator_amount: str
     path: str
+    snapshots: list[dict[str, str]]
 
 @dataclass
 class ConfigList:
@@ -109,6 +110,7 @@ def validate_config(configs: dict[str, Config]) -> tuple[bool, Exception | None]
         "minimum_gas_prices",
         "validator_amount",
         "path",
+        "snapshots",
     ]
     error_msg: str = ""
     for name, config in configs.items():

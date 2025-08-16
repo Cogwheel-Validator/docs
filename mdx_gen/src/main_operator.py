@@ -90,7 +90,8 @@ class MdxNetworkGenerator:
                     validator_amount=config.validator_amount, path=config.path,
                     denom_version=node_info.denom_version,
                     go_version=node_info.go_version,
-                    cosmos_sdk_version=node_info.cosmos_sdk_version))
+                    cosmos_sdk_version=node_info.cosmos_sdk_version,
+                    snapshots=config.snapshots))
         for config in self.testnets.values():
             # make a REST API call to gather the node data
             # subdomain format is always identical hence this is a simple call
@@ -108,7 +109,8 @@ class MdxNetworkGenerator:
                     validator_amount=config.validator_amount, path=config.path,
                     denom_version=node_info.denom_version,
                     go_version=node_info.go_version,
-                    cosmos_sdk_version=node_info.cosmos_sdk_version))
+                    cosmos_sdk_version=node_info.cosmos_sdk_version,
+                    snapshots=config.snapshots))
 
     def _generate_network_mdx(self) -> None:
         """Generate the network_index mdx file.
@@ -194,7 +196,7 @@ class MdxNetworkGenerator:
     def _generate_network_index(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the network index MDX file."""
         template = self.env.get_template("networks/network_index.j2")
-        network_type = "mainnets" if "mainnets" in str(network_dir) else "testnets"
+        network_type = "mainnet" if "mainnets" in str(network_dir) else "testnet"
         rest_api = f"https://{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-api.cogwheel.zone"
         rpc = f"https://{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-rpc.cogwheel.zone"
         grpc = f"{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-grpc.cogwheel.zone:443"
@@ -238,18 +240,19 @@ class MdxNetworkGenerator:
                 "genesis_file": f"{context.path.lower()}_genesis.tar.xz",
                 "addrbook_url": f"https://files.cogwheel.zone/{context.path.lower()}/addrbook.json",
                 "cosmos_sdk_version": context.cosmos_sdk_version,
+                "snapshots": context.snapshots,
             },
             "cosmovisor_recommended_version": "latest",
         }
-        
+
         output_file = network_dir.joinpath("node-setup.mdx")
         with output_file.open("w", encoding="utf-8") as f:
             f.write(template.render(**template_context))
-    
+
     def _generate_validator_setup(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the validator setup MDX file."""
         template = self.env.get_template("networks/validator_setup.j2")
-        
+
         template_context = {
             "network": {
                 "name": context.name,
@@ -261,15 +264,15 @@ class MdxNetworkGenerator:
                 "cosmos_sdk_version": context.cosmos_sdk_version,
             },
         }
-        
+
         output_file = network_dir.joinpath("validator-setup.mdx")
         with output_file.open("w", encoding="utf-8") as f:
             f.write(template.render(**template_context))
-    
+
     def _generate_node_commands(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the node commands MDX file."""
         template = self.env.get_template("networks/node_commands.j2")
-        
+
         template_context = {
             "network": {
                 "name": context.name,
@@ -279,29 +282,28 @@ class MdxNetworkGenerator:
                 "cosmos_sdk_version": context.cosmos_sdk_version,
             },
         }
-        
+
         output_file = network_dir.joinpath("node-commands.mdx")
         with output_file.open("w", encoding="utf-8") as f:
             f.write(template.render(**template_context))
-    
+
     def generate_all(self) -> None:
         """Generate all MDX files."""
         print("Starting MDX generation...")
-        
+
         # Create output directories
         self._solve_dirs()
-        
+
         # Fill network contexts with data
         print("Gathering network information...")
         self._fill_network_contexts()
-        
+
         # Generate network index files
         print("Generating network index files...")
         self._generate_network_mdx()
-        
+
         # Generate individual network files
         print("Generating individual network files...")
         self._generate_individual_network_files()
-        
+
         print("MDX generation completed successfully!")
-        

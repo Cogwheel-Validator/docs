@@ -6,6 +6,11 @@ networks:
     minimum_gas_prices: "0.255uphoton"
     validator_amount: "1000000uatone"
     path: "atomone"
+    snapshots:
+    - name: "Stavr"
+      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync"
+    - name: "Avia"
+      url: "https://aviaone.com/blockchains-service/atomone-atomone-1.html"
   - name: "Juno Network"
     binary_name: "junod"
     home_dir: "juno"
@@ -13,6 +18,9 @@ networks:
     minimum_gas_prices: "0.075ujuno"
     validator_amount: "1000000ujuno"
     path: "juno"
+    snapshots:
+    - name: "Stavr"
+      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/juno/statesync-snapshot"
   - name: "Nibiru Chain"
     binary_name: "nibid"
     home_dir: "nibid"
@@ -20,6 +28,9 @@ networks:
     minimum_gas_prices: "0.025unibi"
     validator_amount: "1000000unibi"
     path: "nibiru"
+    snapshots:
+    - name: "Stavr"
+      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/nibiru/statesync-snapshot"
   - name: "Elys Network"
     binary_name: "elysd"
     home_dir: "elys"
@@ -27,5 +38,7 @@ networks:
     minimum_gas_prices: "0.01uelys"
     validator_amount: "1000000uelys"
     path: "elys"
-
+    snapshots:
+    - name: "Stavr"
+      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/elys/statesync-snapshot"
 

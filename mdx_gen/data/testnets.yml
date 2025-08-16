@@ -6,6 +6,9 @@ networks:
     minimum_gas_prices: "0.01uprism"
     validator_amount: "1000000uprism"
     path: "prysm"
+    snapshots:
+    - name: "Stavr"
+      url: "https://stavr-team.gitbook.io/nodes-guides/testnets/prysm/statesync-snapshot"
   - name: "Juno Network"
     binary_name: "junod"
     home_dir: "juno"
@@ -13,4 +16,6 @@ networks:
     minimum_gas_prices: "0.075ujunox"
     validator_amount: "1000000ujunox"
     path: "juno"
-  
+    snapshots:
+    - name: "Stavr"
+      url: "https://stavr-team.gitbook.io/nodes-guides/testnets/juno/statesync-snapshot"

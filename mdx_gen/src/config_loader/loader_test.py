@@ -12,6 +12,7 @@ def test_validate_config() -> None:
         minimum_gas_prices="test",
         validator_amount="test",
         path="test",
+        snapshots=[],
     )
     # Pass a dictionary with the config, as validate_config expects dict[str, Config]
     configs_dict = {"test": config}
@@ -30,6 +31,8 @@ def test_validate_config() -> None:
         chain_id="test",
         minimum_gas_prices="test",
         validator_amount="test",
+        path="test",
+        snapshots=[],
     )
     configs_dict = {"test": config_missing_element}
     result = validate_config(configs_dict)

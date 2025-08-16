@@ -18,3 +18,6 @@ class NetworkContext:
     denom_version: str
     go_version: str
     cosmos_sdk_version: float
+
+    # Snapshots list
+    snapshots: list[dict[str, str]]
