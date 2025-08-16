@@ -130,6 +130,7 @@ class MdxNetworkGenerator:
                     "image": context.path.lower()+"Icon",
                     "chainId": context.chain_id,
                     "networkType": "mainnet",
+                    "path": context.path,
                 }
                 for context in self.mainnet_contexts
             ],
@@ -150,6 +151,7 @@ class MdxNetworkGenerator:
                     "image": context.path.lower()+"Icon",
                     "chainId": context.chain_id,
                     "networkType": "testnet",
+                    "path": context.path,
                 }
                 for context in self.testnet_contexts
             ],

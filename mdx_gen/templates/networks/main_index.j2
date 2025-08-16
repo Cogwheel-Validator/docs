@@ -11,7 +11,8 @@ export const networks = [
     name: "{{ network.name }}",
     image: "{{ network.image }}",
     chainId: "{{ network.chainId }}",
-    networkType: "{{ network.networkType }}"
+    networkType: "{{ network.networkType }}",
+    path: "{{ network.path }}"
   },
 {% endfor %}
 ];

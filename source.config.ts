@@ -31,6 +31,13 @@ export const services = defineCollections({
   schema: frontmatterSchema,
 });
 
+// Combined collection for search that includes both networks and services
+export const combined = defineCollections({
+  type: 'doc',
+  dir: ['content/networks', 'content/services'],
+  schema: frontmatterSchema,
+});
+
 export default defineConfig({
   mdxOptions: {
     // MDX options
