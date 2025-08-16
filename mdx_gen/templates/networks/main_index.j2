@@ -1,0 +1,20 @@
+---
+title: "{{ network_type }} Network Documentations"
+description: "{{ network_type }} Network Documentations"
+---
+
+# {{ network_type }} Network Documentations
+
+export const networks = [ 
+{% for network in networks %}
+  {
+    name: "{{ network.name }}",
+    image: "{{ network.image }}",
+    chainId: "{{ network.chainId }}",
+    networkType: "{{ network.networkType }}",
+    path: "{{ network.path }}"
+  },
+{% endfor %}
+];
+
+<NetworkGrid networks={networks} />

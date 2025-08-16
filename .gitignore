@@ -1,21 +1,34 @@
+# deps
+/node_modules
+
+# generated content
+.contentlayer
+.content-collections
+.source
+
+# test & build
+/coverage
+/.next/
+/out/
+/build
+*.tsbuildinfo
+
+# misc
 .DS_Store
-.next/
-node_modules/
-*.log
-dist/
-.turbo/
-out/
-# Theme styles
-packages/nextra-theme-*/style.css
+*.pem
+/.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Stork related
-*/**/public/*.st
-*/**/public/*.toml
-
+# others
+.env*.local
 .vercel
-.idea/
-.eslintcache
-.env
+next-env.d.ts
 
-tsup.config.bundled*
-tsconfig.tsbuildinfo
+# python
+.venv
+__pycache__
+.pytest_cache
+*.bak

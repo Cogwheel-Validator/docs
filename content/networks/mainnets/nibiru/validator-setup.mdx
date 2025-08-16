@@ -1,0 +1,46 @@
+---
+title: "Validator setup for Nibiru Chain"
+description: "Validator setup for Nibiru Chain"
+---
+
+# Validator setup for Nibiru Chain
+
+This guide will assume you have already set up your node. 
+If you haven't, please refer to the [node setup guide](/networks/s/).
+
+## Create keys and validator
+
+<Callout type="info" text={`Make sure to change values for moniker, identity, details website to your own values.`} />
+
+```bash
+#Create the wallet ( replace #keyname with whatever name you want)
+nibid keys add #keyname
+```
+
+Use the following command to create the validator.
+```bash
+#Now create the validator 
+nibid tx staking create-validator \
+--amount=1000000unibi \
+--pubkey=$( nibid tendermint show-validator) \
+--moniker= "validatorName" \
+--chain-id= nibiru-1 \
+--commission-rate= "0.05" \
+--commission-max-rate= "0.20" \
+--commission-max-change-rate= "0.01" \
+--min-self-delegation= "1" \
+--gas= "auto" \
+--gas-prices= "0.025unibi" \
+--from= #keyname \
+--gas-adjustment=1.5 \
+--identity=keybaseIdNumber \
+--security-contact= "security@example.com" \
+--details= "write info about your validators for example what type of service you ofer etc." \
+--website= "https://example.com"
+```
+
+
+
+
+
+
