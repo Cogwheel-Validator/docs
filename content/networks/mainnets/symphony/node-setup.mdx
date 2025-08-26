@@ -1,9 +1,9 @@
 ---
-title: "Node setup for Atom One"
-description: "Node setup for Atom One"
+title: "Node setup for symphony"
+description: "Node setup for symphony"
 ---
 
-# Node setup for Atom One
+# Node setup for symphony
 
 Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
 you are using a Debian based OS such as Ubuntu for example.
@@ -20,9 +20,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://go.dev/dl/gogo1.22.10.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf gogo1.22.10.linux-amd64.tar.gz
-rm gogo1.22.10.linux-amd64.tar.gz
+wget https://go.dev/dl/gogo1.24.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.24.5.linux-amd64.tar.gz
+rm gogo1.24.5.linux-amd64.tar.gz
 
 # Add GO to PATH
 echo 'export GO111MODULE=on' >> $HOME/.bashrc
@@ -43,48 +43,48 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 
 ```bash
 cd $HOME 
-git clone https://github.com/atomone/network
-cd atomone  # always doublecheck from the official team for the right version
-git checkout vv2.1.0
+git clone https://github.com/symphony/network
+cd symphony  # always doublecheck from the official team for the right version
+git checkout v1.0.6
 make install
 ```
 
 ## Set up cosmovisor
 
 ```bash 
-mkdir -p $HOME/.atomone/cosmovisor/genesis/bin
-mkdir -p $HOME/.atomone/cosmovisor/upgrades
-mv $HOME/go/bin/atomoned $HOME/.atomone/cosmovisor/genesis/bin/
-sudo ln -s $HOME/.atomone/cosmovisor/genesis $HOME/.atomone/cosmovisor/current -f
-sudo ln -s $HOME/.atomone/cosmovisor/current/bin/atomoned /usr/local/bin/atomoned -f
+mkdir -p $HOME/.symphony/cosmovisor/genesis/bin
+mkdir -p $HOME/.symphony/cosmovisor/upgrades
+mv $HOME/go/bin/symphonyd $HOME/.symphony/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.symphony/cosmovisor/genesis $HOME/.symphony/cosmovisor/current -f
+sudo ln -s $HOME/.symphony/cosmovisor/current/bin/symphonyd /usr/local/bin/symphonyd -f
 
 # Create service file
 
-sudo tee /etc/systemd/system/atomoned.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/symphonyd.service > /dev/null <<EOF
 [Unit]
-Description=Atom One node"
+Description=symphony node"
 After=network-online.target
 
 [Service]
 User=$USER
 ExecStart=$(which cosmovisor) run start
-WorkingDirectory=$HOME/.atomone
+WorkingDirectory=$HOME/.symphony
 Restart=on-failure 
 RestartSec=5
 LimitNOFILE=65535
-Environment="DAEMON_NAME=atomoned"
-Environment="DAEMON_HOME=$HOME/.atomone"
+Environment="DAEMON_NAME=symphonyd"
+Environment="DAEMON_HOME=$HOME/.symphony"
 Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
 Environment="UNSAFE_SKIP_BACKUP=true"
-Environment="PATH=$PATH:$HOME/.atomone/cosmovisor/current/bin"
+Environment="PATH=$PATH:$HOME/.symphony/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable atomoned.service
+sudo systemctl enable symphonyd.service
 ```
 
 ## Set up the node 
@@ -92,26 +92,25 @@ sudo systemctl enable atomoned.service
 ```bash
 # Please when using this guide replace “YOUR_MONIKER" with name for your node.
 
-atomoned init YOUR_MONIKER --chain-id atomone-1
+symphonyd init YOUR_MONIKER --chain-id symphony-1
 
 # Get address book and genesis.json
-curl -L https://files.cogwheel.zone/atomone/genesis.json |  tar -xvf atomone_genesis.tar.xz -C $HOME/.atomone/config/genesis.json
-wget https://files.cogwheel.zone/atomone/addrbook.json -O $HOME/.atomone/config/addrbook.json
+curl -L https://files.cogwheel.zone/symphony/genesis.json |  tar -xvf symphony_genesis.tar.xz -C $HOME/.symphony/config/genesis.json
+wget https://files.cogwheel.zone/symphony/addrbook.json -O $HOME/.symphony/config/addrbook.json
 
 #Set minimum gas prices
-sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"\"|" $HOME/.atomone/config/app.toml
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"\"|" $HOME/.symphony/config/app.toml
 ```
 
 Use snapshot or state sync to catch up.
 ``` 
 Links to snapshots. You only need from one provider.
 
-- [Stavr](https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync)
-- [Avia](https://aviaone.com/blockchains-service/atomone-atomone-1.html)
+- [Code Block Labs](https://documentation.codeblocklabs.com/blockchain-nodes/symphony/snapshot)
 ```
 
 ## Start the node
 
 ```bash
-sudo systemctl start atomoned && sudo journalctl -fu atomoned -o cat
+sudo systemctl start symphonyd && sudo journalctl -fu symphonyd -o cat
 ```

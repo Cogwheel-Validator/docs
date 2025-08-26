@@ -41,4 +41,14 @@ networks:
     snapshots:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/elys/statesync-snapshot"
+  - name: "symphony"
+    binary_name: "symphonyd"
+    home_dir: "symphony"
+    chain_id: "symphony-1"
+    minimum_gas_prices: "0.0025note"
+    validator_amount: "1000000note"
+    path: "symphony"
+    snapshots:
+    - name: "Code Block Labs"
+      url: "https://documentation.codeblocklabs.com/blockchain-nodes/symphony/snapshot"
 
