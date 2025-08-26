@@ -20,9 +20,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://go.dev/dl/gogo1.24.0.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf gogo1.24.0.linux-amd64.tar.gz
-rm gogo1.24.0.linux-amd64.tar.gz
+wget https://go.dev/dl/gogo1.24.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.24.5.linux-amd64.tar.gz
+rm gogo1.24.5.linux-amd64.tar.gz
 
 # Add GO to PATH
 echo 'export GO111MODULE=on' >> $HOME/.bashrc
@@ -45,7 +45,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/nibiru/network
 cd nibiru  # always doublecheck from the official team for the right version
-git checkout vv2.5.0
+git checkout vv2.6.0
 make install
 ```
 
