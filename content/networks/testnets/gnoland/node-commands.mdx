@@ -1,0 +1,40 @@
+---
+title: "Usefull commands for Gnoland"
+description: "Usefull commands for Gnoland"
+---
+
+# Usefull commands for Gnoland
+
+## 🔑 Key management
+
+<Callout type="info" text={`Change wallet in the commands to your own wallet name.`} />
+
+#### Add new key
+
+```bash
+gnokey add wallet_name
+```
+
+#### Recover existing key
+
+```bash
+gnokey add wallet_name --recover
+```
+
+#### List all keys
+
+```bash
+gnokey list
+```
+
+#### Delete key
+
+```bash
+gnokey delete wallet_name
+```
+
+### Check balance
+
+```bash
+gnokey query -remote "https://rpc.test7.testnets.gno.land:443" auth/accounts/$ADDRESS
+```

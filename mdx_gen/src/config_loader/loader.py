@@ -1,6 +1,7 @@
 """Loader for the configs."""
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import yaml
 
@@ -21,6 +22,7 @@ class Config:
     """
 
     name: str
+    repo_url: str
     binary_name: str
     home_dir: str
     chain_id: str
@@ -28,6 +30,7 @@ class Config:
     validator_amount: str
     path: str
     snapshots: list[dict[str, str]]
+    aditional_info: dict[str, Any] | None = None # to be asumed as empty unless specified
 
 @dataclass
 class ConfigList:
@@ -104,6 +107,7 @@ def validate_config(configs: dict[str, Config]) -> tuple[bool, Exception | None]
 
     needed_elements: list[str] = [
         "name",
+        "repo_url",
         "binary_name",
         "home_dir",
         "chain_id",

@@ -45,7 +45,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone {{ network.repo_url }}
 cd {{ network.repo_name }}  # always doublecheck from the official team for the right version
-git checkout v{{ network.version }}
+git checkout {{ network.version }}
 make install
 ```
 

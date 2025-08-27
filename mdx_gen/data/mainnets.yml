@@ -1,5 +1,6 @@
 networks:
   - name: "Atom One"
+    repo_url: "https://github.com/atomone-hub/atomone"
     binary_name: "atomoned"
     home_dir: "atomone"
     chain_id: "atomone-1"
@@ -11,7 +12,11 @@ networks:
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync"
     - name: "Avia"
       url: "https://aviaone.com/blockchains-service/atomone-atomone-1.html"
+    aditional_info:
+      - fees:
+        - "0.025uatone"
   - name: "Juno Network"
+    repo_url: "https://github.com/CosmosContracts/juno"
     binary_name: "junod"
     home_dir: "juno"
     chain_id: "juno-1"
@@ -22,6 +27,7 @@ networks:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/juno/statesync-snapshot"
   - name: "Nibiru Chain"
+    repo_url: "https://github.com/NibiruChain/nibiru"
     binary_name: "nibid"
     home_dir: "nibid"
     chain_id: "nibiru-1"
@@ -32,6 +38,7 @@ networks:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/nibiru/statesync-snapshot"
   - name: "Elys Network"
+    repo_url: "https://github.com/elys-network/elys"
     binary_name: "elysd"
     home_dir: "elys"
     chain_id: "elys-1"
@@ -41,7 +48,8 @@ networks:
     snapshots:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/elys/statesync-snapshot"
-  - name: "symphony"
+  - name: "Symphony"
+    repo_url: "https://github.com/Orchestra-Labs/symphony"
     binary_name: "symphonyd"
     home_dir: "symphony"
     chain_id: "symphony-1"

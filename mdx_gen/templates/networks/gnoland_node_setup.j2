@@ -1,0 +1,116 @@
+---
+title: "Node setup for Gnoland"
+description: "Node setup for Gnoland"
+---
+
+# Node setup for Gnoland
+
+Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
+you are using a Debian based OS such as Ubuntu for example.
+
+## Update the system and install the essentials:
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim # or install nano
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://go.dev/dl/go{{ network.go_version }}.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go{{ network.go_version }}.linux-amd64.tar.gz
+rm {{ network.go_version }}.linux-amd64.tar.gz
+
+# Add GO to PATH
+echo 'export GO111MODULE=on' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+
+# Source the bashrc file
+source $HOME/.bashrc
+```
+
+## Clone the repository and install node binary
+
+```bash
+cd $HOME 
+git clone {{ network.repo_url }}
+cd {{ network.repo_name }}
+git checkout {{ network.version }}
+cd gno
+make install_gnokey
+make -C gno.land install.gnoland && make -C contribs/gnogenesis install
+```
+
+## Initialize the node
+
+These instruction follow some defaults, if you want you can change them. Gnoland secrets and config commands
+can be set to initiated within other directories. Reffer to CLI -h for more information or check the official documentation.
+
+```bash
+
+# Environment variables
+
+export MONIKER= my_moniker
+export CHAIN_ID={{ network.chain_id }}
+export PERSISTENT_PEERS={{ network.additional_info.persistent_peers }}
+export SEEDS={{ network.additional_info.seeds }}
+
+# Initialize the node
+{{ network.binary_name }} secrets init
+{{ network.binary_name }} config init
+{{ network.binary_name }} config set moniker $MONIKER
+{{ network.binary_name }} config set consensus.peer_gossip_sleep_duration 10ms
+{{ network.binary_name }} config set consensus.timeout_commit 3s
+{{ network.binary_name }} config set mempool.size 10000
+{{ network.binary_name }} config set p2p.flush_throttle_timeout 10ms
+{{ network.binary_name }} config set p2p.max_num_outbound_peers 40
+{{ network.binary_name }} set p2p.persistent_peers $PERSISTENT_PEERS
+{{ network.binary_name }} set p2p.seeds $SEEDS
+cd ~/gnoland-data/config
+wget -O genesis.json https://gno-testnets-genesis.s3.eu-central-1.amazonaws.com/test7/genesis.json
+```
+
+Make systemd service file
+
+```bash
+sudo tee /etc/systemd/system/{{ network.binary_name }}.service > /dev/null <<EOF
+[Unit]
+Description={{ network.name }} node
+After=network-online.target
+[Service]
+User=$USER
+WorkingDirectory=$HOME
+ExecStart=$(which {{ network.binary_name }}) start --genesis  $HOME/gnoland-data/config/genesis.json --data-dir $HOME/gnoland-data/ --skip-genesis-sig-verification
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl restart {{ network.binary_name }} && sudo journalctl -u {{ network.binary_name }} -f
+```
+
+## Start the node
+
+```bash
+sudo systemctl start {{ network.binary_name }}
+```
+
+## Bootstrap the node
+
+To speed up the node sync, you can bootstrap the node from a snapshot.
+You can find snapshots here.
+
+{% for snapshot in network.snapshots %}
+- [{{ snapshot.name }}]({{ snapshot.url }})
+{% endfor %}
+
+If you want to use a snapshot make sure the initial db is empty. Also if the validator is active,
+make sure the node is stopped and save a copy of the priv_validator_key.json file.

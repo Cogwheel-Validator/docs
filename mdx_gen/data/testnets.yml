@@ -1,5 +1,6 @@
 networks:
   - name: "Prysm Network"
+    repo_url: "https://github.com/prysmaticlabs/prysm"
     binary_name: "prysmd"
     home_dir: "prysm"
     chain_id: "prysm-testnet"
@@ -10,6 +11,7 @@ networks:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/testnets/prysm/statesync-snapshot"
   - name: "Juno Network"
+    repo_url: "https://github.com/CosmosContracts/juno"
     binary_name: "junod"
     home_dir: "juno"
     chain_id: "uni-7"
@@ -19,3 +21,18 @@ networks:
     snapshots:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/testnets/juno/statesync-snapshot"
+  - name: "Gnoland"
+    repo_url: "https://github.com/gnolang/gno"
+    binary_name: "gnoland"
+    home_dir: "gnoland"
+    chain_id: "test7.2"
+    minimum_gas_prices: ""
+    validator_amount: ""
+    path: "gnoland"
+    snapshots:
+    - name: "It Rocket"
+      url: "https://itrocket.net/services/testnet/gnoland/#snap"
+    aditional_info:
+      version: "chain/test7.2"
+      persistent_peers: "g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656"
+      seeds: "g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656"

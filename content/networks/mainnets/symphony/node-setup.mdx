@@ -1,9 +1,9 @@
 ---
-title: "Node setup for symphony"
-description: "Node setup for symphony"
+title: "Node setup for Symphony"
+description: "Node setup for Symphony"
 ---
 
-# Node setup for symphony
+# Node setup for Symphony
 
 Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
 you are using a Debian based OS such as Ubuntu for example.
@@ -43,9 +43,9 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 
 ```bash
 cd $HOME 
-git clone https://github.com/symphony/network
+git clone https://github.com/Orchestra-Labs/symphony
 cd symphony  # always doublecheck from the official team for the right version
-git checkout v1.0.6
+git checkout 1.0.6
 make install
 ```
 
@@ -62,7 +62,7 @@ sudo ln -s $HOME/.symphony/cosmovisor/current/bin/symphonyd /usr/local/bin/symph
 
 sudo tee /etc/systemd/system/symphonyd.service > /dev/null <<EOF
 [Unit]
-Description=symphony node"
+Description=Symphony node"
 After=network-online.target
 
 [Service]
