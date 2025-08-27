@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -7,6 +8,7 @@ class NetworkContext:
 
     # From the Config class
     name: str
+    repo_url: str
     binary_name: str
     home_dir: str
     chain_id: str
@@ -21,3 +23,6 @@ class NetworkContext:
 
     # Snapshots list
     snapshots: list[dict[str, str]]
+
+    # Aditional info
+    aditional_info: dict[str, Any] | None = None # to be asumed as empty unless specified

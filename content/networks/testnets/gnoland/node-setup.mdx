@@ -19,9 +19,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://go.dev/dl/go{{ network.go_version }}.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go{{ network.go_version }}.linux-amd64.tar.gz
-rm {{ network.go_version }}.linux-amd64.tar.gz
+wget https://go.dev/dl/gogo1.24.6.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.24.6.linux-amd64.tar.gz
+rm go1.24.6.linux-amd64.tar.gz
 
 # Add GO to PATH
 echo 'export GO111MODULE=on' >> $HOME/.bashrc
@@ -38,9 +38,9 @@ source $HOME/.bashrc
 
 ```bash
 cd $HOME 
-git clone {{ network.repo_url }}
-cd {{ network.repo_name }}
-git checkout {{ network.version }}
+git clone https://github.com/gnolang/gno
+cd gno
+git checkout chain/test7.2
 cd gno
 make install_gnokey
 make -C gno.land install.gnoland && make -C contribs/gnogenesis install
@@ -56,21 +56,21 @@ can be set to initiated within other directories. Reffer to CLI -h for more info
 # Environment variables
 
 export MONIKER= my_moniker
-export CHAIN_ID={{ network.chain_id }}
-export PERSISTENT_PEERS={{ network.additional_info.persistent_peers }}
-export SEEDS={{ network.additional_info.seeds }}
+export CHAIN_ID=test7.2
+export PERSISTENT_PEERS=g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656
+export SEEDS=g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656
 
 # Initialize the node
-{{ network.binary_name }} secrets init
-{{ network.binary_name }} config init
-{{ network.binary_name }} config set moniker $MONIKER
-{{ network.binary_name }} config set consensus.peer_gossip_sleep_duration 10ms
-{{ network.binary_name }} config set consensus.timeout_commit 3s
-{{ network.binary_name }} config set mempool.size 10000
-{{ network.binary_name }} config set p2p.flush_throttle_timeout 10ms
-{{ network.binary_name }} config set p2p.max_num_outbound_peers 40
-{{ network.binary_name }} set p2p.persistent_peers $PERSISTENT_PEERS
-{{ network.binary_name }} set p2p.seeds $SEEDS
+gnoland secrets init
+gnoland config init
+gnoland config set moniker $MONIKER
+gnoland config set consensus.peer_gossip_sleep_duration 10ms
+gnoland config set consensus.timeout_commit 3s
+gnoland config set mempool.size 10000
+gnoland config set p2p.flush_throttle_timeout 10ms
+gnoland config set p2p.max_num_outbound_peers 40
+gnoland set p2p.persistent_peers $PERSISTENT_PEERS
+gnoland set p2p.seeds $SEEDS
 cd ~/gnoland-data/config
 wget -O genesis.json https://gno-testnets-genesis.s3.eu-central-1.amazonaws.com/test7/genesis.json
 ```
@@ -78,14 +78,14 @@ wget -O genesis.json https://gno-testnets-genesis.s3.eu-central-1.amazonaws.com/
 Make systemd service file
 
 ```bash
-sudo tee /etc/systemd/system/{{ network.binary_name }}.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/gnoland.service > /dev/null <<EOF
 [Unit]
-Description={{ network.name }} node
+Description=Gnoland node
 After=network-online.target
 [Service]
 User=$USER
 WorkingDirectory=$HOME
-ExecStart=$(which {{ network.binary_name }}) start --genesis  $HOME/gnoland-data/config/genesis.json --data-dir $HOME/gnoland-data/ --skip-genesis-sig-verification
+ExecStart=$(which gnoland) start --genesis  $HOME/gnoland-data/config/genesis.json --data-dir $HOME/gnoland-data/ --skip-genesis-sig-verification
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
@@ -94,13 +94,13 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl restart {{ network.binary_name }} && sudo journalctl -u {{ network.binary_name }} -f
+sudo systemctl restart gnoland && sudo journalctl -u gnoland -f
 ```
 
 ## Start the node
 
 ```bash
-sudo systemctl start {{ network.binary_name }}
+sudo systemctl start gnoland
 ```
 
 ## Bootstrap the node
@@ -108,9 +108,7 @@ sudo systemctl start {{ network.binary_name }}
 To speed up the node sync, you can bootstrap the node from a snapshot.
 You can find snapshots here.
 
-{% for snapshot in network.snapshots %}
-- [{{ snapshot.name }}]({{ snapshot.url }})
-{% endfor %}
+- [It Rocket](https://itrocket.net/services/testnet/gnoland/#snap)
 
 If you want to use a snapshot make sure the initial db is empty. Also if the validator is active,
 make sure the node is stopped and save a copy of the priv_validator_key.json file.

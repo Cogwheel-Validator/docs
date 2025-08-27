@@ -22,6 +22,7 @@ class Config:
     """
 
     name: str
+    repo_url: str
     binary_name: str
     home_dir: str
     chain_id: str
@@ -106,6 +107,7 @@ def validate_config(configs: dict[str, Config]) -> tuple[bool, Exception | None]
 
     needed_elements: list[str] = [
         "name",
+        "repo_url",
         "binary_name",
         "home_dir",
         "chain_id",

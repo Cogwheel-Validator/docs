@@ -86,7 +86,7 @@ class MdxNetworkGenerator:
             if attempt < max_retries:
                 print(f"  Retrying {network_name}...")
 
-        print(f"  ✗ All attempts failed for {network_name}")
+        print(f"✗ All attempts failed for {network_name}")
         return None
 
     def _fill_network_contexts(self) -> None:
@@ -94,46 +94,80 @@ class MdxNetworkGenerator:
         failed_networks = []
 
         for config in self.mainnets.values():
-            print(f"Query the node info for {config.name}")
-            api_url = f"https://{config.path}-api.cogwheel.zone"
+            if config.name == "Gnoland":
+                # no need to query anything for now the data will be added manually
+                self.mainnet_contexts.append(
+                    NetworkContext(
+                        name=config.name, binary_name=config.binary_name,
+                        home_dir=config.home_dir, chain_id=config.chain_id,
+                        minimum_gas_prices=config.minimum_gas_prices,
+                        validator_amount=config.validator_amount, path=config.path,
+                        denom_version=config.aditional_info["version"],
+                        go_version="go1.24.6",
+                        cosmos_sdk_version=None,
+                        snapshots=config.snapshots,
+                        repo_url=config.repo_url,
+                        aditional_info=config.aditional_info))
+            else:
+                print(f"Query the node info for {config.name}")
+                api_url = f"https://{config.path}-api.cogwheel.zone"
 
-            node_info: NodeInfo | None = self._query_node_info_with_retry(api_url, config.name)
+                node_info: NodeInfo | None = self._query_node_info_with_retry(api_url, config.name)
 
-            if node_info is None:
-                error_msg: Exception = Exception(
-                    f"Failed to query REST endpoint: {api_url}")
-                raise error_msg
-            self.mainnet_contexts.append(
-                NetworkContext(
-                    name=config.name, binary_name=config.binary_name,
-                    home_dir=config.home_dir, chain_id=config.chain_id,
-                    minimum_gas_prices=config.minimum_gas_prices,
-                    validator_amount=config.validator_amount, path=config.path,
-                    denom_version=node_info.denom_version,
-                    go_version=node_info.go_version,
-                    cosmos_sdk_version=node_info.cosmos_sdk_version,
-                    snapshots=config.snapshots))
+                if node_info is None:
+                    error_msg: Exception = Exception(
+                        f"Failed to query REST endpoint: {api_url}")
+                    raise error_msg
+                self.mainnet_contexts.append(
+                    NetworkContext(
+                        name=config.name, binary_name=config.binary_name,
+                        home_dir=config.home_dir, chain_id=config.chain_id,
+                        minimum_gas_prices=config.minimum_gas_prices,
+                        validator_amount=config.validator_amount, path=config.path,
+                        denom_version=node_info.denom_version,
+                        go_version=node_info.go_version,
+                        cosmos_sdk_version=node_info.cosmos_sdk_version,
+                        snapshots=config.snapshots,
+                        repo_url=config.repo_url,
+                        aditional_info=config.aditional_info))
 
         for config in self.testnets.values():
-            print(f"Query the node info for {config.name}")
-            api_url = f"https://{config.path}-testnet-api.cogwheel.zone"
+            if config.name == "Gnoland":
+                # no need to query anything for now the data will be added manually
+                self.testnet_contexts.append(
+                    NetworkContext(
+                        name=config.name, binary_name=config.binary_name,
+                        home_dir=config.home_dir, chain_id=config.chain_id,
+                        minimum_gas_prices=config.minimum_gas_prices,
+                        validator_amount=config.validator_amount, path=config.path,
+                        denom_version=config.aditional_info["version"],
+                        go_version="go1.24.6",
+                        cosmos_sdk_version=None,
+                        snapshots=config.snapshots,
+                        repo_url=config.repo_url,
+                        aditional_info=config.aditional_info))
+            else:
+                print(f"Query the node info for {config.name}")
+                api_url = f"https://{config.path}-testnet-api.cogwheel.zone"
 
-            node_info: NodeInfo | None = self._query_node_info_with_retry(api_url, config.name)
+                node_info: NodeInfo | None = self._query_node_info_with_retry(api_url, config.name)
 
-            if node_info is None:
-                error_msg: Exception = Exception(
-                    f"Failed to query REST endpoint: {api_url}")
-                raise error_msg
-            self.testnet_contexts.append(
-                NetworkContext(
-                    name=config.name, binary_name=config.binary_name,
-                    home_dir=config.home_dir, chain_id=config.chain_id,
-                    minimum_gas_prices=config.minimum_gas_prices,
-                    validator_amount=config.validator_amount, path=config.path,
-                    denom_version=node_info.denom_version,
-                    go_version=node_info.go_version,
-                    cosmos_sdk_version=node_info.cosmos_sdk_version,
-                    snapshots=config.snapshots))
+                if node_info is None:
+                    error_msg: Exception = Exception(
+                        f"Failed to query REST endpoint: {api_url}")
+                    raise error_msg
+                self.testnet_contexts.append(
+                    NetworkContext(
+                        name=config.name, binary_name=config.binary_name,
+                        home_dir=config.home_dir, chain_id=config.chain_id,
+                        minimum_gas_prices=config.minimum_gas_prices,
+                        validator_amount=config.validator_amount, path=config.path,
+                        denom_version=node_info.denom_version,
+                        go_version=node_info.go_version,
+                        cosmos_sdk_version=node_info.cosmos_sdk_version,
+                        snapshots=config.snapshots,
+                        repo_url=config.repo_url,
+                        aditional_info=config.aditional_info))
 
         if failed_networks:
             print(f"\n ⚠️  Warning: Failed to query {len(failed_networks)} networks: {', '.join(failed_networks)}")
@@ -222,27 +256,43 @@ class MdxNetworkGenerator:
 
     def _generate_network_index(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the network index MDX file."""
-        template = self.env.get_template("networks/network_index.j2")
+        if context.name == "Gnoland":
+            template = self.env.get_template("networks/gnoland_network_index.j2")
+        else:
+            template = self.env.get_template("networks/network_index.j2")
         network_type = "mainnet" if "mainnets" in str(network_dir) else "testnet"
         rest_api = f"https://{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-api.cogwheel.zone"
         rpc = f"https://{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-rpc.cogwheel.zone"
         grpc = f"{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-grpc.cogwheel.zone:443"
         wss = f"wss://{context.path.lower()}{'-testnet' if network_type == 'testnet' else ''}-rpc.cogwheel.zone"
         # Create template context with all necessary data
-        template_context = {
-            "network": {
-                "name": context.name,
-                "description": f"Documentation for {context.name} {context.chain_id}",
-                "image": context.path.lower()+"Icon",
-                "chain_id": context.chain_id,
-                "chain_version": context.denom_version,
-                "network_type": network_type,
-                "rest_api": rest_api,
-                "rpc": rpc,
-                "grpc": grpc,
-                "wss": wss,
-            },
-        }
+        if context.name == "Gnoland":
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "description": f"Documentation for {context.name} {context.chain_id}",
+                    "image": context.path.lower()+"Icon",
+                    "chain_id": context.chain_id,
+                    "chain_version": context.denom_version,
+                    "network_type": network_type,
+                    "rpc": rpc,
+                },
+            }
+        else:
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "description": f"Documentation for {context.name} {context.chain_id}",
+                    "image": context.path.lower()+"Icon",
+                    "chain_id": context.chain_id,
+                    "chain_version": context.denom_version,
+                    "network_type": network_type,
+                    "rest_api": rest_api,
+                    "rpc": rpc,
+                    "grpc": grpc,
+                    "wss": wss,
+                },
+            }
 
         output_file = network_dir.joinpath("index.mdx")
         with output_file.open("w", encoding="utf-8") as f:
@@ -250,27 +300,47 @@ class MdxNetworkGenerator:
 
     def _generate_node_setup(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the node setup MDX file."""
-        template = self.env.get_template("networks/node_setup.j2")
+        if context.name == "Gnoland":
+            template = self.env.get_template("networks/gnoland_node_setup.j2")
+        else:
+            template = self.env.get_template("networks/node_setup.j2")
 
         # Create template context
-        template_context = {
-            "network": {
-                "name": context.name,
-                "binary_name": context.binary_name,
-                "home_dir": context.home_dir,
-                "chain_id": context.chain_id,
-                "go_version": context.go_version,
-                "repo_url": f"https://github.com/{context.path.lower()}/network",
-                "repo_name": context.path.lower(),
-                "version": context.denom_version,
-                "genesis_url": f"https://files.cogwheel.zone/{context.path.lower()}/genesis.json",
-                "genesis_file": f"{context.path.lower()}_genesis.tar.xz",
-                "addrbook_url": f"https://files.cogwheel.zone/{context.path.lower()}/addrbook.json",
-                "cosmos_sdk_version": context.cosmos_sdk_version,
-                "snapshots": context.snapshots,
-            },
-            "cosmovisor_recommended_version": "latest",
-        }
+        if context.name == "Gnoland":
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "binary_name": context.binary_name,
+                    "home_dir": context.home_dir,
+                    "chain_id": context.chain_id,
+                    "go_version": context.go_version,
+                    "repo_url": context.repo_url,
+                    "repo_name": context.repo_url.split("/")[-1],
+                    "version": context.denom_version,
+                    "snapshots": context.snapshots,
+                    "additional_info": context.aditional_info,
+                },
+            }
+        else:
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "binary_name": context.binary_name,
+                    "home_dir": context.home_dir,
+                    "chain_id": context.chain_id,
+                    "go_version": context.go_version,
+                    "repo_url": context.repo_url,
+                    "repo_name": context.repo_url.split("/")[-1],
+                    "version": context.denom_version,
+                    "genesis_url": f"https://files.cogwheel.zone/{context.path.lower()}/genesis.json",
+                    "genesis_file": f"{context.path.lower()}_genesis.tar.xz",
+                    "addrbook_url": f"https://files.cogwheel.zone/{context.path.lower()}/addrbook.json",
+                    "cosmos_sdk_version": context.cosmos_sdk_version,
+                    "snapshots": context.snapshots,
+                    "additional_info": context.aditional_info,
+                },
+                "cosmovisor_recommended_version": "latest",
+            }
 
         output_file = network_dir.joinpath("node-setup.mdx")
         with output_file.open("w", encoding="utf-8") as f:
@@ -278,19 +348,31 @@ class MdxNetworkGenerator:
 
     def _generate_validator_setup(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the validator setup MDX file."""
-        template = self.env.get_template("networks/validator_setup.j2")
+        if context.name == "Gnoland":
+            template = self.env.get_template("networks/gnoland_validator_setup.j2")
+        else:
+            template = self.env.get_template("networks/validator_setup.j2")
 
-        template_context = {
-            "network": {
-                "name": context.name,
-                "binary_name": context.binary_name,
-                "home_dir": context.home_dir,
-                "chain_id": context.chain_id,
-                "validator_amount": context.validator_amount,
-                "minimum_gas_prices": context.minimum_gas_prices,
-                "cosmos_sdk_version": context.cosmos_sdk_version,
-            },
-        }
+        if context.name == "Gnoland":
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "binary_name": context.binary_name,
+                    "chain_id": context.chain_id,
+                },
+            }
+        else:
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "binary_name": context.binary_name,
+                    "home_dir": context.home_dir,
+                    "chain_id": context.chain_id,
+                    "validator_amount": context.validator_amount,
+                    "minimum_gas_prices": context.minimum_gas_prices,
+                    "cosmos_sdk_version": context.cosmos_sdk_version,
+                },
+            }
 
         output_file = network_dir.joinpath("validator-setup.mdx")
         with output_file.open("w", encoding="utf-8") as f:
@@ -298,17 +380,28 @@ class MdxNetworkGenerator:
 
     def _generate_node_commands(self, context: NetworkContext, network_dir: Path) -> None:
         """Generate the node commands MDX file."""
-        template = self.env.get_template("networks/node_commands.j2")
+        if context.name == "Gnoland":
+            template = self.env.get_template("networks/gnoland_node_commands.j2")
+        else:
+            template = self.env.get_template("networks/node_commands.j2")
 
-        template_context = {
-            "network": {
-                "name": context.name,
-                "binary_name": context.binary_name,
-                "home_dir": context.home_dir,
-                "chain_id": context.chain_id,
-                "cosmos_sdk_version": context.cosmos_sdk_version,
-            },
-        }
+        if context.name == "Gnoland":
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "binary_name": context.binary_name,
+                }
+            }
+        else:
+            template_context = {
+                "network": {
+                    "name": context.name,
+                    "binary_name": context.binary_name,
+                    "home_dir": context.home_dir,
+                    "chain_id": context.chain_id,
+                    "cosmos_sdk_version": context.cosmos_sdk_version,
+                },
+            }
 
         output_file = network_dir.joinpath("node-commands.mdx")
         with output_file.open("w", encoding="utf-8") as f:
