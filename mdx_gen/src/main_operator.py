@@ -70,14 +70,35 @@ class MdxNetworkGenerator:
         match testnet_dir:
             case False:
                 self.output_dir.joinpath("testnets").mkdir(parents=True, exist_ok=True)
-    
+
+    def _query_node_info_with_retry(self, api_url: str, network_name: str, max_retries: int = 2) -> NodeInfo | None:
+        """Query node info with retry mechanism and fallback timeouts."""
+        timeouts = [10, 20, 45]  # Progressive timeout strategy
+
+        for attempt in range(max_retries + 1):
+            timeout = timeouts[min(attempt, len(timeouts) - 1)]
+            print(f"  Attempt {attempt + 1}/{max_retries + 1} with {timeout}s timeout...")
+
+            node_info = query_node_info(api_url, timeout=timeout)
+            if node_info is not None:
+                return node_info
+
+            if attempt < max_retries:
+                print(f"  Retrying {network_name}...")
+
+        print(f"  ✗ All attempts failed for {network_name}")
+        return None
+
     def _fill_network_contexts(self) -> None:
         """Fill the network contexts."""
+        failed_networks = []
+
         for config in self.mainnets.values():
-            # make a REST API call to gather the node data
-            # subdomain format is always identical hence this is a simple call
+            print(f"Query the node info for {config.name}")
             api_url = f"https://{config.path}-api.cogwheel.zone"
-            node_info: NodeInfo | None = query_node_info(api_url)
+
+            node_info: NodeInfo | None = self._query_node_info_with_retry(api_url, config.name)
+
             if node_info is None:
                 error_msg: Exception = Exception(
                     f"Failed to query REST endpoint: {api_url}")
@@ -92,11 +113,13 @@ class MdxNetworkGenerator:
                     go_version=node_info.go_version,
                     cosmos_sdk_version=node_info.cosmos_sdk_version,
                     snapshots=config.snapshots))
+
         for config in self.testnets.values():
-            # make a REST API call to gather the node data
-            # subdomain format is always identical hence this is a simple call
+            print(f"Query the node info for {config.name}")
             api_url = f"https://{config.path}-testnet-api.cogwheel.zone"
-            node_info: NodeInfo | None = query_node_info(api_url)
+
+            node_info: NodeInfo | None = self._query_node_info_with_retry(api_url, config.name)
+
             if node_info is None:
                 error_msg: Exception = Exception(
                     f"Failed to query REST endpoint: {api_url}")
@@ -111,6 +134,10 @@ class MdxNetworkGenerator:
                     go_version=node_info.go_version,
                     cosmos_sdk_version=node_info.cosmos_sdk_version,
                     snapshots=config.snapshots))
+
+        if failed_networks:
+            print(f"\n ⚠️  Warning: Failed to query {len(failed_networks)} networks: {', '.join(failed_networks)}")
+            print("These networks will use fallback values. You may want to update them manually.")
 
     def _generate_network_mdx(self) -> None:
         """Generate the network_index mdx file.

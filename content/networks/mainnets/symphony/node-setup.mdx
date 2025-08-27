@@ -1,9 +1,9 @@
 ---
-title: "Node setup for symphony"
-description: "Node setup for symphony"
+title: "Node setup for Symphony"
+description: "Node setup for Symphony"
 ---
 
-# Node setup for symphony
+# Node setup for Symphony
 
 Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
 you are using a Debian based OS such as Ubuntu for example.
@@ -62,7 +62,7 @@ sudo ln -s $HOME/.symphony/cosmovisor/current/bin/symphonyd /usr/local/bin/symph
 
 sudo tee /etc/systemd/system/symphonyd.service > /dev/null <<EOF
 [Unit]
-Description=symphony node"
+Description=Symphony node"
 After=network-online.target
 
 [Service]

@@ -11,6 +11,9 @@ networks:
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync"
     - name: "Avia"
       url: "https://aviaone.com/blockchains-service/atomone-atomone-1.html"
+    aditional_info:
+      - fees:
+        - "0.025uatone"
   - name: "Juno Network"
     binary_name: "junod"
     home_dir: "juno"
@@ -41,7 +44,7 @@ networks:
     snapshots:
     - name: "Stavr"
       url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/elys/statesync-snapshot"
-  - name: "symphony"
+  - name: "Symphony"
     binary_name: "symphonyd"
     home_dir: "symphony"
     chain_id: "symphony-1"

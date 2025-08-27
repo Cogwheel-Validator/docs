@@ -1,6 +1,7 @@
 """Loader for the configs."""
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import yaml
 
@@ -28,6 +29,7 @@ class Config:
     validator_amount: str
     path: str
     snapshots: list[dict[str, str]]
+    aditional_info: dict[str, Any] | None = None # to be asumed as empty unless specified
 
 @dataclass
 class ConfigList:
