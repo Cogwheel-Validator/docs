@@ -79,6 +79,17 @@ Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
 Environment="UNSAFE_SKIP_BACKUP=true"
 Environment="PATH=$PATH:$HOME/.symphony/cosmovisor/current/bin"
 
+NoNewPrivileges=true
+ProtectSystem=strict
+RestrictSUIDSGID=true
+LockPersonality=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictNamespaces=yes
+
 [Install]
 WantedBy=multi-user.target
 EOF
