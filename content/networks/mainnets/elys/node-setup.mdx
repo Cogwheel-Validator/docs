@@ -20,9 +20,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://go.dev/dl/gogo1.23.9.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf gogo1.23.9.linux-amd64.tar.gz
-rm gogo1.23.9.linux-amd64.tar.gz
+wget https://go.dev/dl/gogo1.24.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.24.5.linux-amd64.tar.gz
+rm gogo1.24.5.linux-amd64.tar.gz
 
 # Add GO to PATH
 echo 'export GO111MODULE=on' >> $HOME/.bashrc
@@ -45,7 +45,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/elys-network/elys
 cd elys  # always doublecheck from the official team for the right version
-git checkout v6.5.0
+git checkout v6.5.0-patch
 make install
 ```
 
@@ -78,6 +78,17 @@ Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
 Environment="UNSAFE_SKIP_BACKUP=true"
 Environment="PATH=$PATH:$HOME/.elys/cosmovisor/current/bin"
+
+NoNewPrivileges=true
+ProtectSystem=strict
+RestrictSUIDSGID=true
+LockPersonality=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictNamespaces=yes
 
 [Install]
 WantedBy=multi-user.target
