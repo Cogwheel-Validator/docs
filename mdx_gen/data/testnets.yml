@@ -1,4 +1,18 @@
 networks:
+  - name: "Atom One"
+    repo_url: "https://github.com/atomone-hub/atomone"
+    binary_name: "atomoned"
+    home_dir: "atomone"
+    chain_id: "atomone-testnet-1"
+    minimum_gas_prices: "0.255uphoton"
+    validator_amount: "1000000uatone"
+    path: "atomone"
+    snapshots:
+    - name: "It Rocket"
+      url: "https://itrocket.net/services/testnet/atomone/#snap"
+    aditional_info:
+      - fees:
+        - "0.025uatone"
   - name: "Prysm Network"
     repo_url: "https://github.com/prysmaticlabs/prysm"
     binary_name: "prysmd"
