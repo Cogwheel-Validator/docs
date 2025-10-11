@@ -14,7 +14,7 @@ networks:
       - fees:
         - "0.025uatone"
   - name: "Prysm Network"
-    repo_url: "https://github.com/prysmaticlabs/prysm"
+    repo_url: "https://github.com/LightLABS-Dev/prysm"
     binary_name: "prysmd"
     home_dir: "prysm"
     chain_id: "prysm-testnet"
