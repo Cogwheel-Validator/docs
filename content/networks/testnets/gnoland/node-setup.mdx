@@ -40,7 +40,7 @@ source $HOME/.bashrc
 cd $HOME 
 git clone https://github.com/gnolang/gno
 cd gno
-git checkout chain/test7.2
+git checkout chain/test9.0
 cd gno
 make install_gnokey
 make -C gno.land install.gnoland && make -C contribs/gnogenesis install
@@ -56,9 +56,9 @@ can be set to initiated within other directories. Reffer to CLI -h for more info
 # Environment variables
 
 export MONIKER= my_moniker
-export CHAIN_ID=test7.2
-export PERSISTENT_PEERS=g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656
-export SEEDS=g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656
+export CHAIN_ID=test9.0
+export PERSISTENT_PEERS=g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656
+export SEEDS=g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656
 
 # Initialize the node
 gnoland secrets init

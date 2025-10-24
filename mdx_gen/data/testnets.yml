@@ -39,7 +39,7 @@ networks:
     repo_url: "https://github.com/gnolang/gno"
     binary_name: "gnoland"
     home_dir: "gnoland"
-    chain_id: "test7.2"
+    chain_id: "test9.0"
     minimum_gas_prices: ""
     validator_amount: ""
     path: "gnoland"
@@ -47,6 +47,6 @@ networks:
     - name: "It Rocket"
       url: "https://itrocket.net/services/testnet/gnoland/#snap"
     aditional_info:
-      version: "chain/test7.2"
-      persistent_peers: "g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656"
-      seeds: "g15y3wvtjc7tdepems32l80gf9a6tshj9nhhl388@gnolan-testnet-rpc.shazoes.xyz:42656,g137jz3hjhz6psrxxjtj5h7h4s6llfyrv2zxtfq3@gno-core-sen-01.test7.testnets.gno.land:26656,g1kpxll39mgzfhsepazzs0vne2l42mmkylxkt6un@gno-core-sen-02.test7.testnets.gno.land:26656"
+      version: "chain/test9.0"
+      persistent_peers: "g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656"
+      seeds: "g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656"
