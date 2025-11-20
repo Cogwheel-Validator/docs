@@ -1,7 +1,7 @@
 import { networksSource, servicesSource } from "@/lib/source";
-import { createFromSource, createSearchAPI } from "fumadocs-core/search/server";
+import { createSearchAPI } from "fumadocs-core/search/server";
 
-export const { GET } = createSearchAPI('advanced', {
+export const { GET } = createSearchAPI("advanced", {
   indexes: [
     ...networksSource.getPages().map((page) => ({
       title: page.data.title,
