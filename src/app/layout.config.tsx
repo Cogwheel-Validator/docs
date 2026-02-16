@@ -77,6 +77,10 @@ export const homeOptions: BaseLayoutProps = {
         { text: "Chain Endpoints", url: "/services/endpoints"},
       ],
       icon: "🔧",
+    },
+    {
+      text: "Spectra Portal",
+      url: "/spectra-portal",
     }
   ],
 };
