@@ -1,4 +1,4 @@
-import { networks, services } from "@/.source";
+import { networks, services, spectraPortal } from "@/.source";
 import { loader } from "fumadocs-core/source";
 import { createMDXSource } from "fumadocs-mdx";
 
@@ -13,4 +13,10 @@ export const networksSource = loader({
 export const servicesSource = loader({
   baseUrl: "/services",
   source: createMDXSource(services),
+});
+
+// Spectra Portal documentation source
+export const spectraPortalSource = loader({
+  baseUrl: "/spectra-portal",
+  source: createMDXSource(spectraPortal),
 });

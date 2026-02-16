@@ -1,4 +1,4 @@
-import { networksSource, servicesSource } from "@/lib/source";
+import { networksSource, servicesSource, spectraPortalSource } from "@/lib/source";
 import { createSearchAPI } from "fumadocs-core/search/server";
 
 export const { GET } = createSearchAPI("advanced", {
@@ -11,6 +11,13 @@ export const { GET } = createSearchAPI("advanced", {
       structuredData: page.data.structuredData,
     })),
     ...servicesSource.getPages().map((page) => ({
+      title: page.data.title,
+      description: page.data.description,
+      url: page.url,
+      id: page.url,
+      structuredData: page.data.structuredData,
+    })),
+    ...spectraPortalSource.getPages().map((page) => ({
       title: page.data.title,
       description: page.data.description,
       url: page.url,
