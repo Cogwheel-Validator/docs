@@ -8,13 +8,13 @@ networks:
     validator_amount: "1000000uatone"
     path: "atomone"
     snapshots:
-    - name: "Stavr"
-      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync"
-    - name: "Avia"
-      url: "https://aviaone.com/blockchains-service/atomone-atomone-1.html"
+      - name: "Stavr"
+        url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync"
+      - name: "Avia"
+        url: "https://aviaone.com/blockchains-service/atomone-atomone-1.html"
     aditional_info:
       - fees:
-        - "0.025uatone"
+          - "0.025uatone"
   - name: "Juno Network"
     repo_url: "https://github.com/CosmosContracts/juno"
     binary_name: "junod"
@@ -24,8 +24,8 @@ networks:
     validator_amount: "1000000ujuno"
     path: "juno"
     snapshots:
-    - name: "Stavr"
-      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/juno/statesync-snapshot"
+      - name: "Stavr"
+        url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/juno/statesync-snapshot"
   - name: "Nibiru Chain"
     repo_url: "https://github.com/NibiruChain/nibiru"
     binary_name: "nibid"
@@ -35,19 +35,8 @@ networks:
     validator_amount: "1000000unibi"
     path: "nibiru"
     snapshots:
-    - name: "Stavr"
-      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/nibiru/statesync-snapshot"
-  - name: "Elys Network"
-    repo_url: "https://github.com/elys-network/elys"
-    binary_name: "elysd"
-    home_dir: "elys"
-    chain_id: "elys-1"
-    minimum_gas_prices: "0.01uelys"
-    validator_amount: "1000000uelys"
-    path: "elys"
-    snapshots:
-    - name: "Stavr"
-      url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/elys/statesync-snapshot"
+      - name: "Stavr"
+        url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/nibiru/statesync-snapshot"
   - name: "Symphony"
     repo_url: "https://github.com/Orchestra-Labs/symphony"
     binary_name: "symphonyd"
@@ -57,6 +46,5 @@ networks:
     validator_amount: "1000000note"
     path: "symphony"
     snapshots:
-    - name: "Code Block Labs"
-      url: "https://documentation.codeblocklabs.com/blockchain-nodes/symphony/snapshot"
-
+      - name: "Code Block Labs"
+        url: "https://documentation.codeblocklabs.com/blockchain-nodes/symphony/snapshot"

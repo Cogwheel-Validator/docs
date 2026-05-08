@@ -8,22 +8,11 @@ networks:
     validator_amount: "1000000uatone"
     path: "atomone"
     snapshots:
-    - name: "It Rocket"
-      url: "https://itrocket.net/services/testnet/atomone/#snap"
+      - name: "It Rocket"
+        url: "https://itrocket.net/services/testnet/atomone/#snap"
     aditional_info:
       - fees:
-        - "0.025uatone"
-  - name: "Prysm Network"
-    repo_url: "https://github.com/LightLABS-Dev/prysm"
-    binary_name: "prysmd"
-    home_dir: "prysm"
-    chain_id: "prysm-testnet"
-    minimum_gas_prices: "0.01uprism"
-    validator_amount: "1000000uprism"
-    path: "prysm"
-    snapshots:
-    - name: "Stavr"
-      url: "https://stavr-team.gitbook.io/nodes-guides/testnets/prysm/statesync-snapshot"
+          - "0.025uatone"
   - name: "Juno Network"
     repo_url: "https://github.com/CosmosContracts/juno"
     binary_name: "junod"
@@ -33,8 +22,8 @@ networks:
     validator_amount: "1000000ujunox"
     path: "juno"
     snapshots:
-    - name: "Stavr"
-      url: "https://stavr-team.gitbook.io/nodes-guides/testnets/juno/statesync-snapshot"
+      - name: "Stavr"
+        url: "https://stavr-team.gitbook.io/nodes-guides/testnets/juno/statesync-snapshot"
   - name: "Gnoland"
     repo_url: "https://github.com/gnolang/gno"
     binary_name: "gnoland"
@@ -44,8 +33,8 @@ networks:
     validator_amount: ""
     path: "gnoland"
     snapshots:
-    - name: "It Rocket"
-      url: "https://itrocket.net/services/testnet/gnoland/#snap"
+      - name: "It Rocket"
+        url: "https://itrocket.net/services/testnet/gnoland/#snap"
     aditional_info:
       version: "chain/test9.0"
       persistent_peers: "g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656"
