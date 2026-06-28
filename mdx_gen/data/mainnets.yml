@@ -12,7 +12,7 @@ networks:
         url: "https://stavr-team.gitbook.io/nodes-guides/mainnets/atomone/sync"
       - name: "Avia"
         url: "https://aviaone.com/blockchains-service/atomone-atomone-1.html"
-    aditional_info:
+    additional_info:
       - fees:
           - "0.025uatone"
   - name: "Juno Network"

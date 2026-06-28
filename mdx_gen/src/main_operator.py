@@ -102,12 +102,12 @@ class MdxNetworkGenerator:
                         home_dir=config.home_dir, chain_id=config.chain_id,
                         minimum_gas_prices=config.minimum_gas_prices,
                         validator_amount=config.validator_amount, path=config.path,
-                        denom_version=config.aditional_info["version"],
+                        denom_version=config.additional_info["version"],
                         go_version="go1.24.6",
                         cosmos_sdk_version=None,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        aditional_info=config.aditional_info))
+                        additional_info=config.additional_info))
             else:
                 print(f"Query the node info for {config.name}")
                 api_url = f"https://{config.path}-api.cogwheel.zone"
@@ -129,7 +129,7 @@ class MdxNetworkGenerator:
                         cosmos_sdk_version=node_info.cosmos_sdk_version,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        aditional_info=config.aditional_info))
+                        additional_info=config.additional_info))
 
         for config in self.testnets.values():
             if config.name == "Gnoland":
@@ -140,12 +140,12 @@ class MdxNetworkGenerator:
                         home_dir=config.home_dir, chain_id=config.chain_id,
                         minimum_gas_prices=config.minimum_gas_prices,
                         validator_amount=config.validator_amount, path=config.path,
-                        denom_version=config.aditional_info["version"],
+                        denom_version=config.additional_info["version"],
                         go_version="go1.24.6",
                         cosmos_sdk_version=None,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        aditional_info=config.aditional_info))
+                        additional_info=config.additional_info))
             else:
                 print(f"Query the node info for {config.name}")
                 api_url = f"https://{config.path}-testnet-api.cogwheel.zone"
@@ -167,7 +167,7 @@ class MdxNetworkGenerator:
                         cosmos_sdk_version=node_info.cosmos_sdk_version,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        aditional_info=config.aditional_info))
+                        additional_info=config.additional_info))
 
         if failed_networks:
             print(f"\n ⚠️  Warning: Failed to query {len(failed_networks)} networks: {', '.join(failed_networks)}")
@@ -318,7 +318,7 @@ class MdxNetworkGenerator:
                     "repo_name": context.repo_url.split("/")[-1],
                     "version": context.denom_version,
                     "snapshots": context.snapshots,
-                    "additional_info": context.aditional_info,
+                    "additional_info": context.additional_info,
                 },
             }
         else:
@@ -337,7 +337,7 @@ class MdxNetworkGenerator:
                     "addrbook_url": f"https://files.cogwheel.zone/{context.path.lower()}/addrbook.json",
                     "cosmos_sdk_version": context.cosmos_sdk_version,
                     "snapshots": context.snapshots,
-                    "additional_info": context.aditional_info,
+                    "additional_info": context.additional_info,
                 },
                 "cosmovisor_recommended_version": "latest",
             }

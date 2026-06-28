@@ -24,5 +24,7 @@ class NetworkContext:
     # Snapshots list
     snapshots: list[dict[str, str]]
 
-    # Aditional info
-    aditional_info: dict[str, Any] | None = None # to be asumed as empty unless specified
+    # Additional info
+    additional_info: dict[str, Any] | None = (
+        None  # to be asumed as empty unless specified
+    )
