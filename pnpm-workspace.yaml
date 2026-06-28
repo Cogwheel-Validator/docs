@@ -1,0 +1,14 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - next
+  - "@next/swc-*"
+  - "@next/env"
+  - react
+  - react-dom
+  - "@types/node"
+  - "@types/react"
+  - "@types/react-dom"
