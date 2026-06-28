@@ -10,7 +10,7 @@ networks:
     snapshots:
       - name: "It Rocket"
         url: "https://itrocket.net/services/testnet/atomone/#snap"
-    aditional_info:
+    additional_info:
       - fees:
           - "0.025uatone"
   - name: "Juno Network"
@@ -35,7 +35,7 @@ networks:
     snapshots:
       - name: "It Rocket"
         url: "https://itrocket.net/services/testnet/gnoland/#snap"
-    aditional_info:
+    additional_info:
       version: "chain/test9.0"
       persistent_peers: "g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656"
       seeds: "g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656"
