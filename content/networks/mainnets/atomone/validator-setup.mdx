@@ -17,27 +17,43 @@ If you haven't, please refer to the [node setup guide](/networks/s/).
 atomoned keys add #keyname
 ```
 
-Use the following command to create the validator.
+
+For Cosmos SDK 0.50 and above we need to first gather the private key details and then create a validator.json file containing the validator information.
+
+Use the following command to get the private key details.
 ```bash
-#Now create the validator 
-atomoned tx staking create-validator \
---amount 1000000uatone \
---pubkey $( atomoned tendermint show-validator) \
---moniker "validatorName" \
---chain-id atomone-1 \
---commission-rate 0.05 \
---commission-max-rate 0.20 \
---commission-max-change-rate 0.01 \
---min-self-delegation 1 \
---gas auto \
---gas-prices 0.255uphoton \
---from #keyname \
---gas-adjustment 1.5 \
---identity keybaseIdNumber \
---security-contact "security@example.com" \
---details "write info about your validators for example what type of service you ofer etc." \
---website "https://example.com"
+# Get the private key details
+atomoned comet show-validator
 ```
+
+And then create the validator.json file. Make sure to set the pubkey to the value from the command above.
+```json
+{
+        "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"insertFromTheCommandAbove"},
+        "amount": "1000000uatone",
+        "moniker": "validatorName",
+        "identity": "optional identity signature (ex. UPort or Keybase)",
+        "website": "validator's (optional) website",
+        "security": "validator's (optional) security contact email",
+        "details": "validator's (optional) details",
+        "commission-rate": "0.1",
+        "commission-max-rate": "0.2",
+        "commission-max-change-rate": "0.01",
+        "min-self-delegation": "1"
+}
+```
+
+And then create the validator. Make sure to set the path to the validator.json file and the keyname.
+```bash
+# Set a path to the validator.json file in this instance we assume it is in the current directory
+atomoned tx staking create-validator ./validator.json \
+--chain-id= atomone-1 \
+--from= #keyname \
+--gas= "auto" \
+--gas-prices= "0.255uphoton" \
+--gas-adjustment=1.5
+```
+
 
 
 
