@@ -20,9 +20,9 @@ sudo apt install entr jq make git ufw wget
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://go.dev/dl/gogo1.22.10.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf gogo1.22.10.linux-amd64.tar.gz
-rm gogo1.22.10.linux-amd64.tar.gz
+wget https://go.dev/dl/gogo1.26.4.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.26.4.linux-amd64.tar.gz
+rm gogo1.26.4.linux-amd64.tar.gz
 
 # Add GO to PATH
 echo 'export GO111MODULE=on' >> $HOME/.bashrc
@@ -45,7 +45,7 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 cd $HOME 
 git clone https://github.com/atomone-hub/atomone
 cd atomone  # always doublecheck from the official team for the right version
-git checkout v3.3.0
+git checkout v4.0.1
 make install
 ```
 

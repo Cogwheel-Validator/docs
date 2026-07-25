@@ -37,13 +37,6 @@ export const spectraPortal = defineCollections({
   schema: frontmatterSchema,
 });
 
-// Combined collection for search that includes both networks and services
-export const combined = defineCollections({
-  type: 'doc',
-  dir: ['content/networks', 'content/services', 'content/spectra-portal'],
-  schema: frontmatterSchema,
-});
-
 export default defineConfig({
   mdxOptions: {
     // MDX options

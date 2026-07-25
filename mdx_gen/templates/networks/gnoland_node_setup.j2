@@ -10,9 +10,9 @@ you are using a Debian based OS such as Ubuntu for example.
 
 ## Update the system and install the essentials:
 ```bash
-sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential
 sudo apt install vim # or install nano
-sudo apt install entr jq make git ufw wget 
+sudo apt install entr jq make git ufw wget
 ```
 
 ## Install GO
@@ -29,6 +29,7 @@ echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
 echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+echo 'export GNOROOR=$HOME/gno
 
 # Source the bashrc file
 source $HOME/.bashrc
@@ -37,13 +38,12 @@ source $HOME/.bashrc
 ## Clone the repository and install node binary
 
 ```bash
-cd $HOME 
+cd $HOME
 git clone {{ network.repo_url }}
 cd {{ network.repo_name }}
 git checkout {{ network.version }}
 cd gno
-make install_gnokey
-make -C gno.land install.gnoland && make -C contribs/gnogenesis install
+make -C gno.land install.gnoland install.gnokey
 ```
 
 ## Initialize the node
@@ -72,7 +72,7 @@ export SEEDS={{ network.additional_info.seeds }}
 {{ network.binary_name }} set p2p.persistent_peers $PERSISTENT_PEERS
 {{ network.binary_name }} set p2p.seeds $SEEDS
 cd ~/gnoland-data/config
-wget -O genesis.json https://gno-testnets-genesis.s3.eu-central-1.amazonaws.com/test7/genesis.json
+wget -O genesis.json {{ network.additional_info.genesis_url }}
 ```
 
 Make systemd service file
@@ -89,6 +89,7 @@ ExecStart=$(which {{ network.binary_name }}) start --genesis  $HOME/gnoland-data
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
+Environment="GNOROOT=$HOME/gno"
 [Install]
 WantedBy=multi-user.target
 EOF

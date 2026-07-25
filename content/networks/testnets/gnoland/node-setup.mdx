@@ -10,9 +10,9 @@ you are using a Debian based OS such as Ubuntu for example.
 
 ## Update the system and install the essentials:
 ```bash
-sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential
 sudo apt install vim # or install nano
-sudo apt install entr jq make git ufw wget 
+sudo apt install entr jq make git ufw wget
 ```
 
 ## Install GO
@@ -29,6 +29,7 @@ echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
 echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+echo 'export GNOROOR=$HOME/gno
 
 # Source the bashrc file
 source $HOME/.bashrc
@@ -37,13 +38,12 @@ source $HOME/.bashrc
 ## Clone the repository and install node binary
 
 ```bash
-cd $HOME 
+cd $HOME
 git clone https://github.com/gnolang/gno
 cd gno
-git checkout chain/test9.0
+git checkout chain/topaz
 cd gno
-make install_gnokey
-make -C gno.land install.gnoland && make -C contribs/gnogenesis install
+make -C gno.land install.gnoland install.gnokey
 ```
 
 ## Initialize the node
@@ -56,9 +56,9 @@ can be set to initiated within other directories. Reffer to CLI -h for more info
 # Environment variables
 
 export MONIKER= my_moniker
-export CHAIN_ID=test9.0
-export PERSISTENT_PEERS=g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656
-export SEEDS=g1d60r9u40340kqrt62cffh6yuc0gfmevz60n8s9@gno-core-sen-01.test9.testnets.gno.land:26656
+export CHAIN_ID=topaz-1
+export PERSISTENT_PEERS=g19q07ssuafhmg6r7ys7wp7rpc4jxc85cpvdy426@seed-1.topaz.testnets.gno.land:26656,g15k98e65gm8h7fdr3yr4tqn82lvch4a97a3sg3j@seed-2.topaz.testnets.gno.land:26656
+export SEEDS=
 
 # Initialize the node
 gnoland secrets init
@@ -72,7 +72,7 @@ gnoland config set p2p.max_num_outbound_peers 40
 gnoland set p2p.persistent_peers $PERSISTENT_PEERS
 gnoland set p2p.seeds $SEEDS
 cd ~/gnoland-data/config
-wget -O genesis.json https://gno-testnets-genesis.s3.eu-central-1.amazonaws.com/test7/genesis.json
+wget -O genesis.json https://github.com/gnolang/gno/releases/download/chain/topaz/genesis.json
 ```
 
 Make systemd service file
@@ -89,6 +89,7 @@ ExecStart=$(which gnoland) start --genesis  $HOME/gnoland-data/config/genesis.js
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
+Environment="GNOROOT=$HOME/gno"
 [Install]
 WantedBy=multi-user.target
 EOF

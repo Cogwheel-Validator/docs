@@ -275,7 +275,8 @@ class MdxNetworkGenerator:
                     "chain_id": context.chain_id,
                     "chain_version": context.denom_version,
                     "network_type": network_type,
-                    "rpc": rpc,
+                    "rpc": context.additional_info.get("rpc_url", ""),
+                    "genesis_url": context.additional_info.get("genesis_url", ""),
                 },
             }
         else:
