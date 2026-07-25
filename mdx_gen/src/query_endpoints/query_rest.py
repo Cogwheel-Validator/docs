@@ -1,6 +1,7 @@
 """Query the REST endpoints for the node info."""
 from dataclasses import dataclass
 from http import HTTPStatus
+from typing import Any
 
 import httpx
 
@@ -11,7 +12,7 @@ class NodeInfo:
 
     denom_version: str
     go_version: str
-    cosmos_sdk_version: str
+    cosmos_sdk_version: float
 
 def query_node_info(api: str, params: dict | None = None, timeout: int = 10) -> NodeInfo | None:
     """Query the REST endpoint for the node info.
@@ -40,27 +41,33 @@ def query_node_info(api: str, params: dict | None = None, timeout: int = 10) -> 
 
         if response.status_code == HTTPStatus.OK:
             data = response.json()
-            print("  ✓ Query successful")
-            return NodeInfo(
-                denom_version=data["application_version"]["version"],
-                go_version=data["application_version"]["go_version"].split(" ")[2],
+            denom_version = data["application_version"]["version"]
+            go_version = data["application_version"]["go_version"].split(" ")[2]
+            cosmos_sdk_version = data["application_version"]["cosmos_sdk_version"]
+            if len(cosmos_sdk_version) > 0:
                 cosmos_sdk_version = float(
-                    str(data["application_version"]["cosmos_sdk_version"]).split("v")[1][:4]),
+                    str(cosmos_sdk_version).split("v")[1][:4])
+            else:
+                cosmos_sdk_version = 0.5
+            print("Query successful")
+            return NodeInfo(
+                denom_version=denom_version,
+                go_version=go_version,
+                cosmos_sdk_version=cosmos_sdk_version,
             )
         else:
-            print(f"✗ HTTP {response.status_code}: {response.text[:100]}...")
+            print(f"HTTP {response.status_code}: {response.text[:100]}...")
             return None
 
     except httpx.TimeoutException:
-        print(f"✗ Request timed out after {timeout}s")
+        print(f"Request timed out after {timeout}s")
         return None
     except httpx.HTTPStatusError as e:
-        print(f"✗ HTTP Status Error: {e.response.status_code}")
+        print(f"HTTP Status Error: {e.response.status_code}")
         return None
     except httpx.RequestError as e:
-        print(f"✗ Request Error: {str(e)[:100]}...")
+        print(f"Request Error: {str(e)[:100]}...")
         return None
     except Exception as e:
-        print(f"✗ Unexpected Error: {str(e)[:100]}...")
+        print(f"Unexpected Error: {str(e)[:100]}...")
         return None
-
