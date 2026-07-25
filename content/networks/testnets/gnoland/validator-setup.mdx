@@ -5,7 +5,7 @@ description: "Validator setup for Gnoland"
 
 # Validator setup for Gnoland
 
-This guide will assume you have already set up your node. 
+This guide will assume you have already set up your node.
 If you haven't, please refer to the [node setup guide](/networks/s/).
 
 <Callout type="info" text={`Make sure to change values for moniker, identity, details website to your own values.`} />
@@ -19,14 +19,15 @@ There are multiple factors the biggest one is contibution to the network.`} />
 ```bash
 # Environment variable
 export DETAILS= details for validator
-VALIDATOR_ADDRESS=$(gnoland secrets get validator_key | jq -r '.address')
-VALIDATOR_PUB_KEY=$(gnoland secrets get validator_key | jq -r '.pub_key')
+export OPERATOR_ADDRESS=$(gnokey list | grep -oP 'addr: \K\S+')
+export VALIDATOR_PUB_KEY=$(gnoland secrets get validator_key | jq -r '.pub_key')
+export
 ```
 
 ```bash
 #Create the wallet ( replace #keyname with whatever name you want)
 export WALLET= wallet_name
-gnokey add $WALLET -home /home/gnoland/gnoland-data/
+gnokey add $WALLET
 ```
 
 ## Create validator proposal
@@ -36,13 +37,13 @@ gnokey maketx call \
 -pkgpath "gno.land/r/gnoland/valopers" \
 -func "Register" \
 -gas-fee 1000000ugnot \
--gas-wanted 30000000 \
+-gas-wanted 60000000 \
 -broadcast \
--chainid test9.0 \
+-chainid topaz-1 \
 -args "$MONIKER" \
 -args "$DETAILS" \
--args "$VALIDATOR_ADDRESS" \
+-args "$OPERATOR_ADDRESS" \
 -args "$VALIDATOR_PUB_KEY" \
--remote "https://rpc.test7.testnets.gno.land:443" \
-$WALLET -home /home/gnoland/gnoland-data/
+-remote  \
+$WALLET
 ```
