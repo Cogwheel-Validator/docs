@@ -2,13 +2,16 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
-minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - next
-  - "@next/swc-*"
-  - "@next/env"
+  - '@next/swc-*'
+  - '@next/env'
   - react
   - react-dom
-  - "@types/node"
-  - "@types/react"
-  - "@types/react-dom"
+  - '@types/node'
+  - '@types/react'
+  - '@types/react-dom'
+  - eslint
+overrides:
+  '@types/react': 19.2.17
+  '@types/react-dom': 19.2.3
