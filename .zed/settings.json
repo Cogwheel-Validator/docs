@@ -1,0 +1,10 @@
+{
+  "tab_size": 4,
+  "hard_tabs": false,
+  "languages": {
+    "Make": {
+      "hard_tabs": true,
+      "tab_size": 4
+    }
+  }
+}

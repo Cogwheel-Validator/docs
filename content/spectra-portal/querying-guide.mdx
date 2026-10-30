@@ -1,0 +1,95 @@
+---
+title: "Querying Guide"
+description: "How to actually call the Pathfinder RPC - plain HTTP, a typed TypeScript client, and what production consumers should watch out for."
+---
+
+This page shows how to call the Pathfinder RPC using [Connect](https://connectrpc.com/docs/protocol) over plain HTTP - no code generation needed. See [Protocols & Tools](/spectra-portal/protocols-and-tools) for gRPC/gRPC-Web and codegen, and the [API Reference](/spectra-portal/api) for an interactive "try it" panel per method.
+
+All examples below call `pathfinder.v2beta.PathfinderQueryService/GetChainInfo` - a read-only lookup that's easy to try safely. Swap in any other method name and request body from the [v1](/spectra-portal/pathfinder-v1) or [v2beta](/spectra-portal/pathfinder-v2beta) docs.
+
+## Plain HTTP POST
+
+<Callout type="info" text="These examples target https://pathfinder.thespectra.io as a placeholder public endpoint - point at your own instance's URL instead." />
+
+```bash
+curl -X POST https://pathfinder.thespectra.io/pathfinder.v2beta.PathfinderQueryService/GetChainInfo \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-d '{
+  "chain_id": "juno-1"
+}'
+```
+
+```typescript
+const response = await fetch(
+  "https://pathfinder.thespectra.io/pathfinder.v2beta.PathfinderQueryService/GetChainInfo",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ chain_id: "juno-1" }),
+  },
+);
+const data = await response.json();
+console.log(data);
+```
+
+```python
+import requests
+
+def get_chain_info(chain_id: str):
+    response = requests.post(
+        "https://pathfinder.thespectra.io/pathfinder.v2beta.PathfinderQueryService/GetChainInfo",
+        json={"chain_id": chain_id},
+        headers={"Content-Type": "application/json", "Accept": "application/json"},
+    )
+    return response.json()
+
+print(get_chain_info("juno-1"))
+```
+
+## Plain HTTP GET (cacheable methods)
+
+Every Pathfinder method is `NO_SIDE_EFFECTS`, so a GET form works too - encode the request as query params:
+
+```bash
+curl --get --data-urlencode 'encoding=json' \
+    --data-urlencode 'message={"chain_id": "juno-1"}' \
+    https://pathfinder.thespectra.io/pathfinder.v2beta.PathfinderQueryService/GetChainInfo
+```
+
+<Callout type="warning" text="FindPath is technically idempotent but can return a slightly different route on repeat calls, since it depends on the live Osmosis SQS. Don't cache FindPath responses beyond a few seconds unless you're intentionally reusing a stale quote - every other method is safe to cache normally." />
+
+## Typed client (TypeScript)
+
+Once you've generated a client (see [Protocols & Tools](/spectra-portal/protocols-and-tools)), you get typed requests and responses instead of hand-written JSON:
+
+```typescript
+import { PathfinderQueryService } from "./lib/generated/pathfinder/v2beta/pathfinder_v2beta_query_pb";
+import { createClient } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+
+const transport = createConnectTransport({
+  baseUrl: "https://pathfinder.thespectra.io",
+});
+
+const client = createClient(PathfinderQueryService, transport);
+
+const chainInfo = await client.getChainInfo({ chainId: "juno-1" });
+console.log(chainInfo.chainInfo?.chainName);
+```
+
+The same pattern applies to `FindPathService` for route-finding - swap in `FindPathService` and call `client.findPath({...})`.
+
+## Production concerns worth knowing about
+
+These come straight from how Spectra Portal's own frontend calls `FindPath` (`usePathfinderQuery.ts` in `client_app/`) - real concerns you'll likely hit too if you're building a live quote UI, not just a one-shot lookup:
+
+- **Debounce input changes.** Don't call `FindPath` on every keystroke of an amount field - debounce by ~1 second.
+- **Auto-refresh, but not too eagerly.** Quotes go stale as pool liquidity moves; refreshing every 30s is a reasonable default, with a shorter "stale" threshold (e.g. 15s) used to visually flag an aging quote before it refreshes.
+- **Guard against race conditions.** If a user changes inputs while a request is in flight, the earlier response can arrive after the later one. Track requests with an incrementing ID and discard any response that isn't for the latest request.
+- **Get a fresh quote right before executing.** Bypass your debounce/cache one last time immediately before the user signs a transaction, so they're executing against current, not stale, pricing.
+
+v2beta's `FindPathStreaming` (see [v2beta](/spectra-portal/pathfinder-v2beta)) is designed to eventually take over some of this - the server pushes a fresh quote on its own instead of the client polling - but as of now it's not yet used anywhere in Spectra Portal's own frontend, so treat the points above as the current best practice either way.

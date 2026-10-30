@@ -1,0 +1,12 @@
+{
+  "title": "Pathfinder Service",
+  "description": "PathfinderService provides route discovery and validation for IBC transfers and swaps.\n\n This is the legacy (v1) API surface. New integrations should prefer the\n v2beta FindPathService/PathfinderQueryService. v1 is kept unchanged for\n existing consumers; it identifies chains only via a single sender_address/\n receiver_address pair on FindPathRequest, and derives any intermediate\n broker/PFM chain address automatically via SLIP-44-guarded bech32\n re-encoding. v2beta replaces that derivation with explicit,\n caller-supplied per-chain addresses (ChainAddress), which is more robust\n across chains that use different SLIP-44 coin types.",
+  "pages": [
+    "v1.PathfinderService.FindPath",
+    "v1.PathfinderService.GetChainInfo",
+    "v1.PathfinderService.GetChainTokens",
+    "v1.PathfinderService.GetTokenDenoms",
+    "v1.PathfinderService.ListSupportedChains",
+    "v1.PathfinderService.LookupDenom"
+  ]
+}

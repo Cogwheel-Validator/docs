@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "index",
+    "querying-guide",
+    "protocols-and-tools",
+    "pathfinder-v1",
+    "pathfinder-v2beta",
+    "api"
+  ]
+}
