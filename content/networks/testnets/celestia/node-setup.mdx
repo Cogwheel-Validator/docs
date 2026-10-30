@@ -1,9 +1,9 @@
 ---
-title: "Node setup for Celestia"
-description: "Node setup for Celestia"
+title: "Node setup for Celestia Mocha"
+description: "Node setup for Celestia Mocha"
 ---
 
-# Node setup for Celestia
+# Node setup for Celestia Mocha
 
 Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
 you are using a Debian based OS such as Ubuntu for example.
@@ -46,7 +46,7 @@ git checkout 10.5.0-mocha
 make install
 ```
 
-<Callout type="info" text={`Celestia ships a multiplexer: a single binary with the previous versions embedded in it. It handles upgrades on its own, so Cosmovisor is not needed.`} />
+<Callout type="info" text={`Celestia Mocha ships a multiplexer: a single binary with the previous versions embedded in it. It handles upgrades on its own, so Cosmovisor is not needed.`} />
 
 ## Set up the service
 
@@ -57,7 +57,7 @@ sudo ln -s $HOME/go/bin/celestia-appd /usr/local/bin/celestia-appd -f
 
 sudo tee /etc/systemd/system/celestia-appd.service > /dev/null <<EOF
 [Unit]
-Description=Celestia node
+Description=Celestia Mocha node
 After=network-online.target
 
 [Service]

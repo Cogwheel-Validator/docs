@@ -1,0 +1,116 @@
+---
+title: "Node setup for Nolus Protocol"
+description: "Node setup for Nolus Protocol"
+---
+
+# Node setup for Nolus Protocol
+
+Node setup requires some basic knowledge of Linux OS and server management. This guide will assume
+you are using a Debian based OS such as Ubuntu for example.
+
+## Update the system and install the essentials:
+
+```bash
+sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
+sudo apt install vim # or install nano
+sudo apt install entr jq make git ufw wget 
+```
+
+## Install GO
+
+```bash
+sudo rm -r /usr/local/go/
+wget https://go.dev/dl/gogo1.27.3.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.27.3.linux-amd64.tar.gz
+rm gogo1.27.3.linux-amd64.tar.gz
+
+# Add GO to PATH
+echo 'export GO111MODULE=on' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
+
+# Source the bashrc file
+source $HOME/.bashrc
+
+```
+
+## Clone the repository and install node binary
+
+```bash
+cd $HOME 
+git clone https://github.com/nolus-protocol/nolus-core
+cd nolus-core  # always doublecheck from the official team for the right version
+git checkout 0.8.6-patch
+make install
+```
+
+<Callout type="info" text={`Nolus Protocol ships a multiplexer: a single binary with the previous versions embedded in it. It handles upgrades on its own, so Cosmovisor is not needed.`} />
+
+## Set up the service
+
+```bash
+sudo ln -s $HOME/go/bin/nolusd /usr/local/bin/nolusd -f
+
+# Create service file
+
+sudo tee /etc/systemd/system/nolusd.service > /dev/null <<EOF
+[Unit]
+Description=Nolus Protocol node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which nolusd) start
+WorkingDirectory=$HOME/.nolus
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+
+NoNewPrivileges=true
+ProtectSystem=strict
+RestrictSUIDSGID=true
+LockPersonality=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictNamespaces=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable nolusd.service
+```
+
+## Set up the node 
+
+```bash
+# Please when using this guide replace “YOUR_MONIKER" with name for your node.
+
+nolusd init YOUR_MONIKER --chain-id pirin-1
+
+# Get address book and genesis.json
+curl -L https://files.cogwheel.zone/nolus/genesis.json |  tar -xvf nolus_genesis.tar.xz -C $HOME/.nolus/config/genesis.json
+wget https://files.cogwheel.zone/nolus/addrbook.json -O $HOME/.nolus/config/addrbook.json
+
+#Set minimum gas prices
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"\"|" $HOME/.nolus/config/app.toml
+```
+
+Use snapshot or state sync to catch up.
+``` 
+Links to snapshots. You only need from one provider.
+
+- [Polkachu](https://polkachu.com/tendermint_snapshots/nolus)
+```
+
+## Start the node
+
+```bash
+sudo systemctl start nolusd && sudo journalctl -fu nolusd -o cat
+```
