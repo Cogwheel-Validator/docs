@@ -1,0 +1,11 @@
+{
+  "title": "Pathfinder Query Service",
+  "description": "PathfinderQueryService provides chain/denom lookups that are independent\n of route-finding. Kept separate from FindPathService so that a breaking\n change to route discovery doesn't force these to be versioned in lockstep.",
+  "pages": [
+    "pathfinder.v2beta.PathfinderQueryService.GetChainInfo",
+    "pathfinder.v2beta.PathfinderQueryService.GetChainTokens",
+    "pathfinder.v2beta.PathfinderQueryService.GetTokenDenoms",
+    "pathfinder.v2beta.PathfinderQueryService.ListSupportedChains",
+    "pathfinder.v2beta.PathfinderQueryService.LookupDenom"
+  ]
+}

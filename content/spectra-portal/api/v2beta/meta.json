@@ -1,0 +1,6 @@
+{
+  "pages": [
+    "pathfinder.v2beta.findpathservice",
+    "pathfinder.v2beta.pathfinderqueryservice"
+  ]
+}

@@ -1,0 +1,97 @@
+---
+title: "Pathfinder v2beta API"
+description: "The current, recommended Pathfinder API - explicit per-chain addresses, a mock/discovery response mode, and a streaming route-finding RPC."
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+<Callout type="success" text="v2beta is the current, recommended API surface for new integrations." />
+
+v2beta is split into two services so route-finding and static lookups can evolve independently, without forcing a version bump on the other:
+
+- **`pathfinder.v2beta.FindPathService`** - `FindPath` (unary) and `FindPathStreaming` (bidirectional streaming, new in v2beta).
+- **`pathfinder.v2beta.PathfinderQueryService`** - `LookupDenom`, `GetTokenDenoms`, `GetChainInfo`, `ListSupportedChains`, `GetChainTokens` - functionally the same lookups as v1, mirrored under this service.
+
+For the full field-by-field schema and a live "try it" panel for every unary method, see the **[interactive API Reference](/spectra-portal/api/v2beta)**. It can't represent `FindPathStreaming`, though (see below) - that's covered in full on this page instead.
+
+## The `ChainAddress` model
+
+v1 takes a single `sender_address`/`receiver_address` pair and derives any other address the route needs. v2beta replaces that with `repeated ChainAddress addresses` - one `{chain_id, address}` entry per chain the route may touch. You resolve and supply every address yourself; nothing is derived on your behalf.
+
+Here's the same 3-chain broker-swap route (ATOM on Cosmos Hub → swap on Osmosis → USDC on Noble), addressed both ways:
+
+<Tabs items={['v1', 'v2beta']}>
+<Tab value="v1">
+```json
+{
+  "chain_from": "cosmoshub-4",
+  "sender_address": "cosmos1zjqm4lngspfqkp68psuv4suxwjfxftkeg9fmqp",
+  "chain_to": "noble-1",
+  "receiver_address": "noble1zjqm4lngspfqkp68psuv4suxwjfxftkenx9k4n"
+}
+```
+The Osmosis address is derived server-side - not supplied.
+</Tab>
+<Tab value="v2beta">
+```json
+{
+  "chain_from": "cosmoshub-4",
+  "chain_to": "noble-1",
+  "addresses": [
+    { "chain_id": "cosmoshub-4", "address": "cosmos1zjqm4lngspfqkp68psuv4suxwjfxftkeg9fmqp" },
+    { "chain_id": "osmosis-1", "address": "osmo1zjqm4lngspfqkp68psuv4suxwjfxftken7rwm0" },
+    { "chain_id": "noble-1", "address": "noble1zjqm4lngspfqkp68psuv4suxwjfxftkenx9k4n" }
+  ]
+}
+```
+Every touched chain gets an explicit address - nothing derived.
+</Tab>
+</Tabs>
+
+`addresses` must be either empty (see mock mode, below) or contain at least 2 entries. If it's non-empty but missing an address for a chain the route actually needs, the call fails with an error naming the missing chain IDs.
+
+## Mock / discovery mode
+
+On the unary `FindPath` call, you can leave `addresses` empty. The Pathfinder still computes a route using placeholder addresses, but the response is marked `response_code: RESPONSE_CODE_MOCK_ADDRESSES`, omits `execution`/memo data, and populates `required_chains` with every chain ID a real request would need an address for.
+
+<Callout type="info" text="Use mock mode to show a route's shape - hop count, chains, tokens - before the user has connected a wallet on every intermediate chain. Re-issue the same request with real addresses once they're ready to execute (response_code: RESPONSE_CODE_OK)." />
+
+## `FindPathStreaming`
+
+A bidirectional-streaming RPC with no v1 equivalent, for a route/quote that stays fresh without the client re-polling. It's only reachable over gRPC, gRPC-Web, or Connect's native streaming transport - the plain HTTP GET/POST patterns from the [Querying Guide](/spectra-portal/querying-guide) don't apply to it, and it can't be represented in the interactive API Reference (Scalar's playground is built for one-shot request/response calls, not streams).
+
+Unlike unary `FindPath`, `addresses` is always required here (at least 2 entries) - there's no mock/discovery mode over a stream.
+
+### Runtime contract
+
+<Mermaid chart={`sequenceDiagram
+    participant C as Client
+    participant S as Pathfinder Server
+    C->>S: open stream
+    Note over C,S: must send first request within 60s, or server closes
+    C->>S: FindPathStreamingRequest #1
+    S-->>C: response #1
+    Note over S: client idle 15s...
+    S-->>C: response #2 (auto-recomputed)
+    C->>S: FindPathStreamingRequest #2 (new amount)
+    S-->>C: response #3
+    Note over C,S: hard 1-hour cap - server closes regardless of activity
+`} />
+
+Three timing rules, enforced server-side:
+
+1. **60-second first-message timeout** - send your first request within 60s of opening the stream, or the server closes it.
+2. **15-second idle auto-refresh** - if you don't send a new request within 15s of the last response, the server recomputes from your *last* request and pushes an updated response on its own.
+3. **1-hour hard lifetime cap** - regardless of activity, the server closes the stream after an hour; reopen a new one to continue.
+
+### Where this fits today
+
+Spectra Portal's own frontend only calls unary v1 `FindPath` right now - there's no `FindPathStreaming` integration anywhere in the app yet. The existing `usePathfinderQuery` hook approximates what streaming is designed to eventually take over: debouncing input, auto-refreshing on a timer, tracking staleness, and guarding against race conditions between overlapping requests (see the [Querying Guide](/spectra-portal/querying-guide#production-concerns-worth-knowing-about)) - all client-side logic that a long-lived stream with server-side auto-refresh could simplify. Treat the contract above as the API guarantee, not a description of current production behavior.
+
+## `TokenInfo` denom field rename
+
+v1's `TokenInfo.ibc_denom` (the denom a token has on the *other end* of a route) is renamed to `counterpart_denom` in v2beta. Same meaning, clearer name: the value isn't always a literal IBC hash - it can be a plain native denom when the token in question originates on the counterparty chain.
+
+## Full worked examples
+
+For complete route-shape examples (shared with v1, since the underlying route engine is the same) plus the mock-mode response shape, see [`docs/pathfinder/v2beta.md`](https://github.com/Cogwheel-Validator/spectra-portal/blob/main/docs/pathfinder/v2beta.md) in the spectra-ibc-hub repo - the source of truth this page summarizes.

@@ -1,0 +1,41 @@
+---
+title: "Pathfinder v1 API"
+description: "The pathfinder.v1.PathfinderService API - route finding and chain/token lookups. Legacy; new integrations should use v2beta."
+---
+
+<Callout type="warning" text="v1 is the legacy Pathfinder API surface, kept for existing consumers. New integrations should use v2beta instead - see the v2beta page for why." />
+
+`pathfinder.v1.PathfinderService` is a single service with 6 methods:
+
+- `FindPath` - find the best route to bridge/swap tokens between two chains.
+- `LookupDenom`, `GetTokenDenoms`, `GetChainInfo`, `ListSupportedChains`, `GetChainTokens` - chain and token metadata lookups.
+
+For the full field-by-field schema, try each method live, and see auto-generated request/response examples, use the **[interactive API Reference](/spectra-portal/api/v1)**.
+
+## The address model
+
+v1 identifies a transfer with a single `sender_address` and `receiver_address` pair. If the route the Pathfinder finds needs an address on an intermediate chain (a broker chain for a swap, or a PFM hop), v1 derives that address automatically from the sender/receiver pair via SLIP-44-guarded bech32 re-encoding.
+
+That works for the common case, but different chains can use different SLIP-44 coin types, so a re-derived address can occasionally be malformed or simply wrong for some chains. This is the main reason v2beta exists - see [Pathfinder v2beta](/spectra-portal/pathfinder-v2beta) for the replacement model.
+
+## What `FindPath` returns
+
+`FindPathResponse` has a `route` field that's one of three shapes - exactly one is populated per response:
+
+- **`direct`** - a single IBC hop, no swap. The simplest case: e.g. bridging ATONE from AtomOne to Osmosis.
+- **`indirect`** - multiple IBC hops, still no swap. Used when a token needs to pass through an intermediate chain to reach its destination (via manual chaining or [Packet Forwarding Middleware](https://ibc.cosmos.network/main/middleware/packet-forward-middleware/overview/)).
+- **`broker_swap`** - one hop reaches a DEX broker chain (currently only Osmosis), a swap happens there, and zero or more hops continue on to the destination. This is the shape used for any cross-chain swap, and covers same-chain swaps, swap-then-transfer, transfer-then-swap, and swap-with-multi-hop-outbound.
+
+When a `broker_swap` response includes an `execution` field, it carries ready-to-use transaction data - either a `memo` for `MsgTransfer` (an IBC-hooks memo) or `smart_contract_data` for direct smart contract execution. See the Spectra IBC Hub repo's [`docs/IBC_MEMO.md`](https://github.com/Cogwheel-Validator/spectra-portal/blob/main/docs/IBC_MEMO.md) for exactly how those formats assemble.
+
+## Denom syntax
+
+Any denom field (`token_from_denom`, `token_to_denom`, `LookupDenom`'s `denom`) accepts three forms:
+
+- A native denom, e.g. `uatone`, `uosmo`.
+- A full IBC denom, e.g. `ibc/BC26A7A8...`.
+- The `symbol@origin_chain` convenience syntax, e.g. `uatone@atomone-1` - names the chain a base denom is native to, to disambiguate when the same base denom could otherwise resolve ambiguously.
+
+## Full worked examples
+
+For every route shape (`direct`, `broker_swap` in each of its variants, `indirect`) with complete, realistic JSON, see [`docs/pathfinder/v1.md`](https://github.com/Cogwheel-Validator/spectra-portal/blob/main/docs/pathfinder/v1.md) in the spectra-ibc-hub repo - the source of truth this page summarizes.

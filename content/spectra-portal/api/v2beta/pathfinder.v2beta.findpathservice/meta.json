@@ -1,0 +1,7 @@
+{
+  "title": "Find Path Service",
+  "description": "FindPathService finds and validates routes between two chains for IBC\n transfers and swaps. The unary and streaming methods are kept in the same\n service since they answer the same question, just over different\n transports.",
+  "pages": [
+    "pathfinder.v2beta.FindPathService.FindPath"
+  ]
+}

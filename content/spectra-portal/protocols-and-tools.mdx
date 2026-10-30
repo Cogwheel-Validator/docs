@@ -1,0 +1,65 @@
+---
+title: "Protocols & Tools"
+description: "How the Pathfinder RPC is reachable (gRPC, gRPC-Web, Connect) and the tools you can use to explore or test it."
+---
+
+The Pathfinder RPC is a Go service built with [ConnectRPC](https://connectrpc.com/), which means a single server serves the same API over three wire protocols on the same port. Pick whichever fits your stack - there's no functional difference in what you can call.
+
+<Mermaid chart={`graph LR;
+    C[Your client]
+    S(("Pathfinder RPC<br/>(single Go server)"))
+    C -- gRPC --> S
+    C -- gRPC-Web --> S
+    C -- "Connect (plain HTTP/JSON or protobuf)" --> S
+`} />
+
+## The three protocols
+
+- **gRPC** - the "native" protocol. Needs a gRPC client and generated code; not directly reachable from a browser.
+- **gRPC-Web** - a browser-compatible variant of gRPC, used by gRPC-Web client libraries.
+- **Connect** - the easiest option to start with. It's a normal-looking HTTP API: you can `curl` it or `fetch()` it directly with plain JSON, no code generation required, and it also accepts binary protobuf on the same endpoints if you want the smaller payload.
+
+<Callout type="info" text="If you're not sure which to use, start with Connect over plain HTTP/JSON - see the Querying Guide for copy-pasteable examples in curl, TypeScript, Python, and Go." />
+
+## Interactive reference
+
+The [API Reference](/spectra-portal/api) pages have a "try it" panel (powered by Scalar) for every unary method, built from the same OpenAPI spec that documents the Connect JSON+HTTP surface. It's the fastest way to explore request/response shapes without leaving the browser. It can't represent `FindPathStreaming` (see [v2beta](/spectra-portal/pathfinder-v2beta)) since that's a bidirectional stream, not a request/response call - Scalar's playground is built around one-shot HTTP requests.
+
+## CLI and GUI tools
+
+- **[`grpcurl`](https://grpcurl.com/#Installation%20Method)** - a command-line gRPC client, good for quick ad-hoc calls once you know a method's name:
+
+  ```bash
+  grpcurl -d '{"chain_id": "juno-1"}' pathfinder.thespectra.io pathfinder.v2beta.PathfinderQueryService/GetChainInfo
+  grpcurl pathfinder.thespectra.io list
+  ```
+
+- **[`grpcui`](https://github.com/fullstorydev/grpcui)** - a local web UI over gRPC reflection, useful if you'd rather click through forms than write JSON by hand:
+
+  ```bash
+  grpcui pathfinder.thespectra.io
+  ```
+
+- **[Buf Studio](https://buf.build/studio)** - a hosted, browser-based client for calling live gRPC/Connect/gRPC-Web APIs, without installing anything locally. Since raw gRPC can't run in a browser, Studio talks to your server through the Buf Studio Agent (bundled in the `buf` CLI) as a bridge, and needs either a schema published to the Buf Schema Registry or manually-provided proto descriptors. Spectra doesn't currently publish Pathfinder's schema to the BSR, so using Studio today means supplying descriptors yourself - for zero-setup testing, the Connect-over-HTTP examples in the [Querying Guide](/spectra-portal/querying-guide) or the interactive [API Reference](/spectra-portal/api) are the faster path.
+
+## Generating a typed client
+
+If you want type-safe request/response objects instead of hand-written JSON, generate a client from the proto files with [buf](https://buf.build/docs/cli/):
+
+```yaml
+version: v2
+plugins:
+  - local: protoc-gen-es
+    out: ./src/lib/generated
+    opt: target=ts
+    include_imports: true
+  - local: protoc-gen-connect-es
+    out: ./src/lib/generated
+    opt: target=ts
+inputs:
+  - git_repo: https://github.com/Cogwheel-Validator/spectra-portal
+    branch: main
+    subdir: proto
+```
+
+Both plugins are required - `protoc-gen-es` generates the message types, `protoc-gen-connect-es` generates the service client object that `createClient()` needs. See the [Querying Guide](/spectra-portal/querying-guide) for what to do with the generated code, and the spectra-ibc-hub repo's own `proto/buf.gen.yaml` for the canonical, always-current version of this config.
