@@ -107,7 +107,9 @@ class MdxNetworkGenerator:
                         cosmos_sdk_version=None,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        additional_info=config.additional_info))
+                        additional_info=config.additional_info,
+                        build_tool=config.build_tool,
+                        use_cosmovisor=config.use_cosmovisor))
             else:
                 print(f"Query the node info for {config.name}")
                 api_url = f"https://{config.path}-api.cogwheel.zone"
@@ -129,7 +131,9 @@ class MdxNetworkGenerator:
                         cosmos_sdk_version=node_info.cosmos_sdk_version,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        additional_info=config.additional_info))
+                        additional_info=config.additional_info,
+                        build_tool=config.build_tool,
+                        use_cosmovisor=config.use_cosmovisor))
 
         for config in self.testnets.values():
             if config.name == "Gnoland":
@@ -145,7 +149,9 @@ class MdxNetworkGenerator:
                         cosmos_sdk_version=None,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        additional_info=config.additional_info))
+                        additional_info=config.additional_info,
+                        build_tool=config.build_tool,
+                        use_cosmovisor=config.use_cosmovisor))
             else:
                 print(f"Query the node info for {config.name}")
                 api_url = f"https://{config.path}-testnet-api.cogwheel.zone"
@@ -167,7 +173,9 @@ class MdxNetworkGenerator:
                         cosmos_sdk_version=node_info.cosmos_sdk_version,
                         snapshots=config.snapshots,
                         repo_url=config.repo_url,
-                        additional_info=config.additional_info))
+                        additional_info=config.additional_info,
+                        build_tool=config.build_tool,
+                        use_cosmovisor=config.use_cosmovisor))
 
         if failed_networks:
             print(f"\n ⚠️  Warning: Failed to query {len(failed_networks)} networks: {', '.join(failed_networks)}")
@@ -339,6 +347,8 @@ class MdxNetworkGenerator:
                     "cosmos_sdk_version": context.cosmos_sdk_version,
                     "snapshots": context.snapshots,
                     "additional_info": context.additional_info,
+                    "build_tool": context.build_tool,
+                    "use_cosmovisor": context.use_cosmovisor,
                 },
                 "cosmovisor_recommended_version": "latest",
             }

@@ -28,3 +28,5 @@ class NetworkContext:
     additional_info: dict[str, Any] | None = (
         None  # to be asumed as empty unless specified
     )
+    build_tool: str = "make"
+    use_cosmovisor: bool = True

@@ -18,6 +18,8 @@ class Config:
         minimum_gas_prices: Minimum gas prices of the network
         validator_amount: Amount of validator of the network
         path: Path of the network
+        build_tool: Tool used to build/install the binary ("make" or "just")
+        use_cosmovisor: Whether the node is run through cosmovisor
 
     """
 
@@ -31,6 +33,8 @@ class Config:
     path: str
     snapshots: list[dict[str, str]]
     additional_info: dict[str, Any] | None = None # to be asumed as empty unless specified
+    build_tool: str = "make"
+    use_cosmovisor: bool = True
 
 @dataclass
 class ConfigList:
