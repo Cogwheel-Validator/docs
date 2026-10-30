@@ -14,15 +14,16 @@ you are using a Debian based OS such as Ubuntu for example.
 sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
 sudo apt install vim # or install nano
 sudo apt install entr jq make git ufw wget 
+sudo apt install just # or: cargo install just
 ```
 
 ## Install GO and Cosmovisor
 
 ```bash
 sudo rm -r /usr/local/go/
-wget https://go.dev/dl/gogo1.25.0.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf gogo1.25.0.linux-amd64.tar.gz
-rm gogo1.25.0.linux-amd64.tar.gz
+wget https://go.dev/dl/gogo1.27.0.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf gogo1.27.0.linux-amd64.tar.gz
+rm gogo1.27.0.linux-amd64.tar.gz
 
 # Add GO to PATH
 echo 'export GO111MODULE=on' >> $HOME/.bashrc
@@ -34,6 +35,7 @@ echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
 # Source the bashrc file
 source $HOME/.bashrc
 
+
 # Install cosmovisor
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@vlatest
 sudo mv ~/go/bin/cosmovisor /usr/local/bin
@@ -44,9 +46,9 @@ sudo mv ~/go/bin/cosmovisor /usr/local/bin
 ```bash
 cd $HOME 
 git clone https://github.com/NibiruChain/nibiru
-cd nibiru # always doublecheck from the official team for the right version
-git checkout v2.17.0
-make install
+cd nibiru  # always doublecheck from the official team for the right version
+git checkout v2.21.1
+just install
 ```
 
 ## Set up cosmovisor

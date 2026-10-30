@@ -14,9 +14,13 @@ you are using a Debian based OS such as Ubuntu for example.
 sudo apt update && sudo apt full-upgrade -y && apt install build-essential 
 sudo apt install vim # or install nano
 sudo apt install entr jq make git ufw wget 
+{% if network.build_tool == "just" %}
+sudo apt install just # or: cargo install just
+{% endif %}
 ```
 
-## Install GO and Cosmovisor
+## Install GO{% if network.use_cosmovisor %} and Cosmovisor{% endif %}
+
 
 ```bash
 sudo rm -r /usr/local/go/
@@ -34,9 +38,12 @@ echo 'export PATH=$PATH:$GOROOT/bin' >> $HOME/.bashrc
 # Source the bashrc file
 source $HOME/.bashrc
 
+{% if network.use_cosmovisor %}
+
 # Install cosmovisor
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v{{ cosmovisor_recommended_version }}
 sudo mv ~/go/bin/cosmovisor /usr/local/bin
+{% endif %}
 ```
 
 ## Clone the repository and install node binary
@@ -46,9 +53,14 @@ cd $HOME
 git clone {{ network.repo_url }}
 cd {{ network.repo_name }}  # always doublecheck from the official team for the right version
 git checkout {{ network.version }}
-make install
+{{ network.build_tool }} install
 ```
+{% if not network.use_cosmovisor %}
 
+<Callout type="info" text={`{{ network.name }} ships a multiplexer: a single binary with the previous versions embedded in it. It handles upgrades on its own, so Cosmovisor is not needed.`} />
+{% endif %}
+
+{% if network.use_cosmovisor %}
 ## Set up cosmovisor
 
 ```bash 
@@ -98,6 +110,47 @@ sudo systemctl daemon-reload
 sudo systemctl enable {{ network.binary_name }}.service
 ```
 
+{% else %}
+## Set up the service
+
+```bash
+sudo ln -s $HOME/go/bin/{{ network.binary_name }} /usr/local/bin/{{ network.binary_name }} -f
+
+# Create service file
+
+sudo tee /etc/systemd/system/{{ network.binary_name }}.service > /dev/null <<EOF
+[Unit]
+Description={{ network.name }} node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which {{ network.binary_name }}) start
+WorkingDirectory=$HOME/.{{ network.home_dir }}
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+
+NoNewPrivileges=true
+ProtectSystem=strict
+RestrictSUIDSGID=true
+LockPersonality=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictNamespaces=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable {{ network.binary_name }}.service
+```
+
+{% endif %}
 ## Set up the node 
 
 ```bash
