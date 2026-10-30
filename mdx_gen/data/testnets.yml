@@ -30,7 +30,7 @@ networks:
       seeds: ""
       genesis_url: "https://github.com/gnolang/gno/releases/download/chain/onyx/genesis.json"
       rpc_url: "https://gnoland-testnet-rpc.cogwheel.zone/"
-  - name: "Celestia"
+  - name: "Celestia Mocha"
     repo_url: "https://github.com/celestiaorg/celestia-app"
     binary_name: "celestia-appd"
     home_dir: "celestia-app"

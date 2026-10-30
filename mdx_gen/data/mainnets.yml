@@ -50,3 +50,15 @@ networks:
     snapshots:
       - name: "Polkachu"
         url: "https://polkachu.com/tendermint_snapshots/celestia"
+  - name: "Nolus Protocol"
+    repo_url: "https://github.com/nolus-protocol/nolus-core"
+    binary_name: "nolusd"
+    home_dir: "nolus"
+    chain_id: "pirin-1"
+    minimum_gas_prices: "0.002utia"
+    validator_amount: "1000000utia"
+    path: "nolus"
+    use_cosmovisor: false
+    snapshots:
+      - name: "Polkachu"
+        url: "https://polkachu.com/tendermint_snapshots/nolus"
