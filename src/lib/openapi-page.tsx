@@ -1,7 +1,7 @@
 "use client";
 
 import { createOpenAPIPage } from "fumadocs-openapi/ui";
-import { withScalar } from "fumadocs-openapi/scalar";
+import { withScalar } from "fumadocs-openapi/ui/scalar";
 
 // Shared interactive "try it" component (Scalar-powered), registered in
 // mdx-components.tsx and consumed by the pages generated under
