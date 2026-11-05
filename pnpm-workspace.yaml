@@ -13,3 +13,7 @@ minimumReleaseAgeExclude:
   - '@types/react'
   - '@types/react-dom'
   - eslint
+  - fumadocs-core
+  - fumadocs-mdx
+  - fumadocs-openapi
+  - fumadocs-ui
